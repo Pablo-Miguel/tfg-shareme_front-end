@@ -1,0 +1,49 @@
+/* Make a class header that sticks the header on top and then an other class to put a img and a h1 in line inside of a div */
+.header {
+  position: sticky;
+  top: 0;
+  background-color: #07116b;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  height: 80px;
+  box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.75);
+  color: white;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+img {
+  height: 40px;
+}
+
+.button {
+  background-color: #07116b;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userInfo img {
+  height: 40px;
+  border-radius: 50%;
+}
