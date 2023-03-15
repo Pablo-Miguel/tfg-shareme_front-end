@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 import MainHeader from "../components/MainHeader/MainHeader";
+import SideMenu from "../components/SideMenu/SideMenu";
 import useUser from "../hooks/useUser";
 
 const RootLayout = () => {
@@ -11,6 +12,7 @@ const RootLayout = () => {
       {user ? (
         <>
           <MainHeader />
+          <SideMenu />
           <Outlet />
         </>
       ) : (
