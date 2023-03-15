@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 
 import classes from "./MainHeader.module.css";
 import shareme_blue_logo from "../../assets/imgs/logos/shareme_blue_logo.png";
-import { checkAuth, logout } from "../../store/auth-store/auth-actions";
+import { logout } from "../../store/auth-store/auth-actions";
 import useUser from "../../hooks/useUser";
 
 const MainHeader = () => {
