@@ -6,11 +6,10 @@ import {
   removeAuthToken,
   setAuthToken,
 } from "../../utils/storage";
-import { useRouter } from "../../hooks/useRouter";
+import { navigate } from "../../utils/router-supplier";
 
 export const checkAuth = () => {
   return async (dispatch) => {
-    const router = useRouter();
     try {
       const fetchedData = await axios.get("http://127.0.0.1:8000/users/me", {
         headers: {
@@ -22,14 +21,13 @@ export const checkAuth = () => {
     } catch (error) {
       dispatch(authActions.logout());
       removeAuthToken();
-      router.navigate("/login");
+      navigate("/login");
     }
   };
 };
 
 export const signUp = (firstName, lastName, email, password) => {
   return async (dispatch) => {
-    const router = useRouter();
     try {
       dispatch(authActions.setError(null));
       const fetchedData = await axios.post(
@@ -50,7 +48,7 @@ export const signUp = (firstName, lastName, email, password) => {
       dispatch(authActions.login({ user: fetchedData.data.user }));
 
       setAuthToken(fetchedData.data.token);
-      router.navigate("/");
+      navigate("/");
     } catch (error) {
       dispatch(
         authActions.setError({
@@ -64,7 +62,6 @@ export const signUp = (firstName, lastName, email, password) => {
 
 export const login = (email, password) => {
   return async (dispatch) => {
-    const router = useRouter();
     try {
       dispatch(authActions.setError(null));
       const fetchedData = await axios.post(
@@ -83,7 +80,7 @@ export const login = (email, password) => {
       dispatch(authActions.login({ user: fetchedData.data.user }));
 
       setAuthToken(fetchedData.data.token);
-      router.navigate("/");
+      navigate("/");
     } catch (error) {
       dispatch(
         authActions.setError({
@@ -97,7 +94,6 @@ export const login = (email, password) => {
 
 export const logout = (isAll = false) => {
   return async (dispatch) => {
-    const router = useRouter();
     try {
       let urlBase = "http://127.0.0.1:8000/users/";
       if (isAll) urlBase += "logoutAll";
@@ -112,7 +108,7 @@ export const logout = (isAll = false) => {
       dispatch(authActions.logout({ user: fetchedData.data.user }));
 
       removeAuthToken();
-      router.navigate("/login");
+      navigate("/login");
     } catch (error) {
       console.log("Can not logout!");
     }
