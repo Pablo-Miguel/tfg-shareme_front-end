@@ -38,7 +38,7 @@ const SideMenu = (props) => {
               <Link to="/profile">Your profile</Link>
             </li>
             <li>
-              <Link to="/">Add stuff</Link>
+              <Link to="/add-stuff">Add stuff</Link>
             </li>
             <li>
               <Link to="/">Create collection</Link>
