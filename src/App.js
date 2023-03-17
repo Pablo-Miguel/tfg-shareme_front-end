@@ -8,6 +8,7 @@ import SignUpPage from "./pages/SignUpPage";
 import { checkAuthLoader, checkUnauthLoader, getUserByIdLoader } from "./utils/loaders";
 import ErrorPage from "./pages/ErrorPage";
 import ProfilePage from "./pages/ProfilePage";
+import AddStuffPage from "./pages/AddStuffPage";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,11 @@ export const router = createBrowserRouter([
         ],
         loader: checkAuthLoader,
       },
+      {
+        path: "/add-stuff",
+        element: <AddStuffPage />,
+        loader: checkAuthLoader
+      }
     ],
   },
   {
