@@ -7,8 +7,6 @@ const ProfilePage = (props) => {
   const user = useUser();
   const laoder = useRouteLoaderData("user-details");
 
-  console.log(laoder);
-
   return (
     <>
       {!laoder ? (
