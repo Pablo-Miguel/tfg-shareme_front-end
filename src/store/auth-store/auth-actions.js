@@ -1,6 +1,6 @@
-import { authActions } from "./auth-slice";
 import axios from "axios";
 
+import { authActions } from "./auth-slice";
 import {
   getAuthToken,
   removeAuthToken,
