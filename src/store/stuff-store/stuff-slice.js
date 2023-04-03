@@ -27,6 +27,28 @@ const stuffSlice = createSlice({
     },
     setIsLoading(state, action) {
       state.isLoading = action.payload;
+    },
+    likeStuff(state, action) {
+      state.stuff = state.stuff.map((item) => {
+        if (item._id === action.payload._id) {
+          return {
+            ...item,
+            likes: action.payload.likes
+          };
+        }
+        return item;
+      });
+    },
+    viewStuff(state, action) {
+      state.stuff = state.stuff.map((item) => {
+        if (item._id === action.payload) {
+          return {
+            ...item,
+            views: item.views + 1
+          };
+        }
+        return item;
+      });
     }
   }
 });
