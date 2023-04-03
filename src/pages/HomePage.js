@@ -92,6 +92,7 @@ const HomePage = () => {
                 owner={item.owner}
                 has_offer={item.has_offer}
                 offer_price={item.offer_price}
+                isLiked={item.isLiked}
               />
             ))}
           </div>
