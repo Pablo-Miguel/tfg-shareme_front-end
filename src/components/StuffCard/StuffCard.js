@@ -1,7 +1,18 @@
+import React from "react";
+import { useDispatch } from "react-redux";
+
+import { likeStuff } from "../../store/stuff-store/stuff-actions";
 import Card from "../UIs/Card/Card";
 import classes from "./StuffCard.module.css";
 
 const StuffCard = (props) => {
+  const dispatch = useDispatch();
+
+  const likeHandler = (event) => {
+    dispatch(likeStuff(props.id));
+    event.target.disabled = true;
+  };
+
   return (
     <>
       <Card>
@@ -22,6 +33,7 @@ const StuffCard = (props) => {
           )}
         </div>
         <button className={classes.stuffCard__button}>Details</button>
+        <button className={classes.stuffCard__button} onClick={likeHandler} disabled={props.isLiked}>Like</button>
       </Card>
     </>
   );
