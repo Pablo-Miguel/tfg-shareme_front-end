@@ -4,14 +4,20 @@ import { useDispatch } from "react-redux";
 import { likeStuff } from "../../store/stuff-store/stuff-actions";
 import Card from "../UIs/Card/Card";
 import classes from "./StuffCard.module.css";
+import { useNavigate } from "react-router-dom";
 
 const StuffCard = (props) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const likeHandler = (event) => {
     dispatch(likeStuff(props.id));
     event.target.disabled = true;
   };
+
+  const detailsHandler = () => {
+    navigate(`/details/${props.id}/${props.isLiked}`);
+  }
 
   return (
     <>
@@ -32,7 +38,7 @@ const StuffCard = (props) => {
             </p>
           )}
         </div>
-        <button className={classes.stuffCard__button}>Details</button>
+        <button className={classes.stuffCard__button} onClick={detailsHandler}>Details</button>
         <button className={classes.stuffCard__button} onClick={likeHandler} disabled={props.isLiked}>Like</button>
       </Card>
     </>
