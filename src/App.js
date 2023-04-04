@@ -9,6 +9,7 @@ import { checkAuthLoader, checkUnauthLoader, getUserByIdLoader } from "./utils/l
 import ErrorPage from "./pages/ErrorPage";
 import ProfilePage from "./pages/ProfilePage";
 import AddStuffPage from "./pages/AddStuffPage";
+import DetailsPage from "./pages/DetailsPage";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,11 @@ export const router = createBrowserRouter([
       {
         path: "/add-stuff",
         element: <AddStuffPage />,
+        loader: checkAuthLoader
+      },
+      {
+        path: "/details/:stuff_id/:isLiked",
+        element: <DetailsPage />,
         loader: checkAuthLoader
       }
     ],
