@@ -41,10 +41,10 @@ const stuffSlice = createSlice({
     },
     viewStuff(state, action) {
       state.stuff = state.stuff.map((item) => {
-        if (item._id === action.payload) {
+        if (item._id === action.payload._id) {
           return {
             ...item,
-            views: item.views + 1
+            views: action.payload.views
           };
         }
         return item;
