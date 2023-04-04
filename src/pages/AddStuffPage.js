@@ -100,7 +100,7 @@ const AddStuffPage = () => {
           ref={descriptionInputRef}
         />
         <label htmlFor="price">Price</label>
-        <input type="number" id="price" name="price" ref={priceInputRef} />
+        <input type="number" id="price" name="price" min={0} ref={priceInputRef} />
         <label htmlFor="has_offer">Has offer</label>
         <input
           type="checkbox"
@@ -116,6 +116,7 @@ const AddStuffPage = () => {
               type="number"
               id="offer_price"
               name="offer_price"
+              min={0}
               ref={offerPriceInputRef}
             />
           </>
