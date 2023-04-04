@@ -80,3 +80,29 @@ export const likeStuff = (stuff_id) => {
     }
   };
 };
+
+export const viewStuff = (stuff_id) => {
+  return async (dispatch) => {
+    try {
+      dispatch(stuffActions.setError(null));
+      dispatch(stuffActions.setIsLoading(true));
+
+      const fetchedStuff = await axios.get(`http://127.0.0.1:8000/stuff/${stuff_id}/view`, {
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      });
+
+      dispatch(stuffActions.setIsLoading(false));
+      dispatch(stuffActions.viewStuff(fetchedStuff.data));
+    } catch (error) {
+      dispatch(stuffActions.setIsLoading(false));
+      dispatch(
+        stuffActions.setError({
+          message: "Error viewing stuff",
+          status: 404,
+        })
+      );
+    }
+  };
+};
