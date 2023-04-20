@@ -33,7 +33,8 @@ const stuffSlice = createSlice({
         if (item._id === action.payload._id) {
           return {
             ...item,
-            likes: action.payload.likes
+            likes: action.payload.likes,
+            isLiked: true
           };
         }
         return item;
