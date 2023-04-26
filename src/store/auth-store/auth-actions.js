@@ -5,6 +5,8 @@ import {
   getAuthToken,
   removeAuthToken,
   setAuthToken,
+  setUserId,
+  removeUserId
 } from "../../utils/storage";
 import { navigate } from "../../utils/router-supplier";
 
@@ -48,6 +50,7 @@ export const signUp = (firstName, lastName, email, password) => {
       dispatch(authActions.login({ user: fetchedData.data.user }));
 
       setAuthToken(fetchedData.data.token);
+      setUserId(fetchedData.data.user._id);
       navigate("/");
     } catch (error) {
       dispatch(
@@ -80,6 +83,7 @@ export const login = (email, password) => {
       dispatch(authActions.login({ user: fetchedData.data.user }));
 
       setAuthToken(fetchedData.data.token);
+      setUserId(fetchedData.data.user._id);
       navigate("/");
     } catch (error) {
       dispatch(
@@ -108,6 +112,7 @@ export const logout = (isAll = false) => {
       dispatch(authActions.logout({ user: fetchedData.data.user }));
 
       removeAuthToken();
+      removeUserId();
       navigate("/login");
     } catch (error) {
       console.log("Can not logout!");
