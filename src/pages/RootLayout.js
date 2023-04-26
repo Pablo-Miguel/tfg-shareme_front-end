@@ -14,7 +14,7 @@ const RootLayout = () => {
       {user ? (
         <>
           <MainHeader />
-          <SideMenu />
+          <SideMenu userId={user._id} />
           <Outlet />
         </>
       ) : (
