@@ -19,29 +19,21 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage />, loader: checkAuthLoader },
       {
-        path: "/profile",
-        children: [
-          { index: true, element: <ProfilePage /> },
-          {
-            path: ":user_id",
-            id: 'user-details',
-            element: <ProfilePage />,
-            loader: getUserByIdLoader,
-          },
-        ],
-        loader: checkAuthLoader,
+        path: "/profile/:user_id",
+        id: 'user-details',
+        element: <ProfilePage />,
+        loader: getUserByIdLoader,
       },
       {
         path: "/add-stuff",
-        element: <AddStuffPage />,
-        loader: checkAuthLoader
+        element: <AddStuffPage />
       },
       {
         path: "/details/:stuff_id/:isLiked",
-        element: <DetailsPage />,
-        loader: checkAuthLoader
+        element: <DetailsPage />
       }
     ],
+    loader: checkAuthLoader
   },
   {
     path: "/login",
