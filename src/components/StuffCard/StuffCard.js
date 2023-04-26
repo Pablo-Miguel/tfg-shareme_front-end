@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { likeStuff } from "../../store/stuff-store/stuff-actions";
 import Card from "../UIs/Card/Card";
 import classes from "./StuffCard.module.css";
-import { useNavigate } from "react-router-dom";
 
 const StuffCard = (props) => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const StuffCard = (props) => {
   };
 
   const detailsHandler = () => {
-    navigate(`/details/${props.id}/${props.isLiked}`);
+    navigate(`/details/${props.id}/${props.isLiked}`, { replace: true });
   }
 
   return (
