@@ -5,6 +5,7 @@ import classes from "./SideMenu.module.css";
 
 const SideMenu = (props) => {
   const [showMenu, setShowMenu] = useState(true);
+  const myProfile = `/profile/${props.userId}`;
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -35,7 +36,7 @@ const SideMenu = (props) => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/profile">Your profile</Link>
+              <Link to={myProfile}>Your profile</Link>
             </li>
             <li>
               <Link to="/add-stuff">Add stuff</Link>
