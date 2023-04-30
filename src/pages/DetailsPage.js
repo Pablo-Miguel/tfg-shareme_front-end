@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { viewStuff } from "../store/stuff-store/stuff-actions";
@@ -7,35 +7,56 @@ import { likeStuff } from "../store/stuff-store/stuff-actions";
 
 const DetailsPage = () => {
   const dispatch = useDispatch();
-  const { stuff_id, isLiked } = useParams();
-  const isLikedBool = isLiked === "true" ? true : false;
+  const { stuff_id } = useParams();
   const navigate = useNavigate();
-  const stuff = useSelector((state) => state.stuff.stuff);
-  const isLoading = useSelector((state) => state.stuff.isLoading);
-  const current_stuff = stuff.find((s) => s._id === stuff_id);
+  const loader = useRouteLoaderData("stuff-details");
+  const [current_stuff, setCurrentStuff] = useState(null);
 
   const effectExecutedRef = useRef(false);
 
   useEffect(() => {
-    if (!current_stuff || effectExecutedRef.current) {
+    if (!loader || effectExecutedRef.current) {
       return;
     }
+
+    
 
     effectExecutedRef.current = true;
 
     dispatch(viewStuff(stuff_id));
+
+    setCurrentStuff((prevState) => {
+      return {
+        stuff: {
+          ...loader.stuff,
+          views: loader.stuff.views + 1
+        },
+        isLiked: loader.isLiked,
+      };
+    });
   }, []);
 
   useEffect(() => {
-    if (!current_stuff && !isLoading) {
+    if (!loader) {
       setTimeout(() => {
         navigate("/");
       }, 2000);
     }
-  }, [current_stuff, isLoading, navigate]);
+  }, [navigate, loader]);
 
   const likeHandler = (event) => {
-    dispatch(likeStuff(current_stuff._id));
+    dispatch(likeStuff(current_stuff.stuff._id));
+
+    setCurrentStuff((prevState) => {
+      return {
+        stuff: {
+          ...prevState.stuff,
+          likes: prevState.stuff.likes + 1,
+        },
+        isLiked: true,
+      };
+    });
+
     event.target.disabled = true;
   };
 
@@ -45,23 +66,23 @@ const DetailsPage = () => {
     : 
         <>
           <h1>Details Page</h1>
-          <img src={current_stuff.image} alt="stuff_image"/>
-          <h2>{current_stuff.title}</h2>
-          <p>{current_stuff.description}</p>
-          <p>Views: {current_stuff.views}</p>
-          <p>Likes: {current_stuff.likes}</p>
-          <p>Category: {current_stuff.category}</p>
-          <p>Owner: {current_stuff.owner}</p>
-          <p>Price: {current_stuff.price}€</p>
-          {current_stuff.has_offer && (
+          <img src={current_stuff.stuff.image} alt="stuff_image"/>
+          <h2>{current_stuff.stuff.title}</h2>
+          <p>{current_stuff.stuff.description}</p>
+          <p>Views: {current_stuff.stuff.views}</p>
+          <p>Likes: {current_stuff.stuff.likes}</p>
+          <p>Category: {current_stuff.stuff.category}</p>
+          <p>Owner: {current_stuff.stuff.owner.name}</p>
+          <p>Price: {current_stuff.stuff.price}€</p>
+          {current_stuff.stuff.has_offer && (
               <p>
-                  Offer: <span>{current_stuff.offer_price}€</span>
+                  Offer: <span>{current_stuff.stuff.offer_price}€</span>
               </p>
           )}
-          <a href={current_stuff.shopping_link}  target="_blank" rel="noopener noreferrer">To by click here</a>
-          <p>Creation day: {current_stuff.createdAt}</p>
-          <p>Last update: {current_stuff.updatedAt}</p>
-          <button onClick={likeHandler} disabled={isLikedBool}>Like</button>
+          <a href={current_stuff.stuff.shopping_link}  target="_blank" rel="noopener noreferrer">To by click here</a>
+          <p>Creation day: {current_stuff.stuff.createdAt}</p>
+          <p>Last update: {current_stuff.stuff.updatedAt}</p>
+          <button onClick={likeHandler} disabled={current_stuff.isLiked}>Like</button>
           {/* A divider for commets area */}
           <hr/>
           <h2>Comments</h2>
