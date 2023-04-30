@@ -5,7 +5,7 @@ import RootLayout from "./pages/RootLayout";
 import HomePage from "./pages/HomePage";
 import LogInPage from "./pages/LogInPage";
 import SignUpPage from "./pages/SignUpPage";
-import { checkAuthLoader, checkUnauthLoader, getUserByIdLoader } from "./utils/loaders";
+import { checkAuthLoader, checkUnauthLoader, getStuffByIdLoader, getUserByIdLoader } from "./utils/loaders";
 import ErrorPage from "./pages/ErrorPage";
 import ProfilePage from "./pages/ProfilePage";
 import AddStuffPage from "./pages/AddStuffPage";
@@ -29,8 +29,10 @@ export const router = createBrowserRouter([
         element: <AddStuffPage />
       },
       {
-        path: "/details/:stuff_id/:isLiked",
-        element: <DetailsPage />
+        path: "/details/:stuff_id",
+        id: 'stuff-details',
+        element: <DetailsPage />,
+        loader: getStuffByIdLoader
       }
     ],
     loader: checkAuthLoader
