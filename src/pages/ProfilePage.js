@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouteLoaderData } from "react-router-dom";
 
-import PageContent from "../components/Layouts/PageContent/PageContent";
 import useUser from "../hooks/useUser";
 import StuffCard from "../components/StuffCard/StuffCard";
 
@@ -24,8 +23,8 @@ const ProfilePage = (props) => {
 
       setFrontUser((prevState) => ({
         ...prevState,
-        stuff: loader.userStuff,
-        total: loader.userStuff.length
+        stuff: loader.userStuff.stuff,
+        total: loader.userStuff.total
       }));
 
     }
@@ -70,10 +69,10 @@ const ProfilePage = (props) => {
                   views={item.views}
                   likes={item.likes}
                   category={item.category}
-                  owner={item.owner}
+                  owner={item.owner.name}
                   has_offer={item.has_offer}
                   offer_price={item.offer_price}
-                  isLiked={true}
+                  isLiked={isMe ? true : item.isLiked}
                 />
               ))}
             </div>
