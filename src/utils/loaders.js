@@ -63,6 +63,8 @@ const fetchUserStuff = async (user_id, isMe) => {
     url_base += `isMine=${isMe}`;
   }
 
+  url_base += '&sortBy=updatedAt:desc';
+
   const response = await axios.get(url_base, {
     headers: {
       Authorization: `Bearer ${getAuthToken()}`,
@@ -77,13 +79,8 @@ const fetchUserStuff = async (user_id, isMe) => {
       }
     );
   }
-
-  let temp_stuff = [];
-  response.data.stuff.forEach(element => {
-    temp_stuff.push({...element.single_stuff, isLiked: element.isLiked});
-  });
-
-  return temp_stuff;
+  
+  return response.data;
 
 };
 
@@ -96,5 +93,39 @@ export const getUserByIdLoader = async ({ request, params }) => {
     isMe: isMe,
     user: await fetchUserById(id),
     userStuff: await fetchUserStuff(id, isMe),
+  });
+};
+
+
+export const getStuffByIdLoader = async ({ request, params }) => {
+  const response = await axios.get(`http://127.0.0.1:8000/stuff/${params.stuff_id}`, {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    }
+  });
+
+  if (response.status === 404) {
+    throw json(
+      { message: "Stuff not found!" },
+      {
+        status: 404,
+      }
+    );
+  }
+
+  if (response.statusText !== "OK") {
+    throw json(
+      { message: "Could not fetch the stuff!" },
+      {
+        status: 500,
+      }
+    );
+  }
+
+  const data = await response.data;
+
+  return defer({
+    stuff: data.stuff,
+    isLiked: data.isLiked
   });
 };
