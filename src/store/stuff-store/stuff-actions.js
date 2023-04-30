@@ -20,6 +20,8 @@ export const fetchStuff = (page_number = 0, text_searched = "") => {
         url_base += `&text_searched=${text_searched}`;
       }
 
+      url_base += '&sortBy=updatedAt:desc';
+
       const fetchedStaff = await axios.get(url_base, {
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
@@ -36,13 +38,8 @@ export const fetchStuff = (page_number = 0, text_searched = "") => {
         return;
       }
 
-      let temp_stuff = [];
-      fetchedStaff.data.stuff.forEach(element => {
-        temp_stuff.push({...element.single_stuff, isLiked: element.isLiked});
-      });
-
       dispatch(stuffActions.setIsLoading(false));
-      dispatch(stuffActions.setStuff(temp_stuff));
+      dispatch(stuffActions.setStuff(fetchedStaff.data.stuff));
       dispatch(stuffActions.setTotal(fetchedStaff.data.total));
     } catch (error) {
       dispatch(
