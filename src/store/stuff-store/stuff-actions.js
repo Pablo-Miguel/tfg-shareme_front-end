@@ -13,14 +13,14 @@ export const fetchStuff = (page_number = 0, text_searched = "") => {
       if (page_number === 0) {
         url_base += "skip=0";
       } else {
-        url_base += `skip=${page_number * 10 + 1}`;
+        url_base += `skip=${page_number * 10}`;
       }
 
       if (text_searched !== "") {
         url_base += `&text_searched=${text_searched}`;
       }
 
-      url_base += '&sortBy=updatedAt:desc';
+      url_base += '&sortBy=createdAt:desc';
 
       const fetchedStaff = await axios.get(url_base, {
         headers: {
@@ -37,10 +37,11 @@ export const fetchStuff = (page_number = 0, text_searched = "") => {
         );
         return;
       }
-
+      
       dispatch(stuffActions.setIsLoading(false));
       dispatch(stuffActions.setStuff(fetchedStaff.data.stuff));
       dispatch(stuffActions.setTotal(fetchedStaff.data.total));
+      dispatch(stuffActions.setPage(page_number));
     } catch (error) {
       dispatch(
         stuffActions.setError({
