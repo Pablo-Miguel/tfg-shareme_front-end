@@ -63,7 +63,7 @@ const fetchUserStuff = async (user_id, isMe) => {
     url_base += `isMine=${isMe}`;
   }
 
-  url_base += '&sortBy=updatedAt:desc';
+  url_base += '&sortBy=createdAt:desc';
 
   const response = await axios.get(url_base, {
     headers: {
@@ -86,7 +86,7 @@ const fetchUserStuff = async (user_id, isMe) => {
 
 
 export const getUserByIdLoader = async ({ request, params }) => {
-  const isMe = params.user_id == getUserId();
+  const isMe = params.user_id === getUserId();
   const id = params.user_id;
 
   return defer({
