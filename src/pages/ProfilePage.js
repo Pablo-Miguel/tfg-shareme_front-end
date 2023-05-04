@@ -3,13 +3,18 @@ import { useParams, useRouteLoaderData } from "react-router-dom";
 
 import useUser from "../hooks/useUser";
 import StuffCard from "../components/StuffCard/StuffCard";
+import useHttp from "../hooks/useHttp";
+import { getAuthToken } from "../utils/storage";
 
 const ProfilePage = (props) => {
+  const [ viewMoreCont, setViewMoreCont ] = useState(0);
+  const [ viewMore, setViewMore ] = useState(false);
   const { user_id } = useParams();
   const user = useUser();
-  const isMe = user_id == user._id;
+  const isMe = user_id === user._id;
   const loader = useRouteLoaderData("user-details");
   const [ frontUser, setFrontUser ] = useState(null);
+  const { sendRequest: fetchMoreStuff } = useHttp();
 
   useEffect(() => {
 
@@ -27,9 +32,56 @@ const ProfilePage = (props) => {
         total: loader.userStuff.total
       }));
 
+      setViewMore(loader.userStuff.total <= (viewMoreCont + 1) * 10);
+
     }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loader]);
+
+  useEffect(() => {
+
+    if(viewMoreCont !== 0){
+
+      let url_base = 'http://127.0.0.1:8000/stuff?';
+
+      if (!isMe) {
+        url_base += `other_user_id=${user_id}`;
+      } else {
+        url_base += `isMine=${isMe}`;
+      }
+
+      url_base += `&limit=10`;
+      url_base += `&skip=${viewMoreCont * 10}`;
+      url_base += '&sortBy=createdAt:desc';
+
+      fetchMoreStuff({
+        url: url_base,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        }
+      }, (data) => {
+
+        setFrontUser((prevState) => ({
+          ...prevState,
+          stuff: prevState.stuff.concat(data.stuff),
+          total: data.total
+        }));
+
+        setViewMore(frontUser.total <= (viewMoreCont + 1) * 10);
+
+      });
+
+    }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewMoreCont]);
+
+
+  const onClickViewMoreHandler = () => {
+    setViewMoreCont((prevState) => prevState + 1);
+  };
 
   return (
     <>
@@ -75,6 +127,24 @@ const ProfilePage = (props) => {
                   isLiked={isMe ? true : item.isLiked}
                 />
               ))}
+              {!viewMore && <div style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+              }}>
+                <button
+                  style={{
+                    width: "100px",
+                    height: "30px",
+                    margin: "10px",
+                  }}
+                  type="button"
+                  onClick={onClickViewMoreHandler}
+                >
+                  View more
+                </button>
+              </div>}
             </div>
           </div>
         </div>
