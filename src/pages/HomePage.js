@@ -17,6 +17,14 @@ const HomePage = () => {
     dispatch(fetchStuff(0, searchBarInputRef.current.value));
   };
 
+  const onClickPreviousHandler = () => {
+    dispatch(fetchStuff(stuff.page - 1, searchBarInputRef.current.value));
+  };
+
+  const onClickNextHandler = () => {
+    dispatch(fetchStuff(stuff.page + 1, searchBarInputRef.current.value));
+  };
+
   return (
     <>
       <h1
@@ -95,6 +103,48 @@ const HomePage = () => {
                 isLiked={item.isLiked}
               />
             ))}
+            {Math.ceil(stuff.total / stuff.limit) > 1 && (
+              <div
+                style={{ 
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <button
+                  style={{
+                    width: "100px",
+                    height: "30px",
+                    margin: "10px",
+                  }}
+                  type="button"
+                  onClick={onClickPreviousHandler}
+                  disabled={stuff.page === 0}
+                >
+                  Previous
+                </button>
+                <h1
+                  style={{
+                    margin: "10px",
+                  }}
+                >
+                  {stuff.page + 1}/{Math.ceil(stuff.total / stuff.limit)}
+                </h1>
+                <button
+                  style={{
+                    width: "100px",
+                    height: "30px",
+                    margin: "10px",
+                  }}
+                  type="button"
+                  onClick={onClickNextHandler}
+                  disabled={stuff.total <= (stuff.page + 1) * stuff.limit}
+                >
+                  Next
+                </button>
+              </div>
+            )}
           </div>
         </>
       )}
