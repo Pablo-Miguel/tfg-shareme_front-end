@@ -10,6 +10,7 @@ import ErrorPage from "./pages/ErrorPage";
 import ProfilePage from "./pages/ProfilePage";
 import AddStuffPage from "./pages/AddStuffPage";
 import DetailsPage from "./pages/DetailsPage";
+import CreateCollectionPage from "./pages/CreateCollectionPage";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
         id: 'stuff-details',
         element: <DetailsPage />,
         loader: getStuffByIdLoader
+      },
+      {
+        path: "/create-collection",
+        element: <CreateCollectionPage />
       }
     ],
     loader: checkAuthLoader
