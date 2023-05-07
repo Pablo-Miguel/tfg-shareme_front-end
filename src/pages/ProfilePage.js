@@ -15,6 +15,7 @@ const ProfilePage = (props) => {
   const loader = useRouteLoaderData("user-details");
   const [ frontUser, setFrontUser ] = useState(null);
   const { sendRequest: fetchMoreStuff } = useHttp();
+  const { sendRequest: followUser } = useHttp();
 
   useEffect(() => {
 
@@ -78,6 +79,28 @@ const ProfilePage = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewMoreCont]);
 
+  const onClickFollowHandler = () => {
+
+    followUser(
+      {
+        url: `http://localhost:8000/users/${user_id}/follow`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        }
+      },
+      (data) => {
+          
+          setFrontUser((prevState) => ({
+            ...prevState,
+            isFollowing: true,
+            followers: prevState.followers + 1
+          }));
+  
+        }
+    );
+
+  };
 
   const onClickViewMoreHandler = () => {
     setViewMoreCont((prevState) => prevState + 1);
@@ -105,10 +128,43 @@ const ProfilePage = (props) => {
               <h2>{`${frontUser.firstName} ${frontUser.lastName}`}</h2>
               <p>Followers: {frontUser.followers}</p>
               <p>Following: {frontUser.following}</p>
+              {
+                isMe ? (
+                  <div>
+                    <button
+                      style={{
+                        width: "100px",
+                        height: "30px",
+                        margin: "10px",
+                      }}
+                      type="button"
+                      disabled={true}
+                    >
+                      Edit
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <button
+                      style={{
+                        width: "100px",
+                        height: "30px",
+                        margin: "10px",
+                      }}
+                      type="button"
+                      disabled={frontUser.isFollowing}
+                      onClick={onClickFollowHandler}
+                    >
+                      Follow
+                    </button>
+                  </div>
+                )
+
+              }
             </div>
           </div>
           <div>
-            <h3>Posted stuff  </h3>
+            <h3>Posted stuff</h3>
             <div>
               {frontUser.total === 0 && <h1>No stuff found yet!</h1>}
               {frontUser.stuff.map((item) => (
