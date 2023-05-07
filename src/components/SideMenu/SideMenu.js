@@ -42,10 +42,7 @@ const SideMenu = (props) => {
               <Link to="/add-stuff">Add stuff</Link>
             </li>
             <li>
-              <Link to="/">Create collection</Link>
-            </li>
-            <li>
-              <Link to="/">Messages</Link>
+              <Link to="/create-collection">Create collection</Link>
             </li>
           </ul>
         </div>
