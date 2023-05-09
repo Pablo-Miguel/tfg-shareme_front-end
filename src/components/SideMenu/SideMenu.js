@@ -39,10 +39,13 @@ const SideMenu = (props) => {
               <Link to={myProfile}>Your profile</Link>
             </li>
             <li>
-              <Link to="/add-stuff">Add stuff</Link>
+              <Link to="/create-stuff">Create stuff</Link>
             </li>
             <li>
               <Link to="/create-collection">Create collection</Link>
+            </li>
+            <li>
+              <Link to="/search-profiles">Search profiles</Link>
             </li>
           </ul>
         </div>
