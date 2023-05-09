@@ -16,7 +16,7 @@ const StuffCard = (props) => {
   };
 
   const detailsHandler = () => {
-    navigate(`/details/${props.id}`, { replace: true });
+    navigate(`/stuff-details/${props.id}`, { replace: true });
   }
 
   return (
