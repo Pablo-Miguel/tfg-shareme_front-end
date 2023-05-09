@@ -74,7 +74,7 @@ const ProfilePage = (props) => {
           total_stuff: data.total
         }));
 
-        setViewMore(frontUser.total <= (viewMoreCont + 1) * 10);
+        setViewMore(frontUser.total_stuff <= (viewMoreCont + 1) * 10);
 
       });
 
