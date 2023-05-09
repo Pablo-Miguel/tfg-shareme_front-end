@@ -5,12 +5,14 @@ import RootLayout from "./pages/RootLayout";
 import HomePage from "./pages/HomePage";
 import LogInPage from "./pages/LogInPage";
 import SignUpPage from "./pages/SignUpPage";
-import { checkAuthLoader, checkUnauthLoader, getStuffByIdLoader, getUserByIdLoader } from "./utils/loaders";
+import { checkAuthLoader, checkUnauthLoader, getCollectionByIdLoader, getCollectionStuffLoader, getStuffByIdLoader, getUserByIdLoader } from "./utils/loaders";
 import ErrorPage from "./pages/ErrorPage";
 import ProfilePage from "./pages/ProfilePage";
-import AddStuffPage from "./pages/AddStuffPage";
-import DetailsPage from "./pages/DetailsPage";
+import CreateStuffPage from "./pages/CreateStuffPage";
+import DetailsPage from "./pages/StuffDetailsPage";
 import CreateCollectionPage from "./pages/CreateCollectionPage";
+import CollectionDetailsPage from "./pages/CollectionDetailsPage";
+import SearchProfilesPage from "./pages/SearchProfilesPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,24 +22,36 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage />, loader: checkAuthLoader },
       {
+        path: "/search-profiles",
+        element: <SearchProfilesPage />,
+      },
+      {
         path: "/profile/:user_id",
         id: 'user-details',
         element: <ProfilePage />,
         loader: getUserByIdLoader,
       },
       {
-        path: "/add-stuff",
-        element: <AddStuffPage />
+        path: "/create-stuff",
+        element: <CreateStuffPage />
       },
       {
-        path: "/details/:stuff_id",
+        path: "/stuff-details/:stuff_id",
         id: 'stuff-details',
         element: <DetailsPage />,
         loader: getStuffByIdLoader
       },
       {
+        path: "/collection-details/:collection_id",
+        id: 'collection-details',
+        element: <CollectionDetailsPage />,
+        loader: getCollectionByIdLoader
+      },
+      {
         path: "/create-collection",
-        element: <CreateCollectionPage />
+        id: 'collection-stuff-details',
+        element: <CreateCollectionPage />,
+        loader: getCollectionStuffLoader
       }
     ],
     loader: checkAuthLoader
