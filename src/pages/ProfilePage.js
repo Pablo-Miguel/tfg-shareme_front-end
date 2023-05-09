@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams, useRouteLoaderData } from "react-router-dom";
+import { useParams, useRouteLoaderData, useNavigate } from "react-router-dom";
 
 import useUser from "../hooks/useUser";
 import StuffCard from "../components/StuffCard/StuffCard";
 import useHttp from "../hooks/useHttp";
 import { getAuthToken } from "../utils/storage";
+import Card from "../components/UIs/Card/Card";
 
 const ProfilePage = (props) => {
   const [ viewMoreCont, setViewMoreCont ] = useState(0);
@@ -16,6 +17,7 @@ const ProfilePage = (props) => {
   const [ frontUser, setFrontUser ] = useState(null);
   const { sendRequest: fetchMoreStuff } = useHttp();
   const { sendRequest: followUser } = useHttp();
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -30,7 +32,9 @@ const ProfilePage = (props) => {
       setFrontUser((prevState) => ({
         ...prevState,
         stuff: loader.userStuff.stuff,
-        total: loader.userStuff.total
+        total_stuff: loader.userStuff.total,
+        collections: loader.userCollections.collections,
+        total_collections: loader.userCollections.total
       }));
 
       setViewMore(loader.userStuff.total <= (viewMoreCont + 1) * 10);
@@ -67,7 +71,7 @@ const ProfilePage = (props) => {
         setFrontUser((prevState) => ({
           ...prevState,
           stuff: prevState.stuff.concat(data.stuff),
-          total: data.total
+          total_stuff: data.total
         }));
 
         setViewMore(frontUser.total <= (viewMoreCont + 1) * 10);
@@ -104,6 +108,10 @@ const ProfilePage = (props) => {
 
   const onClickViewMoreHandler = () => {
     setViewMoreCont((prevState) => prevState + 1);
+  };
+
+  const onClickDetailsHandler = (event) => {
+    navigate(`/collection-details/${event.target.id}`);
   };
 
   return (
@@ -166,7 +174,7 @@ const ProfilePage = (props) => {
           <div>
             <h3>Posted stuff</h3>
             <div>
-              {frontUser.total === 0 && <h1>No stuff found yet!</h1>}
+              {frontUser.total_stuff === 0 && <h1>No stuff found yet!</h1>}
               {frontUser.stuff.map((item) => (
                 <StuffCard
                   key={item._id}
@@ -177,7 +185,7 @@ const ProfilePage = (props) => {
                   views={item.views}
                   likes={item.likes}
                   category={item.category}
-                  owner={item.owner.name}
+                  owner={item.owner.nickName}
                   has_offer={item.has_offer}
                   offer_price={item.offer_price}
                   isLiked={isMe ? true : item.isLiked}
@@ -201,6 +209,23 @@ const ProfilePage = (props) => {
                   View more
                 </button>
               </div>}
+            </div>
+          </div>
+          <div>
+            <h3>Posted collections</h3>
+            <div>
+              {frontUser.total_collections === 0 && <h1>No collections found yet!</h1>}
+              {frontUser.collections.map((item) => (
+                <div key={item._id}>
+                  <Card>
+                      <h2>{item.title}</h2>
+                      <p>Stuff: {item.stuff.length}</p>
+                      <p>Created by: {item.owner.nickName}</p>
+                      <button type="button" onClick={onClickDetailsHandler} id={item._id}>Details</button>
+                      <button type="button">Like</button>
+                  </Card>
+                </div>
+              ))}
             </div>
           </div>
         </div>
