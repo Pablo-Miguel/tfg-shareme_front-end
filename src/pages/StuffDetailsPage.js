@@ -193,7 +193,7 @@ const DetailsPage = () => {
           <p>Views: {current_stuff.stuff.views}</p>
           <p>Likes: {current_stuff.stuff.likes}</p>
           <p>Category: {current_stuff.stuff.category}</p>
-          <p>Owner: {current_stuff.stuff.owner.name}</p>
+          <p>Owner: {current_stuff.stuff.owner.nickName}</p>
           <p>Price: {current_stuff.stuff.price}€</p>
           {current_stuff.stuff.has_offer && (
               <p>
