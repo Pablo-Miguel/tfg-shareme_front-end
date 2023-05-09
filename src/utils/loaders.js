@@ -84,6 +84,37 @@ const fetchUserStuff = async (user_id, isMe) => {
 
 };
 
+export const fetchUserCollections = async (user_id, isMe) => {
+
+  let url_base = 'http://127.0.0.1:8000/collections?';
+
+  if (!isMe) {
+    url_base += `other_user_id=${user_id}`;
+  } else {
+    url_base += `isMine=${isMe}`;
+  }
+
+  url_base += '&sortBy=createdAt:desc';
+
+  const response = await axios.get(url_base, {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    }
+  });
+
+  if (response.statusText !== "OK") {
+    throw json(
+      { message: "Could not fetch the user collections!" },
+      {
+        status: 500,
+      }
+    );
+  }
+  
+  return response.data;
+
+};
+
 
 export const getUserByIdLoader = async ({ request, params }) => {
   const isMe = params.user_id === getUserId();
@@ -93,9 +124,15 @@ export const getUserByIdLoader = async ({ request, params }) => {
     isMe: isMe,
     user: await fetchUserById(id),
     userStuff: await fetchUserStuff(id, isMe),
+    userCollections: await fetchUserCollections(id, isMe),
   });
 };
 
+export const getCollectionStuffLoader = async ({ request, params }) => {
+  return defer({
+    collectionStuff: await fetchUserStuff(null, true),
+  });
+};
 
 export const getStuffByIdLoader = async ({ request, params }) => {
   const response = await axios.get(`http://127.0.0.1:8000/stuff/${params.stuff_id}`, {
@@ -127,5 +164,37 @@ export const getStuffByIdLoader = async ({ request, params }) => {
   return defer({
     stuff: data.stuff,
     isLiked: data.isLiked
+  });
+};
+
+export const getCollectionByIdLoader = async ({ request, params }) => {
+  const response = await axios.get(`http://127.0.0.1:8000/collections/${params.collection_id}`, {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    }
+  });
+
+  if (response.status === 404) {
+    throw json(
+      { message: "Collection not found!" },
+      {
+        status: 404,
+      }
+    );
+  }
+
+  if (response.statusText !== "OK") {
+    throw json(
+      { message: "Could not fetch the collection!" },
+      {
+        status: 500,
+      }
+    );
+  }
+
+  const data = await response.data;
+
+  return defer({
+    collection: data,
   });
 };
