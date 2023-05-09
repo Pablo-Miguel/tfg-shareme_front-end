@@ -8,6 +8,7 @@ const SignUpPage = () => {
   const lastNameInputRef = useRef();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+  const nickNameInputRef = useRef();
   const dispatch = useDispatch();
   const error = useSelector((state) => state.auth.error);
 
@@ -24,6 +25,7 @@ const SignUpPage = () => {
       signUp(
         firstNameInputRef.current.value,
         lastNameInputRef.current.value,
+        nickNameInputRef.current.value,
         emailInputRef.current.value,
         passwordInputRef.current.value
       )
@@ -49,6 +51,15 @@ const SignUpPage = () => {
           name="lastName"
           id="lastName"
           ref={lastNameInputRef}
+        />
+        <br />
+        <br />
+        <label htmlFor="nickName">NickName </label>
+        <input
+          type="text"
+          name="nickName"
+          id="nickName"
+          ref={nickNameInputRef}
         />
         <br />
         <br />

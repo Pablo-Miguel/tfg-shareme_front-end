@@ -28,7 +28,7 @@ export const checkAuth = () => {
   };
 };
 
-export const signUp = (firstName, lastName, email, password) => {
+export const signUp = (firstName, lastName, nickName, email, password) => {
   return async (dispatch) => {
     try {
       dispatch(authActions.setError(null));
@@ -37,6 +37,7 @@ export const signUp = (firstName, lastName, email, password) => {
         {
           firstName,
           lastName,
+          nickName,
           email,
           password,
         },

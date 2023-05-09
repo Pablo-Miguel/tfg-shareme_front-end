@@ -97,7 +97,7 @@ const HomePage = () => {
                 views={item.views}
                 likes={item.likes}
                 category={item.category}
-                owner={item.owner.name}
+                owner={item.owner.nickName}
                 has_offer={item.has_offer}
                 offer_price={item.offer_price}
                 isLiked={item.isLiked}
