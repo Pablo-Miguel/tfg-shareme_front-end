@@ -198,3 +198,28 @@ export const getCollectionByIdLoader = async ({ request, params }) => {
     collection: data,
   });
 };
+
+export const getUsersLoader = async ({ request, params }) => {
+  
+  const response = await axios.get(`http://127.0.0.1:8000/users?sortBy=followers:desc`, {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    }
+  });
+
+  if (response.statusText !== "OK") {
+    throw json(
+      { message: "Could not fetch the users!" },
+      {
+        status: 500,
+      }
+    );
+  }
+
+  const data = await response.data;
+
+  return defer({
+    users: data.users,
+    total: data.total
+  });
+};
