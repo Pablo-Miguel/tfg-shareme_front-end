@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useRouteLoaderData } from "react-router-dom";
 
 import useHttp from "../hooks/useHttp";
@@ -7,13 +7,13 @@ import { getAuthToken } from "../utils/storage";
 
 const CreateCollectionPage = () => {
     const loader = useRouteLoaderData("collection-stuff-details");
-    const { sendRequest: fetchMoreStuff } = useHttp();
+    const { isLoading: isLoadingStuff, sendRequest: fetchMoreStuff } = useHttp();
     const { isLoading, error, sendRequest: addNewCollection } = useHttp();
     const [ viewMoreCont, setViewMoreCont ] = useState(0);
     const [ viewMore, setViewMore ] = useState(false);
     const [ collectionStuff, setCollectionStuff ] = useState(null);
     const [ success, setSuccess ] = useState(false);
-    const searchBarInputRef = useRef();
+    const [ searchBarValue, setSearchBarValue ] = useState('');
 
     useEffect(() => {
 
@@ -25,52 +25,48 @@ const CreateCollectionPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loader]);
 
-    const fetchStuffHandler = () => {
-        if(viewMoreCont !== 0){
+    const fetchStuffHandler = (text_searched) => {
     
-            let url_base = 'http://127.0.0.1:8000/stuff?isMine=true';
-            
-            if(searchBarInputRef.current.value) {
-                url_base += `&text_searched=${searchBarInputRef.current.value}`;
+        let url_base = 'http://127.0.0.1:8000/stuff?isMine=true';
+        
+        if(text_searched && text_searched !== '') {
+            url_base += `&text_searched=${text_searched}`;
+        }
+
+        url_base += `&limit=${(viewMoreCont * 10) + 10}`;
+        url_base += '&sortBy=createdAt:desc';
+
+        fetchMoreStuff({
+            url: url_base,
+            method: "GET",
+            headers: {
+            Authorization: `Bearer ${getAuthToken()}`,
             }
+        }, (data) => {
 
-            url_base += `&limit=${(viewMoreCont * 10) + 10}`;
-            url_base += '&sortBy=createdAt:desc';
-
-            fetchMoreStuff({
-              url: url_base,
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${getAuthToken()}`,
-              }
-            }, (data) => {
-            
-              setCollectionStuff({
+            setCollectionStuff({
                 stuff: data.stuff ? data.stuff : [],
                 total: data.total
-              });
-      
-              setViewMore(collectionStuff.total <= (viewMoreCont + 1) * 10);
-
-              console.log(collectionStuff);
-      
             });
-        }
+    
+            setViewMore(data.total <= (viewMoreCont + 1) * 10);
+    
+        });
     };
 
     useEffect(() => {
 
-        fetchStuffHandler();
+        fetchStuffHandler(searchBarValue);
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [viewMoreCont]);
+    }, [viewMoreCont, searchBarValue]);
 
     const onClickViewMoreHandler = () => {
         setViewMoreCont((prevState) => prevState + 1);
     };
 
     const onChangeSearchBarHandler = (event) => {
-        fetchStuffHandler();
+        setSearchBarValue(event.target.value);
     };
 
     const onClickCreateCollectionHandler = (event) => {
@@ -105,7 +101,6 @@ const CreateCollectionPage = () => {
             document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
                 checkbox.checked = false;
             });
-            searchBarInputRef.current.value = '';
             setSuccess(true);
         })
         
@@ -126,9 +121,8 @@ const CreateCollectionPage = () => {
                 {collectionStuff ?
                     <div>
                         <h2>Stuff</h2>
-                        {/* Search bar for stuff */}
                         <label htmlFor="stuffSearch">Search</label>
-                        <input type="text" id="stuffSearch" name="stuffSearch" onChange={onChangeSearchBarHandler} ref={searchBarInputRef}/>
+                        <input type="text" id="stuffSearch" name="stuffSearch" onChange={onChangeSearchBarHandler}/>
                         <br /><br />
                         {collectionStuff.stuff.length > 0 ? 
                             collectionStuff.stuff.map((stuff) => (
@@ -141,6 +135,7 @@ const CreateCollectionPage = () => {
                         :
                             <h1>No stuff found</h1>
                         }
+                        { isLoadingStuff && <p>Loading...</p>}
                         <br />
                         {!viewMore && 
                             <button type="button" onClick={onClickViewMoreHandler}>
