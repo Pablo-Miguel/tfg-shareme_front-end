@@ -5,7 +5,7 @@ import RootLayout from "./pages/RootLayout";
 import HomePage from "./pages/HomePage";
 import LogInPage from "./pages/LogInPage";
 import SignUpPage from "./pages/SignUpPage";
-import { checkAuthLoader, checkUnauthLoader, getCollectionByIdLoader, getCollectionStuffLoader, getStuffByIdLoader, getUserByIdLoader } from "./utils/loaders";
+import { checkAuthLoader, checkUnauthLoader, getCollectionByIdLoader, getCollectionStuffLoader, getStuffByIdLoader, getUserByIdLoader, getUsersLoader } from "./utils/loaders";
 import ErrorPage from "./pages/ErrorPage";
 import ProfilePage from "./pages/ProfilePage";
 import CreateStuffPage from "./pages/CreateStuffPage";
@@ -16,6 +16,16 @@ import SearchProfilesPage from "./pages/SearchProfilesPage";
 
 export const router = createBrowserRouter([
   {
+    path: "/login",
+    element: <LogInPage />,
+    loader: checkUnauthLoader,
+  },
+  {
+    path: "/signup",
+    element: <SignUpPage />,
+    loader: checkUnauthLoader,
+  },
+  {
     path: "/",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
@@ -23,7 +33,9 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage />, loader: checkAuthLoader },
       {
         path: "/search-profiles",
+        id: 'search-profiles',
         element: <SearchProfilesPage />,
+        loader: getUsersLoader,
       },
       {
         path: "/profile/:user_id",
@@ -56,17 +68,7 @@ export const router = createBrowserRouter([
     ],
     loader: checkAuthLoader
   },
-  {
-    path: "/login",
-    element: <LogInPage />,
-    loader: checkUnauthLoader,
-  },
-  {
-    path: "/signup",
-    element: <SignUpPage />,
-    loader: checkUnauthLoader,
-  },
-  { path: "*", element: <ErrorPage /> },
+  { path: "*", element: <ErrorPage /> }
 ]);
 
 const App = () => {
