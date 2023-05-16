@@ -87,22 +87,26 @@ const HomePage = () => {
             }}
           >
             {stuff.total === 0 && <h1>No stuff found yet!</h1>}
-            {stuff.stuff.map((item) => (
-              <StuffCard
-                key={item._id}
-                id={item._id}
-                title={item.title}
-                price={item.price}
-                img={item.image}
-                views={item.views}
-                likes={item.likes}
-                category={item.category}
-                owner={item.owner.nickName}
-                has_offer={item.has_offer}
-                offer_price={item.offer_price}
-                isLiked={item.isLiked}
-              />
-            ))}
+            <div style={
+              {
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: "50px",
+              }
+            }>
+              {stuff.stuff.map((item) => (
+                <StuffCard
+                  key={item._id}
+                  id={item._id}
+                  stuff={item}
+                  style={{
+                  }}
+                />
+              ))}
+            </div>
             {Math.ceil(stuff.total / stuff.limit) > 1 && (
               <div
                 style={{ 

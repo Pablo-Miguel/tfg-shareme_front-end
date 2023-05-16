@@ -20,16 +20,7 @@ const CollectionDetailsPage = () => {
                                 <StuffCard
                                     key={item._id}
                                     id={item._id}
-                                    title={item.title}
-                                    price={item.price}
-                                    img={item.image}
-                                    views={item.views}
-                                    likes={item.likes}
-                                    category={item.category}
-                                    owner={item.owner.nickName}
-                                    has_offer={item.has_offer}
-                                    offer_price={item.offer_price}
-                                    isLiked={item.isLiked}
+                                    stuff={item}
                                 />
                             ))
                         :
