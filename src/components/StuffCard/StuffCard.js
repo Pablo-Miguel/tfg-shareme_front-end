@@ -63,13 +63,12 @@ const StuffCard = ({ stuff, isMine }) => {
           </CardOverflow>
           {
             isMine && (
-              <CardOverflow sx={{ mt: "auto", mb: "auto", ml: "auto" }}>
+              <CardOverflow sx={{ ml: "auto" }}>
                 <IconButton
                   variant="plain"
                   aria-label="Settings"
-                  sx={{ mt: 'auto', mb: 'auto' }}
                   color="neutral"
-                  size="sm"
+                  size="small"
                 >
                   <MoreVertIcon />
                 </IconButton>
