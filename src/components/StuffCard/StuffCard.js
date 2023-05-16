@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { likeStuff } from "../../store/stuff-store/stuff-actions";
 import classes from "./StuffCard.module.css";
 import { AspectRatio, Avatar, Card, CardOverflow, Divider, IconButton, Typography } from "@mui/joy";
-import Favorite from '@mui/icons-material/Favorite';
-import RemoveRedEye from '@mui/icons-material/RemoveRedEye';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const StuffCard = ({ stuff, isMine }) => {
   const navigate = useNavigate();
@@ -37,20 +38,44 @@ const StuffCard = ({ stuff, isMine }) => {
             px: "var(--Card-padding)",
             bgcolor: "background.level1",
           }}
-          onClick={profileHandler}
         >
-          <Avatar src={stuff.owner.avatar} alt={stuff.owner.name} 
-            sx={{ width: 25, height: 25, mr: 0.5 }}
-          />
-          <Typography
-            level="body1"
-            sx={{
-              fontWeight: "md",
-              color: "text.secondary",
+          <CardOverflow sx={{ mt: "auto", mb: "auto" }}
+            onClick={profileHandler}
+            style={{ 
+              cursor: "pointer",
+              display: "flex",
+              flexDirection: "row",
+              gap: 1.5
             }}
           >
-            {stuff.owner.nickName}
-          </Typography>
+            <Avatar src={stuff.owner.avatar} alt={stuff.owner.name} 
+              sx={{ width: 25, height: 25, mr: 0.5 }}
+            />
+            <Typography
+              level="body1"
+              sx={{
+                fontWeight: "md",
+                color: "text.secondary",
+              }}
+            >
+              {stuff.owner.nickName}
+            </Typography>
+          </CardOverflow>
+          {
+            isMine && (
+              <CardOverflow sx={{ mt: "auto", mb: "auto", ml: "auto" }}>
+                <IconButton
+                  variant="plain"
+                  aria-label="Settings"
+                  sx={{ mt: 'auto', mb: 'auto' }}
+                  color="neutral"
+                  size="sm"
+                >
+                  <MoreVertIcon />
+                </IconButton>
+              </CardOverflow>
+            )
+          }
         </CardOverflow>
 
         <Divider />
@@ -79,7 +104,7 @@ const StuffCard = ({ stuff, isMine }) => {
             onClick={likeHandler}
             disabled={stuff.isLiked || isMine}
           >
-            <Favorite />
+            <FavoriteIcon />
           </IconButton>
           <IconButton
             size="md"
@@ -95,7 +120,7 @@ const StuffCard = ({ stuff, isMine }) => {
             }}
             onClick={detailsHandler}
           >
-            <RemoveRedEye />
+            <RemoveRedEyeIcon />
           </IconButton>
         </CardOverflow>
 
