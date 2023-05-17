@@ -147,13 +147,13 @@ const StuffCard = ({ stuff, isMine }) => {
                 <Typography level="body2" sx={{ fontSize: "md", mt: 2, textDecoration: "line-through" }}>
                   {stuff.price}€
                 </Typography>
-                <Typography level="h2" sx={{ fontSize: "lg", fontWeight: "bold", fontSize: 20 }} color="success">
+                <Typography level="h2" sx={{ fontSize: "lg", fontWeight: "bold" }} color="success">
                   {stuff.offer_price}€
                 </Typography>
               </CardOverflow>
             ) : (
               <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
-                <Typography level="h1" sx={{ fontSize: "lg", fontWeight: "bold", fontSize: 24}}>
+                <Typography level="h1" sx={{ fontSize: "lg", fontWeight: "bold" }}>
                   {stuff.price}€
                 </Typography>
               </CardOverflow>
