@@ -38,7 +38,7 @@ const AddStuffPage = () => {
     
     sendNewStuff(
       {
-        url: "http://127.0.0.1:8000/stuff/add-new-stuff",
+        url: `${process.env.REACT_APP_BACKEND_BASE_URL}/stuff/add-new-stuff`,
         method: "POST",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,

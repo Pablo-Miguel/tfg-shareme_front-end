@@ -48,7 +48,7 @@ const ProfilePage = (props) => {
 
     if(viewMoreCont !== 0){
 
-      let url_base = 'http://127.0.0.1:8000/stuff?';
+      let url_base = `${process.env.REACT_APP_BACKEND_BASE_URL}/stuff?`;
 
       if (!isMe) {
         url_base += `other_user_id=${user_id}`;
@@ -87,7 +87,7 @@ const ProfilePage = (props) => {
 
     followUser(
       {
-        url: `http://localhost:8000/users/${user_id}/follow`,
+        url: `${process.env.REACT_APP_BACKEND_BASE_URL}/users/${user_id}/follow`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,

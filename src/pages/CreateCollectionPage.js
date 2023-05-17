@@ -27,7 +27,7 @@ const CreateCollectionPage = () => {
 
     const fetchStuffHandler = (text_searched) => {
     
-        let url_base = 'http://127.0.0.1:8000/stuff?isMine=true';
+        let url_base = `${process.env.REACT_APP_BACKEND_BASE_URL}/stuff?isMine=true`;
         
         if(text_searched && text_searched !== '') {
             url_base += `&text_searched=${text_searched}`;
@@ -88,7 +88,7 @@ const CreateCollectionPage = () => {
         };
 
         addNewCollection({
-            url: 'http://127.0.0.1:8000/collections',
+            url: `${process.env.REACT_APP_BACKEND_BASE_URL}/collections`,
             method: "POST",
             headers: {
                 Authorization: `Bearer ${getAuthToken()}`,

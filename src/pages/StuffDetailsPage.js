@@ -72,7 +72,7 @@ const DetailsPage = () => {
 
     sendRating(
       {
-        url: `http://127.0.0.1:8000/ratingComments/${current_stuff.stuff._id}`,
+        url: `${process.env.REACT_APP_BACKEND_BASE_URL}/ratingComments/${current_stuff.stuff._id}`,
         method: "POST",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
@@ -107,7 +107,7 @@ const DetailsPage = () => {
     
     sendQuestion(
       {
-        url: `http://127.0.0.1:8000/questionAnswersComments/${current_stuff.stuff._id}/question`,
+        url: `${process.env.REACT_APP_BACKEND_BASE_URL}/questionAnswersComments/${current_stuff.stuff._id}/question`,
         method: "POST",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
@@ -141,7 +141,7 @@ const DetailsPage = () => {
 
     sendAnswer(
       {
-        url: `http://127.0.0.1:8000/questionAnswersComments/${event.target.id}/answer`,
+        url: `${process.env.REACT_APP_BACKEND_BASE_URL}/questionAnswersComments/${event.target.id}/answer`,
         method: "POST",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,

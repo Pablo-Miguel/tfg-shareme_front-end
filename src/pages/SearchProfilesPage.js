@@ -15,7 +15,7 @@ const SearchProfilesPage = () => {
     }
 
     const onChangeSearchBarHandler = (e) => {
-        let url_base = 'http://127.0.0.1:8000/users?';
+        let url_base = `${process.env.REACT_APP_BACKEND_BASE_URL}/users?`;
 
         if (e.target.value) {
             url_base += `profileNameOrNickName=${e.target.value}`;
