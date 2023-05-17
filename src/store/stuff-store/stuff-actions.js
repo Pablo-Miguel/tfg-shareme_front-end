@@ -9,7 +9,7 @@ export const fetchStuff = (page_number = 0, text_searched = "") => {
       dispatch(stuffActions.setError(null));
       dispatch(stuffActions.setIsLoading(true));
 
-      let url_base = "http://127.0.0.1:8000/stuff?";
+      let url_base = `${process.env.REACT_APP_BACKEND_BASE_URL}/stuff?`;
       if (page_number === 0) {
         url_base += "skip=0";
       } else {
@@ -61,7 +61,7 @@ export const likeStuff = (stuff_id) => {
     try {
       dispatch(stuffActions.setError(null));
 
-      const fetchedStuff = await axios.get(`http://127.0.0.1:8000/stuff/${stuff_id}/like`, {
+      const fetchedStuff = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/stuff/${stuff_id}/like`, {
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
         },
@@ -85,7 +85,7 @@ export const viewStuff = (stuff_id) => {
       dispatch(stuffActions.setError(null));
       dispatch(stuffActions.setIsLoading(true));
 
-      const fetchedStuff = await axios.get(`http://127.0.0.1:8000/stuff/${stuff_id}/view`, {
+      const fetchedStuff = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/stuff/${stuff_id}/view`, {
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
         },

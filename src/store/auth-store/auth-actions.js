@@ -13,7 +13,7 @@ import { navigate } from "../../utils/router-supplier";
 export const checkAuth = () => {
   return async (dispatch) => {
     try {
-      const fetchedData = await axios.get("http://127.0.0.1:8000/users/me", {
+      const fetchedData = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/users/me`, {
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
         },
@@ -33,7 +33,7 @@ export const signUp = (firstName, lastName, nickName, email, password) => {
     try {
       dispatch(authActions.setError(null));
       const fetchedData = await axios.post(
-        "http://127.0.0.1:8000/users/signup",
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/users/signup`,
         {
           firstName,
           lastName,
@@ -69,7 +69,7 @@ export const login = (email, password) => {
     try {
       dispatch(authActions.setError(null));
       const fetchedData = await axios.post(
-        "http://127.0.0.1:8000/users/login",
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/users/login`,
         {
           email: email,
           password: password,
@@ -100,7 +100,7 @@ export const login = (email, password) => {
 export const logout = (isAll = false) => {
   return async (dispatch) => {
     try {
-      let urlBase = "http://127.0.0.1:8000/users/";
+      let urlBase = `${process.env.REACT_APP_BACKEND_BASE_URL}/users/`;
       if (isAll) urlBase += "logoutAll";
       else urlBase += "logout";
 

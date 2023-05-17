@@ -24,7 +24,7 @@ export const checkUnauthLoader = () => {
 };
 
 const fetchUserById = async (user_id) => {
-  const response = await axios.get(`http://127.0.0.1:8000/users/${user_id}`, {
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/users/${user_id}`, {
     headers: {
       Authorization: `Bearer ${getAuthToken()}`,
     }
@@ -55,7 +55,7 @@ const fetchUserById = async (user_id) => {
 
 const fetchUserStuff = async (user_id, isMe) => {
 
-  let url_base = 'http://127.0.0.1:8000/stuff?';
+  let url_base = `${process.env.REACT_APP_BACKEND_BASE_URL}/stuff?`;
 
   if (!isMe) {
     url_base += `other_user_id=${user_id}`;
@@ -86,7 +86,7 @@ const fetchUserStuff = async (user_id, isMe) => {
 
 export const fetchUserCollections = async (user_id, isMe) => {
 
-  let url_base = 'http://127.0.0.1:8000/collections?';
+  let url_base = `${process.env.REACT_APP_BACKEND_BASE_URL}/collections?`;
 
   if (!isMe) {
     url_base += `other_user_id=${user_id}`;
@@ -135,7 +135,7 @@ export const getCollectionStuffLoader = async ({ request, params }) => {
 };
 
 export const getStuffByIdLoader = async ({ request, params }) => {
-  const response = await axios.get(`http://127.0.0.1:8000/stuff/${params.stuff_id}`, {
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/stuff/${params.stuff_id}`, {
     headers: {
       Authorization: `Bearer ${getAuthToken()}`,
     }
@@ -168,7 +168,7 @@ export const getStuffByIdLoader = async ({ request, params }) => {
 };
 
 export const getCollectionByIdLoader = async ({ request, params }) => {
-  const response = await axios.get(`http://127.0.0.1:8000/collections/${params.collection_id}`, {
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/collections/${params.collection_id}`, {
     headers: {
       Authorization: `Bearer ${getAuthToken()}`,
     }
@@ -201,7 +201,7 @@ export const getCollectionByIdLoader = async ({ request, params }) => {
 
 export const getUsersLoader = async ({ request, params }) => {
   
-  const response = await axios.get(`http://127.0.0.1:8000/users?sortBy=followers:desc`, {
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/users?sortBy=followers:desc`, {
     headers: {
       Authorization: `Bearer ${getAuthToken()}`,
     }
