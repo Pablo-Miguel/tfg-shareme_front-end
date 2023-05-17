@@ -1,7 +1,18 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import Box from '@mui/joy/Box';
+import Button from '@mui/joy/Button';
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Input from '@mui/joy/Input';
+import Typography from '@mui/joy/Typography';
+import { Link as JoyLink } from "@mui/joy";
+
 import { signUp } from "../store/auth-store/auth-actions";
 import { authActions } from "../store/auth-store/auth-slice";
+import LogInSignUpWrapper from "../components/LogInSignUpWrapper/LogInSignUpWrapper";
+import { Grid } from "@mui/material";
 
 const SignUpPage = () => {
   const firstNameInputRef = useRef();
@@ -18,73 +29,87 @@ const SignUpPage = () => {
     };
   }, [dispatch]);
 
-  const signupHandler = (event) => {
-    event.preventDefault();
-
+  const signupHandler = (data) => {
     dispatch(
       signUp(
-        firstNameInputRef.current.value,
-        lastNameInputRef.current.value,
-        nickNameInputRef.current.value,
-        emailInputRef.current.value,
-        passwordInputRef.current.value
+        data.firstName,
+        data.lastName,
+        data.nickName,
+        data.email,
+        data.password
       )
     );
   };
 
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+    const formElements = event.currentTarget.elements;
+    const data = {
+      firstName: formElements.firstName.value,
+      lastName: formElements.lastName.value,
+      nickName: formElements.nickName.value,
+      email: formElements.email.value,
+      password: formElements.password.value
+    };
+    signupHandler(data);
+  };
+
   return (
     <>
-      <h1>Sign Up</h1>
-      <form>
-        <label htmlFor="firstName">First Name </label>
-        <input
-          type="text"
-          name="firstName"
-          id="firstName"
-          ref={firstNameInputRef}
-        />
-        <br />
-        <br />
-        <label htmlFor="lastName">Last Name </label>
-        <input
-          type="text"
-          name="lastName"
-          id="lastName"
-          ref={lastNameInputRef}
-        />
-        <br />
-        <br />
-        <label htmlFor="nickName">NickName </label>
-        <input
-          type="text"
-          name="nickName"
-          id="nickName"
-          ref={nickNameInputRef}
-        />
-        <br />
-        <br />
-        <label htmlFor="email">Email </label>
-        <input type="email" name="email" id="email" ref={emailInputRef} />
-        <br />
-        <br />
-        <label htmlFor="password">Password </label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          ref={passwordInputRef}
-        />
-        <br />
-        <br />
-        {error && (
-          <div>
-            <p>{error.message}</p>
-          </div>
-        )}
-        <button onClick={signupHandler} type="submit">
-          Sign Up
-        </button>
-      </form>
+      <LogInSignUpWrapper title='Welcome to ShareMe' subtitle='Let&apos;s get started! Please enter your details.'>
+        <form
+          onSubmit={onSubmitHandler}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <FormControl required>
+                <FormLabel>First Name</FormLabel>
+                <Input placeholder="Enter your first name" type="text" name="firstName" />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl required>
+                <FormLabel>Last Name</FormLabel>
+                <Input placeholder="Enter your last name" type="text" name="lastName" />
+              </FormControl>
+            </Grid>
+          </Grid>
+          <FormControl required>
+            <FormLabel>NickName</FormLabel>
+            <Input placeholder="Enter your NickName" type="text" name="nickName" />
+          </FormControl>
+          <FormControl required>
+            <FormLabel>Email</FormLabel>
+            <Input placeholder="Enter your email" type="email" name="email" />
+          </FormControl>
+          <FormControl required>
+            <FormLabel>Password</FormLabel>
+            <Input placeholder="•••••••" type="password" name="password" />
+          </FormControl>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <span />
+            <Link to="/">
+              <JoyLink fontSize="sm" fontWeight="lg">
+                Back to Login
+              </JoyLink>
+            </Link>
+          </Box>
+          <Button type="submit" fullWidth>
+            Sign in
+          </Button>
+          {error && (
+            <Typography level="body2" color="error.main">
+              {error.message}
+            </Typography>
+          )}
+        </form>
+      </LogInSignUpWrapper>
     </>
   );
 };
