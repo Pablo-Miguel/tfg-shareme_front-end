@@ -1,164 +1,81 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Divider } from "@mui/joy";
+import { Box, Grid } from "@mui/material";
 
-import StuffCard from "../components/StuffCard/StuffCard";
 import { fetchStuff } from "../store/stuff-store/stuff-actions";
+import StuffCard from "../components/StuffCard/StuffCard";
+import PaginationUI from "../components/UIs/Pagination/PaginationUI";
+import Spinner from "../components/Spinner/Spinner";
+import SearchBar from "../components/UIs/SearchBar/SearchBar";
 
 const HomePage = () => {
+  const [ searchBarValue, setSearchBarValue ] = useState("");
   const stuff = useSelector((state) => state.stuff);
   const dispatch = useDispatch();
-  const searchBarInputRef = useRef();
 
   useEffect(() => {
     dispatch(fetchStuff());
   }, [dispatch]);
 
-  const searchBarHandler = (event) => {
-    dispatch(fetchStuff(0, searchBarInputRef.current.value));
+  const searchBarHandler = (value) => {
+    setSearchBarValue(value);
+    dispatch(fetchStuff(0, value));
   };
 
-  const onClickPreviousHandler = () => {
-    dispatch(fetchStuff(stuff.page - 1, searchBarInputRef.current.value));
-  };
-
-  const onClickNextHandler = () => {
-    dispatch(fetchStuff(stuff.page + 1, searchBarInputRef.current.value));
+  const onChangePaginationHandler = (event, page) => {
+    dispatch(fetchStuff(page - 1, searchBarValue));
   };
 
   return (
-    <>
-      <h1
-        style={{
-          textAlign: "center",
-          marginTop: "20px",
-          marginBottom: "20px",
-        }}
-      >
-        Home Page
-      </h1>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <input
-          style={{
-            width: "100%",
-            height: "30px",
-            margin: "10px",
-          }}
-          type="text"
-          name="search_bar"
-          id="search_bar"
-          placeholder="Search for stuff..."
-          ref={searchBarInputRef}
-          onChange={searchBarHandler}
-        />
-        <button
-          style={{
-            width: "100px",
-            height: "30px",
-            margin: "10px",
-          }}
-          type="button"
-          onClick={searchBarHandler}
-        >
-          Search
-        </button>
-      </div>
-      <div
-        id="divider"
-        style={{
-          height: "1px",
-          backgroundColor: "grey",
-          margin: "10px",
-        }}
-      ></div>
-      {!stuff.isLoading && (
-        <>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
-          >
-            {stuff.total === 0 && <h1>No stuff found yet!</h1>}
-            <div style={
-              {
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                gap: "50px",
-              }
-            }>
-              {stuff.stuff.map((item) => (
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={1} padding={2}>
+        <Grid item xs={12}>
+          <h1>
+            Home Page
+          </h1>
+        </Grid>
+        <Grid item xs={12}>
+          <SearchBar onSearch={searchBarHandler} />
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+        {!stuff.isLoading && (
+          <>
+            {stuff.total === 0 && (
+              <Grid item xs={12} container justifyContent="center">
+                <h1>No stuff found yet!</h1>
+              </Grid>
+            )}
+            {stuff.stuff.map((item) => (
+              <Grid item xs={12} md={6} lg={4} key={item._id} container justifyContent="center">
                 <StuffCard
-                  key={item._id}
                   id={item._id}
                   stuff={item}
-                  style={{
-                  }}
                 />
-              ))}
-            </div>
+              </Grid>
+            ))}
             {Math.ceil(stuff.total / stuff.limit) > 1 && (
-              <div
-                style={{ 
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <button
-                  style={{
-                    width: "100px",
-                    height: "30px",
-                    margin: "10px",
-                  }}
-                  type="button"
-                  onClick={onClickPreviousHandler}
-                  disabled={stuff.page === 0}
-                >
-                  Previous
-                </button>
-                <h1
-                  style={{
-                    margin: "10px",
-                  }}
-                >
-                  {stuff.page + 1}/{Math.ceil(stuff.total / stuff.limit)}
-                </h1>
-                <button
-                  style={{
-                    width: "100px",
-                    height: "30px",
-                    margin: "10px",
-                  }}
-                  type="button"
-                  onClick={onClickNextHandler}
-                  disabled={stuff.total <= (stuff.page + 1) * stuff.limit}
-                >
-                  Next
-                </button>
-              </div>
+              <Grid item xs={12} container justifyContent="center">
+                <PaginationUI page={stuff.page + 1} count={Math.ceil(stuff.total / stuff.limit)} onChange={onChangePaginationHandler} />
+              </Grid>
             )}
-          </div>
-        </>
-      )}
-      {stuff.isLoading && !stuff.error && <h1>Loading Stuff...</h1>}
-      {stuff.error && (
-        <h1>
-          Error: {stuff.error.status} - {stuff.error.message}
-        </h1>
-      )}
-    </>
+          </>
+        )}
+        {stuff.isLoading && !stuff.error && (
+          <Grid item xs={12}>
+            <Spinner />
+          </Grid>
+        )}
+        {stuff.error && (
+          <Grid item xs={12} container justifyContent="center">
+            <h1>Error: {stuff.error.status} - {stuff.error.message}</h1>
+          </Grid>
+        )}
+      </Grid>
+    </Box>
+
   );
 };
 
