@@ -28,7 +28,7 @@ const StuffCard = ({ stuff, isMine }) => {
 
   return (
     <>
-      <Card variant="outlined" sx={{ minWidth: 400, maxWidth: 400 }} className={classes.card}>
+      <Card variant="outlined" className={classes.card}>
         <CardOverflow 
           variant="soft"
           sx={{
@@ -41,15 +41,14 @@ const StuffCard = ({ stuff, isMine }) => {
         >
           <CardOverflow sx={{ mt: "auto", mb: "auto" }}
             onClick={profileHandler}
-            style={{ 
-              cursor: "pointer",
+            style={{
               display: "flex",
               flexDirection: "row",
               gap: 1.5
             }}
           >
             <Avatar src={stuff.owner.avatar} alt={stuff.owner.name} 
-              sx={{ width: 25, height: 25, mr: 0.5 }}
+              style={{ width: 25, height: 25, marginRight: 10 }}
             />
             <Typography
               level="body1"
@@ -148,7 +147,7 @@ const StuffCard = ({ stuff, isMine }) => {
                 <Typography level="body2" sx={{ fontSize: "md", mt: 2, textDecoration: "line-through" }}>
                   {stuff.price}€
                 </Typography>
-                <Typography level="h2" sx={{ fontSize: "lg", fontWeight: "bold", fontSize: 20 }} color="danger">
+                <Typography level="h2" sx={{ fontSize: "lg", fontWeight: "bold", fontSize: 20 }} color="success">
                   {stuff.offer_price}€
                 </Typography>
               </CardOverflow>
@@ -164,7 +163,7 @@ const StuffCard = ({ stuff, isMine }) => {
           {
             stuff.has_offer && (
               <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
-                <Typography level="body2" sx={{ fontSize: "lg", mt: 2, fontWeight: "bold" }} color="success">
+                <Typography level="body2" sx={{ fontSize: "lg", mt: 2, fontWeight: "bold" }} color="danger">
                   {((stuff.price - stuff.offer_price) / stuff.price) * 100}%
                 </Typography>
               </CardOverflow>

@@ -1,45 +1,14 @@
-.stuffCard__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 5px;
-}
-
-.stuffCard__title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 10px 0;
-}
-
-.stuffCard__description {
-  font-size: 1.2rem;
-  font-weight: 400;
-  margin: 10px 0;
-}
-
-.stuffCard__price {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 10px 0;
-}
-
-.stuffCard__button {
-  width: 100%;
-  margin-top: 10px;
-}
-
 .card {
   width: 30%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-radius: 5px;
+  border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   transition: all 0.3s ease-in-out;
   cursor: pointer;
   margin: 20px;
-  min-width: 500px;
+  min-width: 400px;
 }
 
 .card:hover {
