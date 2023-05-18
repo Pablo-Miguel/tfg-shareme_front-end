@@ -5,6 +5,7 @@ import { formLabelClasses } from '@mui/joy/FormLabel';
 import Typography from '@mui/joy/Typography';
 
 import shareme_blue_logo from '../../assets/imgs/logos/shareme_blue_logo.png';
+import photo_mountain from '../../assets/imgs/bg/photo-mountain.jpg';
 
 const LogInSignUpWrapper = (props) => {
     return (
@@ -119,7 +120,7 @@ const LogInSignUpWrapper = (props) => {
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundImage:
-                    'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8)'
+                    `url(${photo_mountain})`
                 })}
             />
         </>
