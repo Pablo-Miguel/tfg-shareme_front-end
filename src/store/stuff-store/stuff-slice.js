@@ -40,6 +40,18 @@ const stuffSlice = createSlice({
         return item;
       });
     },
+    unlikeStuff(state, action) {
+      state.stuff = state.stuff.map((item) => {
+        if (item._id === action.payload._id) {
+          return {
+            ...item,
+            likes: action.payload.likes,
+            isLiked: false
+          };
+        }
+        return item;
+      });
+    },
     viewStuff(state, action) {
       state.stuff = state.stuff.map((item) => {
         if (item._id === action.payload._id) {

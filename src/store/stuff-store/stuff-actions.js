@@ -79,6 +79,29 @@ export const likeStuff = (stuff_id) => {
   };
 };
 
+export const unlikeStuff = (stuff_id) => {
+  return async (dispatch) => {
+    try {
+      dispatch(stuffActions.setError(null));
+
+      const fetchedStuff = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/stuff/${stuff_id}/unlike`, {
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      });
+
+      dispatch(stuffActions.unlikeStuff(fetchedStuff.data));
+    } catch (error) {
+      dispatch(
+        stuffActions.setError({
+          message: "Error unliking stuff",
+          status: 404,
+        })
+      );
+    }
+  };
+};
+
 export const viewStuff = (stuff_id) => {
   return async (dispatch) => {
     try {
