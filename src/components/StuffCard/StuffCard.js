@@ -2,20 +2,23 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { likeStuff } from "../../store/stuff-store/stuff-actions";
+import { likeStuff, unlikeStuff } from "../../store/stuff-store/stuff-actions";
 import classes from "./StuffCard.module.css";
-import { AspectRatio, Avatar, Card, CardOverflow, Divider, IconButton, Typography } from "@mui/joy";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { AspectRatio, Avatar, Card, CardOverflow, Divider, Typography } from "@mui/joy";
+import PositionedMenu from "../UIs/PositionedMenu/PositionedMenu";
+import RedEyeIconBtn from "../UIs/RedEyeIconBtn/RedEyeIconBtn";
+import FavoriteIconBtn from "../UIs/FavoriteIconBtn/FavoriteIconBtn";
 
 const StuffCard = ({ stuff, isMine }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const likeHandler = (event) => {
-    dispatch(likeStuff(stuff._id));
-    event.target.disabled = true;
+    if(stuff.isLiked) {
+      dispatch(unlikeStuff(stuff._id));
+    } else {
+      dispatch(likeStuff(stuff._id));
+    }
   };
 
   const detailsHandler = () => {
@@ -63,14 +66,7 @@ const StuffCard = ({ stuff, isMine }) => {
           {
             isMine && (
               <CardOverflow sx={{ ml: "auto" }}>
-                <IconButton
-                  variant="plain"
-                  aria-label="Settings"
-                  color="neutral"
-                  size="small"
-                >
-                  <MoreVertIcon />
-                </IconButton>
+                <PositionedMenu />
               </CardOverflow>
             )
           }
@@ -87,39 +83,8 @@ const StuffCard = ({ stuff, isMine }) => {
                 alt={stuff.title}
               />
           </AspectRatio>
-          <IconButton
-            size="md"
-            variant="solid"
-            color="danger"
-            sx={{
-              position: 'absolute',
-              zIndex: 2,
-              borderRadius: '50%',
-              right: '1rem',
-              bottom: 0,
-              transform: 'translateY(50%)',
-            }}
-            onClick={likeHandler}
-            disabled={stuff.isLiked || isMine}
-          >
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton
-            size="md"
-            variant="solid"
-            color="info"
-            sx={{
-              position: 'absolute',
-              zIndex: 2,
-              borderRadius: '50%',
-              right: '4rem',
-              bottom: 0,
-              transform: 'translateY(50%)',
-            }}
-            onClick={detailsHandler}
-          >
-            <RemoveRedEyeIcon />
-          </IconButton>
+          <RedEyeIconBtn onClick={detailsHandler} />
+          <FavoriteIconBtn stuff={stuff} onClick={likeHandler} isMine={isMine} />
         </CardOverflow>
 
         <CardOverflow
