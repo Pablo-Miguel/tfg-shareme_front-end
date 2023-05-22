@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -9,15 +9,18 @@ import PositionedMenu from "../UIs/PositionedMenu/PositionedMenu";
 import RedEyeIconBtn from "../UIs/RedEyeIconBtn/RedEyeIconBtn";
 import FavoriteIconBtn from "../UIs/FavoriteIconBtn/FavoriteIconBtn";
 
-const StuffCard = ({ stuff, isMine }) => {
+const StuffCard = ({ stuff: inputStuff, isMine }) => {
+  const [ stuff, setStuff ] = useState(inputStuff);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const likeHandler = (event) => {
     if(stuff.isLiked) {
       dispatch(unlikeStuff(stuff._id));
+      setStuff({ ...stuff, isLiked: false, likes: stuff.likes - 1 });
     } else {
       dispatch(likeStuff(stuff._id));
+      setStuff({ ...stuff, isLiked: true, likes: stuff.likes + 1 });
     }
   };
 
