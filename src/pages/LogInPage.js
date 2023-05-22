@@ -71,7 +71,7 @@ const LogInPage = () => {
             </Link>
             <Link to="/signup">
               <JoyLink fontSize="sm" fontWeight="lg">
-                Don't have an account jet?
+                Don't have an account yet?
               </JoyLink>
             </Link>
           </Box>
