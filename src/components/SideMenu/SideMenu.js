@@ -1,55 +1,51 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import classes from "./SideMenu.module.css";
 
 const SideMenu = (props) => {
-  const [showMenu, setShowMenu] = useState(true);
-  const myProfile = `/profile/${props.userId}`;
+  const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
+  const createStuffOnClickHandler = () => {
+    navigate("/create-stuff", { replace: true });
+    props.setOpenSideMenu(false);
+  };
+
+  const createCollectionOnClickHandler = () => {
+    navigate("/create-collection", { replace: true });
+    props.setOpenSideMenu(false);
+  };
+
+  const searchProfilesOnClickHandler = () => {
+    navigate("/search-profiles", { replace: true });
+    props.setOpenSideMenu(false);
   };
 
   return (
     <>
-      <div className={classes.sideMenu__container}>
-        <button className={classes.sideMenu__button} onClick={toggleMenu}>
-          <i className="fas fa-bars"></i>
-        </button>
-        <div className={classes.sideMenu__search}>
-          <input
-            type="text"
-            name="search_bar"
-            id="search_bar"
-            placeholder="Search..."
-          />
-          <button type="submit">
-            <i className="fas fa-search"></i>
-          </button>
-        </div>
+      <div
+        className={`${classes.sideMenu__container} ${
+          props.showMenu && classes["sideMenu__container--open"]
+        } ${
+          !props.showMenu && classes["sideMenu__container--close"]
+        }`}
+      >
+        {props.showMenu && (
+          <div className={classes.sideMenu__menu}>
+            <ul>
+              <li onClick={createStuffOnClickHandler}>
+                Create stuff
+              </li>
+              <li onClick={createCollectionOnClickHandler}>
+                Create collection
+              </li>
+              <li onClick={searchProfilesOnClickHandler}>
+                Search profiles
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
-      {showMenu && (
-        <div className={classes.sideMenu__menu}>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to={myProfile}>Your profile</Link>
-            </li>
-            <li>
-              <Link to="/create-stuff">Create stuff</Link>
-            </li>
-            <li>
-              <Link to="/create-collection">Create collection</Link>
-            </li>
-            <li>
-              <Link to="/search-profiles">Search profiles</Link>
-            </li>
-          </ul>
-        </div>
-      )}
     </>
   );
 };
