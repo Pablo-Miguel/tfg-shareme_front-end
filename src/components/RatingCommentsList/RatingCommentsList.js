@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button, FormControl, FormLabel, IconButton, Input, Textarea, Typography } from "@mui/joy";
+import { Box, Button, FormControl, FormLabel, Textarea, Typography } from "@mui/joy";
 import { Rating } from "@mui/material";
 
 const RatingCommentsList = (props) => {
