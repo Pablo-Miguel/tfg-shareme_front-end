@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "@mui/joy";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 import { fetchStuff } from "../store/stuff-store/stuff-actions";
 import StuffCard from "../components/StuffCard/StuffCard";
@@ -30,9 +30,9 @@ const HomePage = () => {
   return (
     <Grid container spacing={1} padding={2}>
       <Grid item xs={12}>
-        <h1>
+        <Typography variant="h4" component="h4" style={{ fontWeight: "bold" }}>
           Home Page
-        </h1>
+        </Typography>
       </Grid>
       <Grid item xs={12}>
         <SearchBar onSearch={searchBarHandler} />
@@ -43,8 +43,10 @@ const HomePage = () => {
       {!stuff.isLoading && (
         <>
           {stuff.total === 0 && (
-            <Grid item xs={12} container justifyContent="center">
-              <h1>No stuff found yet!</h1>
+            <Grid item xs={12} container justifyContent="center" display="flex">
+              <Typography variant="h5" component="h5" style={{ fontWeight: "bold", marginTop: 100 }}>
+                No stuff found yet!
+              </Typography>
             </Grid>
           )}
           {stuff.stuff.map((item) => (
@@ -69,7 +71,9 @@ const HomePage = () => {
       )}
       {stuff.error && (
         <Grid item xs={12} container justifyContent="center">
-          <h1>Error: {stuff.error.status} - {stuff.error.message}</h1>
+          <Typography variant="h5" component="h5" style={{ fontWeight: "bold", marginTop: 100 }}>
+            Error: {stuff.error.status} - {stuff.error.message}
+          </Typography>
         </Grid>
       )}
     </Grid>
