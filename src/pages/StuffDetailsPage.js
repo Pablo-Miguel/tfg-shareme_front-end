@@ -2,13 +2,28 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { viewStuff } from "../store/stuff-store/stuff-actions";
+import { unlikeStuff, viewStuff } from "../store/stuff-store/stuff-actions";
 import { likeStuff } from "../store/stuff-store/stuff-actions";
-import Card from "../components/UIs/Card/Card";
 import useHttp from "../hooks/useHttp";
 import { getAuthToken } from "../utils/storage";
+import Spinner from "../components/Spinner/Spinner";
+import { Avatar, Box, Button, Divider, Grid, Typography } from "@mui/material";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import LocalMallRoundedIcon from '@mui/icons-material/LocalMallRounded';
+import LocalOfferRoundedIcon from '@mui/icons-material/LocalOfferRounded';
+import PercentRoundedIcon from '@mui/icons-material/PercentRounded';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import LikeToggleBtn from "../components/UIs/LikeToggleBtn/LikeToggleBtn";
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+
+import useUser from "../hooks/useUser";
+import DetailsTab from "../components/DetailsTab/DetailsTab";
 
 const DetailsPage = () => {
+  const user = useUser();
   const { sendRequest: sendRating } = useHttp();
   const { sendRequest: sendQuestion } = useHttp();
   const { sendRequest: sendAnswer } = useHttp();
@@ -52,19 +67,29 @@ const DetailsPage = () => {
   }, [navigate, loader]);
 
   const likeHandler = (event) => {
-    dispatch(likeStuff(current_stuff.stuff._id));
-
-    setCurrentStuff((prevState) => {
-      return {
-        stuff: {
-          ...prevState.stuff,
-          likes: prevState.stuff.likes + 1,
-        },
-        isLiked: true,
-      };
-    });
-
-    event.target.disabled = true;
+    if(current_stuff.isLiked) {
+      dispatch(unlikeStuff(current_stuff.stuff._id));
+      setCurrentStuff((prevState) => {
+        return {
+          stuff: {
+            ...prevState.stuff,
+            likes: prevState.stuff.likes - 1,
+          },
+          isLiked: false,
+        };
+      });
+    } else {
+      dispatch(likeStuff(current_stuff.stuff._id));
+      setCurrentStuff((prevState) => {
+        return {
+          stuff: {
+            ...prevState.stuff,
+            likes: prevState.stuff.likes + 1,
+          },
+          isLiked: true,
+        };
+      });
+    }
   };
 
   const onClickRatingFormHandler = (event) => {
@@ -183,134 +208,159 @@ const DetailsPage = () => {
 
   return <>
     {!current_stuff ? 
-        <h1>Loading...</h1> 
+        <Spinner />
     : 
-        <>
-          <h1>Details Page</h1>
-          <img src={current_stuff.stuff.image} alt="stuff_image"/>
-          <h2>{current_stuff.stuff.title}</h2>
-          <p>{current_stuff.stuff.description}</p>
-          <p>Views: {current_stuff.stuff.views}</p>
-          <p>Likes: {current_stuff.stuff.likes}</p>
-          <p>Category: {current_stuff.stuff.category}</p>
-          <p>Owner: {current_stuff.stuff.owner.nickName}</p>
-          <p>Price: {current_stuff.stuff.price}€</p>
-          {current_stuff.stuff.has_offer && (
-              <p>
-                  Offer: <span>{current_stuff.stuff.offer_price}€</span>
-              </p>
-          )}
-          <a href={current_stuff.stuff.shopping_link}  target="_blank" rel="noopener noreferrer">To by click here</a>
-          <p>Creation day: {current_stuff.stuff.createdAt}</p>
-          <p>Last update: {current_stuff.stuff.updatedAt}</p>
-          <button onClick={likeHandler} disabled={current_stuff.isLiked}>Like</button>
-          <hr/>
-          <div className="comments-content">
-            <h2>Rating Comments</h2>
-            <form>
-                <label htmlFor="rating">Rate this stuff:</label>
-                <br/>
-                <select id="rating" name="rating" ref={ratingStarsOptions}>
-                  <option value="1">1 star</option>
-                  <option value="2">2 stars</option>
-                  <option value="3">3 stars</option>
-                  <option value="4">4 stars</option>
-                  <option value="5">5 stars</option>
-                </select>
-                <br/><br/>
-                <label htmlFor="comment">Write your comment here:</label>
-                <br/>
-                <textarea id="comment" name="comment" cols={80} rows={5} ref={ratingCommentInput}/>
-                <br/>
-                <button type="button" onClick={onClickRatingFormHandler}>Submit</button>
-            </form>
-            <div className="rating-comments">
-              <div style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column"
-              }}>
-                {current_stuff.stuff.ratingComments.length !== 0 ? current_stuff.stuff.ratingComments.map((ratingComment) => {
-                  return (
-                    <div style={
-                      {
-                        marginTop: "1rem",
-                      }
-                    } key={ratingComment._id}>
-                      <Card>
-                        <p>Rating: {ratingComment.rating}</p>
-                        <p>Comment: {ratingComment.comment}</p>
-                        <p>From: {ratingComment.from.name}</p>
-                        <p>Created at: {ratingComment.createdAt}</p>
-                        <hr/>
-                      </Card>
-                    </div>
-                  )})
-                : 
-                  <h3>No rating comments yet</h3>
-                }
-              </div>
-            </div>
-            <hr/>
-            <h2>Questions Comments</h2>
-            <form>
-              <label htmlFor="comment">Write your question here:</label>
-              <br/>
-              <textarea id="comment" name="comment" cols={80} rows={5} ref={questionInput}/>
-              <br/>
-              <button type="button" onClick={onClickQuestionFormHandler}>Submit</button>
-            </form>
-            <div className="questions-comments">
-              <div style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column"
-              }}>
-                {current_stuff.stuff.questionAnswersComments.length !== 0 ? current_stuff.stuff.questionAnswersComments.map((questionComment) => {
-                  return (
-                    <div style={
-                      {
-                        marginTop: "1rem",
-                      }
-                    } key={questionComment._id}>
-                      <Card>
-                        <p>Question: {questionComment.question}</p>
-                        <p>From: {questionComment.from.name}</p>
-                        <div>{questionComment.answers.map((answer) => {
-                          return (
-                            <div className="answer-content" key={answer._id}>
-                              <p>Answer: {answer.body}</p>
-                              <p>From: {answer.from.name}</p>
-                            </div>
-                          )
-                        })}</div>
-                        <div className="answer-form"
-                        style={
-                          {
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            flexDirection: "column",
-                          }
-                        }>
-                          <p>Write answer:</p>
-                          <textarea id="comment" name="comment" cols={50} rows={5}/>
-                          <br/>
-                          <button id={questionComment._id} type="button" onClick={onClickAnswerFormHandler}>Submit</button>
-                        </div>
-                        <hr/>
-                      </Card>
-                    </div>
-                  )})
-                :
-                  <h3>No questions yet</h3>
-                }
-              </div>
-            </div>
-          </div>
-        </>
+      <>
+        <Grid container spacing={1} padding={2}>
+          <Grid item xs={12}>
+            <Typography variant="h4" component="h4" style={{ fontWeight: "bold"}}>
+              Details Page
+            </Typography>
+            
+            
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={4} container justifyContent="center">
+            <Box sx={{ display: { xs: 'flex', sm: 'none' }, mr: 2 }} flexDirection="column">
+              <Grid item xs={12} container direction="row" style={{ marginTop: 10, marginBottom: 10 }}>
+                <Avatar src={current_stuff.stuff.owner.avatar} alt={current_stuff.stuff.owner.name} 
+                  style={{ width: 25, height: 25, marginRight: 10 }}
+                />
+                <Typography variant="p" component="p">
+                  {current_stuff.stuff.owner.nickName}
+                </Typography>
+              </Grid>
+
+              <Typography variant="h6" component="h6"
+                style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
+              >
+                <ArrowForwardIosRoundedIcon /> {current_stuff.stuff.category}
+              </Typography>
+            </Box>
+            <Grid item xs={12} container justifyContent="center">
+              <img src={current_stuff.stuff.image} alt="stuff_image" style={{ minHeight: 300 }} />
+            </Grid>
+            <Grid item padding={2} container>
+              <Grid item xs={6} container justifyContent="center">
+                <Typography variant="p" component="p"
+                  style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
+                >
+                  <RemoveRedEyeIcon color="secondary" /> {current_stuff.stuff.views}
+                </Typography>
+              </Grid>
+              <Grid item xs={6} container justifyContent="center">
+                <Typography variant="p" component="p"
+                  style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
+                >
+                  <FavoriteIcon color="error" /> {current_stuff.stuff.likes}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={8}>
+            <Box sx={{ display: { xs: 'none', sm: 'flex' }, mr: 2 }} flexDirection="column">
+              <Grid item xs={12} container direction="row" style={{ marginTop: 10, marginBottom: 10 }}>
+                <Avatar src={current_stuff.stuff.owner.avatar} alt={current_stuff.stuff.owner.name} 
+                  style={{ width: 25, height: 25, marginRight: 10 }}
+                />
+                <Typography variant="p" component="p">
+                  {current_stuff.stuff.owner.nickName}
+                </Typography>
+              </Grid>
+
+              <Typography variant="h6" component="h6"
+                style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold"}}
+              >
+                <ArrowForwardIosRoundedIcon /> {current_stuff.stuff.category}
+              </Typography>
+            </Box>
+
+            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            
+            <Typography variant="h5" component="h5"
+              style={{ fontWeight: "bold" }}
+            >
+              {current_stuff.stuff.title}
+            </Typography>
+            <Typography variant="body1" component="p">
+              {current_stuff.stuff.description}
+            </Typography>
+
+            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+
+            {
+              current_stuff.stuff.has_offer ? (
+                <Grid item xs={6} container>
+                  <div>
+                    <Typography variant="h6" component="h6" color="grey"
+                      style={{ display: "flex", alignItems: "center", gap: 5, textDecoration: "line-through" }}
+                    >
+                      <LocalMallRoundedIcon /> {current_stuff.stuff.price}€
+                    </Typography>
+                    <Typography variant="h5" component="h5" color="green"
+                      style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold"}}
+                    >
+                      <LocalOfferRoundedIcon /> {current_stuff.stuff.offer_price}€
+                    </Typography>
+                  </div>
+                  <div style={{ marginTop: "auto", marginLeft: 30 }}>
+                    <Typography variant="h5" component="h5" color="error"
+                      style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold"}}
+                    >
+                      {((current_stuff.stuff.price - current_stuff.stuff.offer_price) / current_stuff.stuff.price) * 100} <PercentRoundedIcon />
+                    </Typography>
+                  </div>
+                </Grid>
+              ) : (
+                <Typography variant="h6" component="h6"
+                  style={{ display: "flex", alignItems: "center", gap: 5 }}
+                >
+                  <LocalMallRoundedIcon /> {current_stuff.stuff.price}€
+                </Typography>
+              )
+            }
+
+            <Button variant="contained" color="secondary" style={{ marginTop: 10 }} startIcon={<ShoppingCartOutlinedIcon />}>
+              <Typography variant="p" component="a" href={current_stuff.stuff.shopping_link}  target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "white" }}>Shopping link</Typography>
+            </Button>
+
+            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+
+            <LikeToggleBtn isLiked={current_stuff.isLiked} onClick={likeHandler} isMine={current_stuff.stuff.owner._id === user._id} />
+
+            {
+              current_stuff.stuff.owner._id === user._id && (
+                <div>
+                  <Button variant="contained" color="primary" style={{ marginRight: 20 }} startIcon={<EditRoundedIcon />}>
+                    <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Edit</Typography>
+                  </Button>
+                  <Button variant="contained" color="error" startIcon={<DeleteForeverRoundedIcon />}>
+                    <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Delete</Typography>
+                  </Button>
+                </div>
+              )
+            }
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+          </Grid>
+
+          <Grid item xs={12}>
+            <DetailsTab 
+              onClickRatingCommentsSubmit={onClickRatingFormHandler} 
+              onClickQuestionsCommentsSubmit={onClickQuestionFormHandler}
+              onClickQuestionAnswerSubmit={onClickAnswerFormHandler}
+              stuff={current_stuff.stuff} 
+            />
+          </Grid>
+        </Grid>
+      </>
     }
     </>;
 };
