@@ -45,7 +45,7 @@ const PositionedMenu = () => {
           <ListItemDecorator>
             <Edit />
           </ListItemDecorator>{' '}
-          Edit stuff
+          Edit
         </MenuItem>
         <ListDivider />
         <MenuItem onClick={handleClose} variant="soft" color="danger">
