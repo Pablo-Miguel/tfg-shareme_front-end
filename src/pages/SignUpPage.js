@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Box from '@mui/joy/Box';
@@ -15,11 +15,6 @@ import LogInSignUpWrapper from "../components/LogInSignUpWrapper/LogInSignUpWrap
 import { Grid } from "@mui/material";
 
 const SignUpPage = () => {
-  const firstNameInputRef = useRef();
-  const lastNameInputRef = useRef();
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
-  const nickNameInputRef = useRef();
   const dispatch = useDispatch();
   const error = useSelector((state) => state.auth.error);
 
