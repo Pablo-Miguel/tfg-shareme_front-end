@@ -1,17 +1,34 @@
 import { useState } from "react";
 import { Box, Button, FormControl, FormLabel, Textarea, Typography } from "@mui/joy";
+import { Grid } from "@mui/material";
+import QuestionCard from "../QuestionCard/QuestionCard";
 
 const QuestionsCommentsList = (props) => {
     const [text, setText] = useState('');
 
+    const onSubmitHandler = (event) => {
+      event.preventDefault();
+
+      const formElements = event.currentTarget.elements;
+      const data = {
+        question: formElements.question.value
+      };
+
+      props.onClickFormSubmit({
+        data: data,
+        setText: setText
+      });
+    };
+
     return (
         <>
             <form
-              onSubmit={props.onClickFormSubmit}
+              onSubmit={onSubmitHandler}
             >
               <FormControl required>
                 <FormLabel>Your question</FormLabel>
                 <Textarea
+                  name="question"
                   placeholder="Type something here…"
                   value={text}
                   onChange={(event) => setText(event.target.value)}
@@ -39,54 +56,24 @@ const QuestionsCommentsList = (props) => {
                 />
               </FormControl>
             </form>
-            <div className="questions-comments">
-              <div style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column"
-              }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography  level="h5" variant="h6" sx={{ mt: 4 }}>Questions ({props.stuff.questionAnswersComments.length})</Typography>
+              </Grid>
+              <Grid item container xs={12}>
                 {props.stuff.questionAnswersComments.length !== 0 ? props.stuff.questionAnswersComments.map((questionComment) => {
                   return (
-                    <div style={
-                      {
-                        marginTop: "1rem",
-                      }
-                    } key={questionComment._id}>
-                      <div>
-                        <p>Question: {questionComment.question}</p>
-                        <p>From: {questionComment.from.name}</p>
-                        <div>{questionComment.answers.map((answer) => {
-                          return (
-                            <div className="answer-content" key={answer._id}>
-                              <p>Answer: {answer.body}</p>
-                              <p>From: {answer.from.name}</p>
-                            </div>
-                          )
-                        })}</div>
-                        <div className="answer-form"
-                        style={
-                          {
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            flexDirection: "column",
-                          }
-                        }>
-                          <p>Write answer:</p>
-                          <textarea id="comment" name="comment" cols={50} rows={5}/>
-                          <br/>
-                          <button id={questionComment._id} type="button" onClick={props.onClickAnswerSubmit}>Submit</button>
-                        </div>
-                        <hr/>
-                      </div>
-                    </div>
-                  )})
-                :
-                  <h3>No questions yet</h3>
-                }
-              </div>
-            </div>
+                    <Grid item xs={12} md={6} container justifyContent="center" key={questionComment._id} style={{ padding: 10 }}>
+                      <QuestionCard question={questionComment} userId={props.userId} onSubmitHandler={props.onClickAnswerSubmit} />
+                    </Grid>
+                  )
+                }) : (
+                  <Grid item container justifyContent="center">
+                    <Typography level="h4" variant="h6" sx={{ mt: 4}}>No questions yet</Typography>
+                  </Grid>
+                )}
+              </Grid>
+            </Grid>
         </>
     )
 };
