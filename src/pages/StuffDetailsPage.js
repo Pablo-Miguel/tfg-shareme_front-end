@@ -32,9 +32,6 @@ const DetailsPage = () => {
   const navigate = useNavigate();
   const loader = useRouteLoaderData("stuff-details");
   const [current_stuff, setCurrentStuff] = useState(null);
-  const ratingStarsOptions = useRef();
-  const ratingCommentInput = useRef();
-  const questionInput = useRef();
   const effectExecutedRef = useRef(false);
 
   useEffect(() => {
@@ -93,7 +90,6 @@ const DetailsPage = () => {
   };
 
   const onClickRatingFormHandler = (event) => {
-    event.preventDefault();
 
     sendRating(
       {
@@ -104,8 +100,8 @@ const DetailsPage = () => {
           "Content-Type": "application/json",
         },
         body: {
-          rating: ratingStarsOptions.current.value,
-          comment: ratingCommentInput.current.value,
+          rating: event.data.rating,
+          comment: event.data.comment,
         },
       },
       (data) => {
@@ -119,8 +115,9 @@ const DetailsPage = () => {
             },
           };
         });
-
-        ratingCommentInput.current.value = "";
+        
+        event.setValue(0);
+        event.setText("");
 
       }
     );
@@ -128,7 +125,6 @@ const DetailsPage = () => {
   };
 
   const onClickQuestionFormHandler = (event) => {
-    event.preventDefault();
     
     sendQuestion(
       {
@@ -139,7 +135,7 @@ const DetailsPage = () => {
           "Content-Type": "application/json",
         },
         body: {
-          question: questionInput.current.value,
+          question: event.data.question,
         },
       },
       (data) => {
@@ -154,30 +150,28 @@ const DetailsPage = () => {
           };
         });
 
-        questionInput.current.value = "";
-
+        event.setText("");
+        
       }
     );
 
   };
 
   const onClickAnswerFormHandler = (event) => {
-    event.preventDefault();
-
     sendAnswer(
       {
-        url: `${process.env.REACT_APP_BACKEND_BASE_URL}/questionAnswersComments/${event.target.id}/answer`,
+        url: `${process.env.REACT_APP_BACKEND_BASE_URL}/questionAnswersComments/${event.data.questionId}/answer`,
         method: "POST",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
           "Content-Type": "application/json",
         },
         body: {
-          body: event.target.parentNode.childNodes[1].value,
+          body: event.data.answer,
         },
       },
       (data) => {
-        const answerList = current_stuff.stuff.questionAnswersComments.find((answer) => answer._id === event.target.id).answers;
+        const answerList = current_stuff.stuff.questionAnswersComments.find((answer) => answer._id === event.data.questionId).answers;
         answerList.unshift(data);
 
         setCurrentStuff((prevState) => {
@@ -186,7 +180,7 @@ const DetailsPage = () => {
             stuff: {
               ...prevState.stuff,
               questionAnswersComments: prevState.stuff.questionAnswersComments.map((answer) => {
-                if (answer._id === event.target.id) {
+                if (answer._id === event.data.questionId) {
                   return {
                     ...answer,
                     answers: answerList,
@@ -199,12 +193,13 @@ const DetailsPage = () => {
           };
         });
 
-        event.target.parentNode.childNodes[1].value = "";
+        event.setText("");
 
       }
     );
 
   };
+
 
   return <>
     {!current_stuff ? 
@@ -357,6 +352,7 @@ const DetailsPage = () => {
               onClickQuestionsCommentsSubmit={onClickQuestionFormHandler}
               onClickQuestionAnswerSubmit={onClickAnswerFormHandler}
               stuff={current_stuff.stuff} 
+              userId={user._id}
             />
           </Grid>
         </Grid>
