@@ -29,53 +29,57 @@ const HomePage = () => {
 
   return (
     <Grid container spacing={1} padding={2}>
-      <Grid item xs={12}>
-        <Typography variant="h4" component="h4" style={{ fontWeight: "bold" }}>
-          Home Page
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <SearchBar onSearch={searchBarHandler} />
-      </Grid>
-      <Grid item xs={12}>
-        <Divider />
-      </Grid>
-      {!stuff.isLoading && (
-        <>
-          {stuff.total === 0 && (
-            <Grid item xs={12} container justifyContent="center" display="flex">
-              <Typography variant="h5" component="h5" style={{ fontWeight: "bold", marginTop: 100 }}>
-                No stuff found yet!
-              </Typography>
-            </Grid>
-          )}
-          {stuff.stuff.map((item) => (
-            <Grid item xs={12} md={6} lg={4} key={item._id} container justifyContent="center">
-              <StuffCard
-                id={item._id}
-                stuff={item}
-              />
-            </Grid>
-          ))}
-          {Math.ceil(stuff.total / stuff.limit) > 1 && (
-            <Grid item xs={12} container justifyContent="center">
-              <PaginationUI page={stuff.page + 1} count={Math.ceil(stuff.total / stuff.limit)} onChange={onChangePaginationHandler} />
-            </Grid>
-          )}
-        </>
-      )}
-      {stuff.isLoading && !stuff.error && (
+      <Grid item xs={0} md={1} lg={2}></Grid>
+      <Grid item xs={12} md={10} lg={8} container>
         <Grid item xs={12}>
-          <Spinner />
-        </Grid>
-      )}
-      {stuff.error && (
-        <Grid item xs={12} container justifyContent="center">
-          <Typography variant="h5" component="h5" style={{ fontWeight: "bold", marginTop: 100 }}>
-            Error: {stuff.error.status} - {stuff.error.message}
+          <Typography variant="h4" component="h4" style={{ fontWeight: "bold", marginBottom: 10 }}>
+            Home Page
           </Typography>
         </Grid>
-      )}
+        <Grid item xs={12}>
+          <SearchBar onSearch={searchBarHandler} />
+        </Grid>
+        <Grid item xs={12}>
+          <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+        </Grid>
+        {!stuff.isLoading && (
+          <>
+            {stuff.total === 0 && (
+              <Grid item xs={12} container justifyContent="center" display="flex">
+                <Typography variant="h5" component="h5" style={{ fontWeight: "bold", marginTop: 100 }}>
+                  No stuff found yet!
+                </Typography>
+              </Grid>
+            )}
+            {stuff.stuff.map((item) => (
+              <Grid item xs={12} md={6} lg={6} key={item._id} container justifyContent="center">
+                <StuffCard
+                  id={item._id}
+                  stuff={item}
+                />
+              </Grid>
+            ))}
+            {Math.ceil(stuff.total / stuff.limit) > 1 && (
+              <Grid item xs={12} container justifyContent="center">
+                <PaginationUI page={stuff.page + 1} count={Math.ceil(stuff.total / stuff.limit)} onChange={onChangePaginationHandler} />
+              </Grid>
+            )}
+          </>
+        )}
+        {stuff.isLoading && !stuff.error && (
+          <Grid item xs={12}>
+            <Spinner />
+          </Grid>
+        )}
+        {stuff.error && (
+          <Grid item xs={12} container justifyContent="center">
+            <Typography variant="h5" component="h5" style={{ fontWeight: "bold", marginTop: 100 }}>
+              Error: {stuff.error.status} - {stuff.error.message}
+            </Typography>
+          </Grid>
+        )}
+      </Grid>
+      <Grid item xs={0} md={1} lg={2}></Grid>
     </Grid>
   );
 };
