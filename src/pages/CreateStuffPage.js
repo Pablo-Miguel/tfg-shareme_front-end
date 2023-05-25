@@ -1,40 +1,32 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import useHttp from "../hooks/useHttp";
 import { getAuthToken } from "../utils/storage";
+import { Divider, Grid, Typography as TypographyMUI } from "@mui/material";
 
-const categories = [
-  "Music",
-  "Photography",
-  "Technology",
-  "Clothes",
-  "Kitchen",
-  "Sports",
-  "Decoration",
-  "Books",
-  "Other",
-];
+
+import Alert from "../components/Alert/Alert";
+import CreateStuffForm from "../components/CreateStuffForm/CreateStuffForm";
 
 const AddStuffPage = () => {
-  const [success, setSuccess] = useState(false);
-  const [hasOffer, setHasOffer] = useState(false);
-  const titleInputRef = useRef();
-  const descriptionInputRef = useRef();
-  const priceInputRef = useRef();
-  const hasOfferInputRef = useRef();
-  const offerPriceInputRef = useRef();
-  const categorySelectRef = useRef();
-  const shopping_linkInputRef = useRef();
   const { isLoading, error, sendRequest: sendNewStuff } = useHttp();
+  const [open, setOpen] = useState(false);
 
-  const onChangeHandler = () => {
-    setHasOffer((prevState) => !prevState);
+  useEffect(() => {
+    if (error && error !== '') {
+      setOpen(true);
+    }
+  }, [error]);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    
+    setOpen(false);
   };
 
   const sendStuffHandler = (event) => {
-    event.preventDefault();
-
-    setSuccess(false);
     
     sendNewStuff(
       {
@@ -45,104 +37,52 @@ const AddStuffPage = () => {
           "Content-Type": "application/json",
         },
         body: {
-          title: titleInputRef.current.value,
-          description: descriptionInputRef.current.value,
-          price: priceInputRef.current.value,
-          category: categorySelectRef.current.value,
-          shopping_link: shopping_linkInputRef.current.value,
-          has_offer: hasOfferInputRef.current.checked,
-          offer_price: !offerPriceInputRef.current
-            ? 0
-            : offerPriceInputRef.current.value,
+          title: event.data.title,
+          description: event.data.description,
+          price: event.data.price,
+          category: event.data.category,
+          shopping_link: event.data.shopping_link,
+          has_offer: event.data.has_offer,
+          offer_price: event.data.offer_price,
         },
       },
       (data) => {
-        console.log(data);
+        event.clearForm();
+        
+        setOpen(true);
       }
     );
 
-    titleInputRef.current.value = "";
-    descriptionInputRef.current.value = "";
-    priceInputRef.current.value = "";
-    categorySelectRef.current.value = "";
-    shopping_linkInputRef.current.value = "";
-    hasOfferInputRef.current.checked = false;
-    if (offerPriceInputRef.current) {
-      offerPriceInputRef.current.value = "";
-    }
-
-    setHasOffer(false);
-    
-    setSuccess(true);
   };
 
   return (
-    <div>
-      <h1>Add Stuff</h1>
-      <p>This page is for adding stuff to the database.</p>
-      <form
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "50%",
-          margin: "auto",
-          gap: "10px",
-        }}
-        onBlur={() => setSuccess(false)}
-      >
-        <label htmlFor="title">Title</label>
-        <input type="text" id="title" name="title" ref={titleInputRef} />
-        <label htmlFor="description">Description</label>
-        <input
-          type="text"
-          id="description"
-          name="description"
-          ref={descriptionInputRef}
-        />
-        <label htmlFor="price">Price</label>
-        <input type="number" id="price" name="price" min={0} ref={priceInputRef} />
-        <label htmlFor="has_offer">Has offer</label>
-        <input
-          type="checkbox"
-          id="has_offer"
-          name="has_offer"
-          onChange={onChangeHandler}
-          ref={hasOfferInputRef}
-        />
-        {hasOffer && (
-          <>
-            <label htmlFor="offer_price">Offer price</label>
-            <input
-              type="number"
-              id="offer_price"
-              name="offer_price"
-              min={0}
-              ref={offerPriceInputRef}
-            />
-          </>
-        )}
-        <label htmlFor="category">Category</label>
-        <select name="category" id="category" ref={categorySelectRef}>
-          {categories.map((category) => (
-            <option value={category} key={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-        <label htmlFor="shopping_link">Shopping link</label>
-        <input
-          type="text"
-          id="shopping_link"
-          name="shopping_link"
-          ref={shopping_linkInputRef}
-        />
-        <button type="submit" onClick={sendStuffHandler}>
-          {isLoading ? "Loading..." : "New stuff"}
-        </button>
-      </form>
-      {success && <p>Success!</p>}
-      {error && <p>{error}</p>}
-    </div>
+    <>
+      <Grid container spacing={3} padding={2}>
+        <Grid item xs={0} md={1} lg={2}></Grid>
+        <Grid item xs={12} md={10} lg={8} container>
+          <Grid item xs={12}>
+            <TypographyMUI variant="h4" component="h4" style={{ fontWeight: "bold"}}>
+              Create new stuff
+            </TypographyMUI>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+          </Grid>
+
+          <Grid item xs={12}>
+            <CreateStuffForm onSubmit={sendStuffHandler} isLoading={isLoading} />
+          </Grid>
+        </Grid>
+        <Grid item xs={0} md={1} lg={2}></Grid>
+      </Grid>
+      {open & !error ? (
+        <Alert severity="success" open={open} handleClose={handleClose} message="Your stuff has been created successfully!" />
+      )
+      : (
+        <Alert severity="error" open={open} handleClose={handleClose} message={error} />
+      )}
+    </>
   );
 };
 
