@@ -22,7 +22,7 @@ const useHttp = () => {
 
       applyData(response.data);
     } catch (err) {
-      setError(err.message || 'Something went wrong!');
+      setError(err.response.data.message || 'Something went wrong!');
     }
     setIsLoading(false);
   }, []);
