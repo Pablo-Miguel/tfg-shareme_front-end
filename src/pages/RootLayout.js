@@ -4,6 +4,7 @@ import MainHeader from "../components/MainHeader/MainHeader";
 import SideMenu from "../components/SideMenu/SideMenu";
 import useUser from "../hooks/useUser";
 import useStuff from "../hooks/useStuff";
+import SimpleBackdrop from "../components/SimpleBackdrop/SimpleBackdrop";
 
 const RootLayout = () => {
   useStuff();
@@ -18,12 +19,7 @@ const RootLayout = () => {
           <Outlet />
         </>
       ) : (
-        <h1 style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}>Loading...</h1>
+        <SimpleBackdrop />
       )}
     </>
   );
