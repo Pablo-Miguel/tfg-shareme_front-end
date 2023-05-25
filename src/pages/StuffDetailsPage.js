@@ -2,25 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+import { Divider, Grid, Typography } from "@mui/material";
+
 import { unlikeStuff, viewStuff } from "../store/stuff-store/stuff-actions";
 import { likeStuff } from "../store/stuff-store/stuff-actions";
 import useHttp from "../hooks/useHttp";
 import { getAuthToken } from "../utils/storage";
 import Spinner from "../components/Spinner/Spinner";
-import { Avatar, Box, Button, Divider, Grid, Typography } from "@mui/material";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import LocalMallRoundedIcon from '@mui/icons-material/LocalMallRounded';
-import LocalOfferRoundedIcon from '@mui/icons-material/LocalOfferRounded';
-import PercentRoundedIcon from '@mui/icons-material/PercentRounded';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import LikeToggleBtn from "../components/UIs/LikeToggleBtn/LikeToggleBtn";
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
-
 import useUser from "../hooks/useUser";
 import DetailsTab from "../components/DetailsTab/DetailsTab";
+import StuffBodyDetail from "../components/StuffBodyDetail/StuffBodyDetail";
+import StuffHeaderBodyDetail from "../components/StuffHeaderBodyDetail/StuffHeaderBodyDetail";
 
 const DetailsPage = () => {
   const user = useUser();
@@ -205,14 +197,13 @@ const DetailsPage = () => {
     {!current_stuff ? 
         <Spinner />
     : 
-      <>
-        <Grid container spacing={1} padding={2}>
+      <Grid container spacing={1} padding={2}>
+        <Grid item xs={0} md={1} lg={2}></Grid>
+        <Grid item xs={12} md={10} lg={8} container>
           <Grid item xs={12}>
             <Typography variant="h4" component="h4" style={{ fontWeight: "bold"}}>
               Details Page
             </Typography>
-            
-            
           </Grid>
 
           <Grid item xs={12}>
@@ -220,126 +211,11 @@ const DetailsPage = () => {
           </Grid>
 
           <Grid item xs={12} sm={6} md={4} container justifyContent="center">
-            <Box sx={{ display: { xs: 'flex', sm: 'none' }, mr: 2 }} flexDirection="column">
-              <Grid item xs={12} container direction="row" style={{ marginTop: 10, marginBottom: 10 }}>
-                <Avatar src={current_stuff.stuff.owner.avatar} alt={current_stuff.stuff.owner.name} 
-                  style={{ width: 25, height: 25, marginRight: 10 }}
-                />
-                <Typography variant="p" component="p">
-                  {current_stuff.stuff.owner.nickName}
-                </Typography>
-              </Grid>
-
-              <Typography variant="h6" component="h6"
-                style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
-              >
-                <ArrowForwardIosRoundedIcon /> {current_stuff.stuff.category}
-              </Typography>
-            </Box>
-            <Grid item xs={12} container justifyContent="center">
-              <img src={current_stuff.stuff.image} alt="stuff_image" style={{ minHeight: 300 }} />
-            </Grid>
-            <Grid item padding={2} container>
-              <Grid item xs={6} container justifyContent="center">
-                <Typography variant="p" component="p"
-                  style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
-                >
-                  <RemoveRedEyeIcon color="secondary" /> {current_stuff.stuff.views}
-                </Typography>
-              </Grid>
-              <Grid item xs={6} container justifyContent="center">
-                <Typography variant="p" component="p"
-                  style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
-                >
-                  <FavoriteIcon color="error" /> {current_stuff.stuff.likes}
-                </Typography>
-              </Grid>
-            </Grid>
+            <StuffHeaderBodyDetail current_stuff={current_stuff} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={8}>
-            <Box sx={{ display: { xs: 'none', sm: 'flex' }, mr: 2 }} flexDirection="column">
-              <Grid item xs={12} container direction="row" style={{ marginTop: 10, marginBottom: 10 }}>
-                <Avatar src={current_stuff.stuff.owner.avatar} alt={current_stuff.stuff.owner.name} 
-                  style={{ width: 25, height: 25, marginRight: 10 }}
-                />
-                <Typography variant="p" component="p">
-                  {current_stuff.stuff.owner.nickName}
-                </Typography>
-              </Grid>
-
-              <Typography variant="h6" component="h6"
-                style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold"}}
-              >
-                <ArrowForwardIosRoundedIcon /> {current_stuff.stuff.category}
-              </Typography>
-            </Box>
-
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-            
-            <Typography variant="h5" component="h5"
-              style={{ fontWeight: "bold" }}
-            >
-              {current_stuff.stuff.title}
-            </Typography>
-            <Typography variant="body1" component="p">
-              {current_stuff.stuff.description}
-            </Typography>
-
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-
-            {
-              current_stuff.stuff.has_offer ? (
-                <Grid item xs={6} container>
-                  <div>
-                    <Typography variant="h6" component="h6" color="grey"
-                      style={{ display: "flex", alignItems: "center", gap: 5, textDecoration: "line-through" }}
-                    >
-                      <LocalMallRoundedIcon /> {current_stuff.stuff.price}€
-                    </Typography>
-                    <Typography variant="h5" component="h5" color="green"
-                      style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold"}}
-                    >
-                      <LocalOfferRoundedIcon /> {current_stuff.stuff.offer_price}€
-                    </Typography>
-                  </div>
-                  <div style={{ marginTop: "auto", marginLeft: 30 }}>
-                    <Typography variant="h5" component="h5" color="error"
-                      style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold"}}
-                    >
-                      {((current_stuff.stuff.price - current_stuff.stuff.offer_price) / current_stuff.stuff.price) * 100} <PercentRoundedIcon />
-                    </Typography>
-                  </div>
-                </Grid>
-              ) : (
-                <Typography variant="h6" component="h6"
-                  style={{ display: "flex", alignItems: "center", gap: 5 }}
-                >
-                  <LocalMallRoundedIcon /> {current_stuff.stuff.price}€
-                </Typography>
-              )
-            }
-
-            <Button variant="contained" color="secondary" style={{ marginTop: 10 }} startIcon={<ShoppingCartOutlinedIcon />}>
-              <Typography variant="p" component="a" href={current_stuff.stuff.shopping_link}  target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "white" }}>Shopping link</Typography>
-            </Button>
-
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-
-            <LikeToggleBtn isLiked={current_stuff.isLiked} onClick={likeHandler} isMine={current_stuff.stuff.owner._id === user._id} />
-
-            {
-              current_stuff.stuff.owner._id === user._id && (
-                <div>
-                  <Button variant="contained" color="primary" style={{ marginRight: 20 }} startIcon={<EditRoundedIcon />}>
-                    <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Edit</Typography>
-                  </Button>
-                  <Button variant="contained" color="error" startIcon={<DeleteForeverRoundedIcon />}>
-                    <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Delete</Typography>
-                  </Button>
-                </div>
-              )
-            }
+            <StuffBodyDetail current_stuff={current_stuff} onLike={likeHandler} user={user} />
           </Grid>
 
           <Grid item xs={12}>
@@ -356,7 +232,8 @@ const DetailsPage = () => {
             />
           </Grid>
         </Grid>
-      </>
+        <Grid item xs={0} md={1} lg={2}></Grid>
+      </Grid>
     }
     </>;
 };
