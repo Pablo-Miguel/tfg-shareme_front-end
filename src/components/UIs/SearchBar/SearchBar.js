@@ -17,7 +17,7 @@ const SearchBar = (props) => {
         <Input
             startDecorator={<SearchIcon />}
             endDecorator={<Button onClick={onClickHandler}>Search</Button>}
-            placeholder="Search for stuff..."
+            placeholder={props.placeholder ? props.placeholder : "Search for stuff..."}
             onChange={onChangeHandler}
             fullWidth={true}
             ref={searchBarInputRef}
