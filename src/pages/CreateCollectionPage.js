@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouteLoaderData } from "react-router-dom";
 
+import { Divider, Grid, Typography as TypographyMUI } from "@mui/material";
+
 import useHttp from "../hooks/useHttp";
-import { useEffect } from "react";
 import { getAuthToken } from "../utils/storage";
+import CreateCollectionForm from "../components/CreateCollectionForm/CreateCollectionForm";
+import Alert from "../components/Alert/Alert";
 
 const CreateCollectionPage = () => {
     const loader = useRouteLoaderData("collection-stuff-details");
@@ -12,8 +15,22 @@ const CreateCollectionPage = () => {
     const [ viewMoreCont, setViewMoreCont ] = useState(0);
     const [ viewMore, setViewMore ] = useState(false);
     const [ collectionStuff, setCollectionStuff ] = useState(null);
-    const [ success, setSuccess ] = useState(false);
     const [ searchBarValue, setSearchBarValue ] = useState('');
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        if (error && error !== '') {
+            setOpen(true);
+        }
+    }, [error]);
+    
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        
+        setOpen(false);
+    };
 
     useEffect(() => {
 
@@ -65,27 +82,11 @@ const CreateCollectionPage = () => {
         setViewMoreCont((prevState) => prevState + 1);
     };
 
-    const onChangeSearchBarHandler = (event) => {
-        setSearchBarValue(event.target.value);
+    const onChangeSearchBarHandler = (value) => {
+        setSearchBarValue(value);
     };
 
-    const onClickCreateCollectionHandler = (event) => {
-        event.preventDefault();
-        const collectionName = event.target.parentNode.childNodes[2].value;
-        const collectionDescription = event.target.parentNode.childNodes[7].value;
-        const stuff = [];
-        const stuffCheckboxes = document.querySelectorAll('input[type="checkbox"]');
-        stuffCheckboxes.forEach((checkbox) => {
-            if(checkbox.checked){
-                stuff.push(checkbox.value);
-            }
-        });
-
-        const collectionData = {
-            title: collectionName,
-            description: collectionDescription,
-            stuff: stuff
-        };
+    const createCollectionHandler = (event) => {
 
         addNewCollection({
             url: `${process.env.REACT_APP_BACKEND_BASE_URL}/collections`,
@@ -94,72 +95,56 @@ const CreateCollectionPage = () => {
                 Authorization: `Bearer ${getAuthToken()}`,
                 "Content-Type": "application/json"
             },
-            body: collectionData
+            body: {
+                title: event.data.title,
+                description: event.data.description,
+                stuff: event.data.stuff
+            }
         }, (data) => {
-            event.target.parentNode.childNodes[2].value = '';
-            event.target.parentNode.childNodes[7].value = '';
-            document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-                checkbox.checked = false;
-            });
-            setSuccess(true);
+            
+            event.clearForm();
+            setOpen(true);
+
         })
         
     };
 
     return (
-        <div>
-            <h1>Create Collection Page</h1>
-            <form onBlur={() => setSuccess(false)}>
-                <label htmlFor="collectionName">Collection Title</label>
-                <br />
-                <input type="text" id="collectionName" name="collectionName" />
-                <br /><br />
-                <label htmlFor="collectionDescription">Collection Description</label>
-                <br />
-                <input type="text" id="collectionDescription" name="collectionDescription" />
-                <br /><br />
-                {collectionStuff ?
-                    <div>
-                        <h2>Stuff</h2>
-                        <label htmlFor="stuffSearch">Search</label>
-                        <input type="text" id="stuffSearch" name="stuffSearch" onChange={onChangeSearchBarHandler}/>
-                        <br /><br />
-                        {collectionStuff.stuff.length > 0 ? 
-                            collectionStuff.stuff.map((stuff) => (
-                                <div key={stuff._id}>
-                                    <input type="checkbox" id={stuff._id} name={stuff._id} value={stuff._id} />
-                                    <label htmlFor={stuff._id}>{stuff.title}</label>
-                                    <br />
-                                </div>
-                            ))
-                        :
-                            <h1>No stuff found</h1>
-                        }
-                        { isLoadingStuff && <p>Loading...</p>}
-                        <br />
-                        {!viewMore && 
-                            <button type="button" onClick={onClickViewMoreHandler}>
-                                View more
-                            </button>
-                        }
-                        <br /><br />
-                    </div>
-                : 
-                    <h1>Loading...</h1>
-                }
-                <button type="submit" onClick={onClickCreateCollectionHandler}>Create Collection</button>
-                <br /><br />
-                {
-                    isLoading && <h1>Loading...</h1>
-                }
-                {
-                    error && <h1>{error}</h1>
-                }
-                {
-                    success && !error && !isLoading && <h1>Collection created successfully!</h1>
-                }
-            </form>
-        </div>
+        <>
+            <Grid container spacing={3} padding={2}>
+                <Grid item xs={0} md={1} lg={2}></Grid>
+                <Grid item xs={12} md={10} lg={8} container>
+                    <Grid item xs={12}>
+                        <TypographyMUI variant="h4" component="h4" style={{ fontWeight: "bold"}}>
+                            Create new collection
+                        </TypographyMUI>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <CreateCollectionForm 
+                            collectionStuff={collectionStuff} 
+                            isLoading={isLoading}
+                            isLoadingStuff={isLoadingStuff} 
+                            onSearchStuff={onChangeSearchBarHandler}
+                            viewMore={viewMore}
+                            onClickViewMore={onClickViewMoreHandler}
+                            onSubmit={createCollectionHandler}
+                        />
+                    </Grid>
+                </Grid>
+                <Grid item xs={0} md={1} lg={2}></Grid>
+            </Grid>
+            {open & !error ? (
+                <Alert severity="success" open={open} handleClose={handleClose} message="Your stuff collection has been created successfully!" />
+            )
+            : (
+                <Alert severity="error" open={open} handleClose={handleClose} message={error} />
+            )}
+        </>
     );
 };
 
