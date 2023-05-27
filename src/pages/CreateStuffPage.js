@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import useHttp from "../hooks/useHttp";
 import { getAuthToken } from "../utils/storage";
