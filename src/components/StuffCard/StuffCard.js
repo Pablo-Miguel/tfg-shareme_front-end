@@ -132,7 +132,7 @@ const StuffCard = ({ stuff: inputStuff, isMine }) => {
             stuff.has_offer && (
               <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
                 <Typography level="body2" sx={{ fontSize: "lg", mt: 2, fontWeight: "bold" }} color="danger">
-                  {((stuff.price - stuff.offer_price) / stuff.price) * 100}%
+                  {Math.round(((stuff.price - stuff.offer_price) / stuff.price) * 100)}%
                 </Typography>
               </CardOverflow>
             )
