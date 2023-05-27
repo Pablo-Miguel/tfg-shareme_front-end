@@ -8,6 +8,11 @@ import Option from '@mui/joy/Option';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { Grid } from "@mui/material";
 
+import InputFormControl from "../UIs/InputFormControl/InputFormControl";
+import TextAreaFormControl from "../UIs/TextAreaFormControl/TextAreaFormControl";
+import SelectFormControl from "../UIs/SelectFormControl/SelectFormControl";
+import FormButton from "../UIs/FormButton/FormButton";
+
 const categories = [
     "Music",
     "Photography",
@@ -61,71 +66,38 @@ const CreateStuffForm = (props) => {
             onSubmit={onSubmitHandler}
             ref={formRef}
         >
-            <FormControl required style={{ marginBottom: 30 }}>
-                <FormLabel>Title</FormLabel>
-                <Input placeholder="Enter a title..." type="text" name="title" />
-            </FormControl>
-            <FormControl style={{ marginBottom: 30 }}>
-                <FormLabel>Description</FormLabel>
-                <Textarea
-                    name="description"
-                    placeholder="Type something here…"
-                    value={text}
-                    onChange={(event) => setText(event.target.value)}
-                    minRows={3}
-                    endDecorator={
-                        <Box
-                            sx={{
-                            display: 'flex',
-                            gap: 'var(--Textarea-paddingBlock)',
-                            pt: 'var(--Textarea-paddingBlock)',
-                            borderTop: '1px solid',
-                            borderColor: 'divider',
-                            flex: 'auto',
-                            }}
-                        >
-                            <Typography level="body3">
-                                {text.length} character(s)
-                            </Typography>
-                        </Box>
-                    }
-                    sx={{
-                    minWidth: 300
-                    }}
-                />
-            </FormControl>
-            
+            <InputFormControl 
+                isRequired={true}
+                label="Title" 
+                placeholder="Enter a title..." 
+                type="text" 
+                name="title" 
+            />
+            <TextAreaFormControl 
+                label="Description" 
+                placeholder="Type something here…" 
+                name="description" 
+                text={text} 
+                onChange={(event) => setText(event.target.value)} 
+            />
             <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
-                    <FormControl required style={{ marginBottom: 30 }}>
-                        <FormLabel>Category</FormLabel>
-                        <Select
-                            name="category"
-                            placeholder="Select category…"
-                            indicator={<KeyboardArrowDown />}
-                            defaultValue=''
-                            sx={{
-                            [`& .${selectClasses.indicator}`]: {
-                                transition: '0.2s',
-                                [`&.${selectClasses.expanded}`]: {
-                                transform: 'rotate(-180deg)',
-                                },
-                            },
-                            }}
-                        >
-                            {categories.map((category) => (
-                                <Option value={category} key={category}>
-                                    {category}
-                                </Option>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <SelectFormControl
+                        isRequired={true}
+                        label="Category"
+                        options={categories}
+                        placeholder="Select category…"
+                        name="category"
+                    />
                 </Grid>
                 <Grid item xs={12} md={8}>
-                    <FormControl required style={{ marginBottom: 30 }}>
-                        <FormLabel>Price (€)</FormLabel>
-                        <Input placeholder="Enter a price..." type="Number" name="price" />
-                    </FormControl>
+                    <InputFormControl
+                        isRequired={true}
+                        label="Price (€)"
+                        placeholder="Enter a price..."
+                        type="Number"
+                        name="price"
+                    />
                 </Grid>
             </Grid>
 
@@ -150,30 +122,32 @@ const CreateStuffForm = (props) => {
                 </Grid>
                 {
                     hasOffer && (
-                    <Grid item xs={8}>
-                        <FormControl required style={{ marginBottom: 30 }}>
-                            <FormLabel>Offer price</FormLabel>
-                            <Input placeholder="Enter an offer price..." type="Number" name="offerPrice" />
-                        </FormControl>
-                    </Grid>
+                        <Grid item xs={8}>
+                            <InputFormControl
+                                isRequired={true}
+                                label="Offer price (€)"
+                                placeholder="Enter an offer price..."
+                                type="Number"
+                                name="offerPrice"
+                            />
+                        </Grid>
                     )
                 }
             </Grid>
-            <FormControl required style={{ marginBottom: 30 }}>
-                <FormLabel>Shopping link</FormLabel>
-                <Input placeholder="Enter a shopping link..." type="text" name="shoppingLink" />
-            </FormControl>
-
-            <Button 
-                type="submit" 
-                loading={props.isLoading}
+            <InputFormControl
+                isRequired={true}
+                label="Shopping link"
+                placeholder="Enter a shopping link..."
+                type="text"
+                name="shoppingLink"
+            />
+            <FormButton
+                text="Create stuff"
+                isLoading={props.isLoading}
                 loadingPosition="end"
+                fullWidth={true}
                 endDecorator={<SendRoundedIcon />}
-                fullWidth 
-                style={{ marginTop: 10, gap: 10 }}
-            >
-                Create stuff
-            </Button>
+            />
         </form>
     );
 };
