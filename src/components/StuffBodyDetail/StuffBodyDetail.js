@@ -62,7 +62,7 @@ const StuffBodyDetail = ({current_stuff, user, onLike}) => {
                     <Typography variant="h5" component="h5" color="error"
                         style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold"}}
                     >
-                        {((current_stuff.stuff.price - current_stuff.stuff.offer_price) / current_stuff.stuff.price) * 100} <PercentRoundedIcon />
+                        {Math.round(((current_stuff.stuff.price - current_stuff.stuff.offer_price) / current_stuff.stuff.price) * 100)} <PercentRoundedIcon />
                     </Typography>
                     </div>
                 </Grid>
