@@ -13,7 +13,7 @@ const useHttp = () => {
         url: requestConfig.url,
         method: requestConfig.method ? requestConfig.method : 'GET',
         headers: requestConfig.headers ? requestConfig.headers : {},
-        data: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
+        data: requestConfig.body ? requestConfig.body : null,
       });
 
       if (response.status !== 200 && response.status !== 201) {
