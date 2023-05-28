@@ -10,13 +10,18 @@ import CreateStuffForm from "../components/CreateStuffForm/CreateStuffForm";
 
 const AddStuffPage = () => {
   const { isLoading, error, sendRequest: sendNewStuff } = useHttp();
+  const { error: imageError, sendRequest: editImageToStuff } = useHttp();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (error && error !== '') {
       setOpen(true);
     }
-  }, [error]);
+
+    if (imageError && imageError !== '') {
+      setOpen(true);
+    }
+  }, [error, imageError]);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -47,12 +52,39 @@ const AddStuffPage = () => {
         },
       },
       (data) => {
-        event.clearForm();
+
+        if(event.data.image) {
+          changeImageHandler(data._id, event.data.image, event.clearForm);
+        } else {
+          event.clearForm();
+          setOpen(true);
+        }
         
-        setOpen(true);
       }
     );
 
+  };
+
+  const changeImageHandler = (id, image, clearForm) => {
+    
+    const formData = new FormData();
+    formData.append('image', image.file, image.file.name);
+
+    editImageToStuff(
+      {
+        url: `${process.env.REACT_APP_BACKEND_BASE_URL}/stuff/${id}/image`,
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`
+        },
+        body: formData,
+      },
+      (data) => {
+        clearForm();
+        setOpen(true);
+      }
+    );
+    
   };
 
   return (
@@ -76,11 +108,11 @@ const AddStuffPage = () => {
         </Grid>
         <Grid item xs={0} md={1} lg={2}></Grid>
       </Grid>
-      {open & !error ? (
+      {open & !error & !imageError ? (
         <Alert severity="success" open={open} handleClose={handleClose} message="Your stuff has been created successfully!" />
       )
       : (
-        <Alert severity="error" open={open} handleClose={handleClose} message={error} />
+        <Alert severity="error" open={open} handleClose={handleClose} message={error ? error : imageError} />
       )}
     </>
   );
