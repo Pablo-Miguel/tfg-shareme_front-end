@@ -2,9 +2,6 @@ import React, { useRef, useState } from "react";
 import { Box, Button, FormControl, FormLabel, Input, Switch, Textarea, Typography } from "@mui/joy";
 import SellRoundedIcon from '@mui/icons-material/SellRounded';
 import RemoveShoppingCartRoundedIcon from '@mui/icons-material/RemoveShoppingCartRounded';
-import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-import Select, { selectClasses } from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { Grid } from "@mui/material";
 
@@ -12,6 +9,7 @@ import InputFormControl from "../UIs/InputFormControl/InputFormControl";
 import TextAreaFormControl from "../UIs/TextAreaFormControl/TextAreaFormControl";
 import SelectFormControl from "../UIs/SelectFormControl/SelectFormControl";
 import FormButton from "../UIs/FormButton/FormButton";
+import ImageFormControl from "../UIs/ImageFormControl/ImageFormControl";
 
 const categories = [
     "Music",
@@ -27,11 +25,15 @@ const categories = [
 
 const CreateStuffForm = (props) => {
     const formRef = useRef();
+    const [file, setFile] = useState(null);
     const [hasOffer, setHasOffer] = useState(false);
     const [text, setText] = useState('');
 
     const clearForm = () => {
         formRef.current.reset();
+        if(file) {
+            file.clear();
+        }
         setText('');
         setHasOffer(false);
     };
@@ -53,6 +55,7 @@ const CreateStuffForm = (props) => {
             shopping_link: formElements.shoppingLink.value,
             has_offer: hasOffer,
             offer_price: !hasOffer ? 0 : formElements.offerPrice.value,
+            image: file ? { file: file.file, preview: file.preview } : null
         };
 
         props.onSubmit({
@@ -66,20 +69,28 @@ const CreateStuffForm = (props) => {
             onSubmit={onSubmitHandler}
             ref={formRef}
         >
-            <InputFormControl 
-                isRequired={true}
-                label="Title" 
-                placeholder="Enter a title..." 
-                type="text" 
-                name="title" 
-            />
-            <TextAreaFormControl 
-                label="Description" 
-                placeholder="Type something here…" 
-                name="description" 
-                text={text} 
-                onChange={(event) => setText(event.target.value)} 
-            />
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={8}>
+                    <InputFormControl 
+                        isRequired={true}
+                        label="Title" 
+                        placeholder="Enter a title..." 
+                        type="text" 
+                        name="title" 
+                    />
+                    <TextAreaFormControl 
+                        label="Description" 
+                        placeholder="Type something here…" 
+                        name="description" 
+                        text={text} 
+                        onChange={(event) => setText(event.target.value)} 
+                    />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <ImageFormControl onChange={(file) => setFile(file)} />
+                </Grid>
+            </Grid>
+
             <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
                     <SelectFormControl
