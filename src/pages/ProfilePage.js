@@ -6,6 +6,7 @@ import StuffCard from "../components/StuffCard/StuffCard";
 import useHttp from "../hooks/useHttp";
 import { getAuthToken } from "../utils/storage";
 import Card from "../components/UIs/Card/Card";
+import CollectionCard from "../components/CollectionCard/CollectionCard";
 
 const ProfilePage = (props) => {
   const [ viewMoreCont, setViewMoreCont ] = useState(0);
@@ -207,16 +208,13 @@ const ProfilePage = (props) => {
             <h3>Posted collections</h3>
             <div>
               {frontUser.total_collections === 0 && <h1>No collections found yet!</h1>}
-              {frontUser.collections.map((item) => (
-                <div key={item._id}>
-                  <Card>
-                      <h2>{item.title}</h2>
-                      <p>Stuff: {item.stuff.length}</p>
-                      <p>Created by: {item.owner.nickName}</p>
-                      <button type="button" onClick={onClickDetailsHandler} id={item._id}>Details</button>
-                      <button type="button">Like</button>
-                  </Card>
-                </div>
+              {frontUser.collections.map((collection) => (
+                <CollectionCard 
+                  key={collection._id} 
+                  id={collection._id} 
+                  collection={collection} 
+                  isMine={isMe} 
+                />
               ))}
             </div>
           </div>
