@@ -86,7 +86,7 @@ const StuffCard = ({ stuff: inputStuff, isMine }) => {
             />
         </AspectRatio>
         <RedEyeIconBtn onClick={detailsHandler} />
-        <FavoriteIconBtn stuff={stuff} onClick={likeHandler} isMine={isMine} />
+        <FavoriteIconBtn isLiked={stuff.isLiked} onClick={likeHandler} isMine={isMine} />
       </CardOverflow>
 
       <CardOverflow
