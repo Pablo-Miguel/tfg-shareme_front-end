@@ -33,141 +33,139 @@ const StuffCard = ({ stuff: inputStuff, isMine }) => {
   }
 
   return (
-    <>
-      <Card variant="outlined" className={classes.card}>
-        <CardOverflow 
-          variant="soft"
-          sx={{
-            display: "flex",
-            gap: 1.5,
-            py: 1.5,
-            px: "var(--Card-padding)",
-            bgcolor: "background.level1",
-          }}
-        >
-          <CardOverflow sx={{ mt: "auto", mb: "auto" }}
-            onClick={profileHandler}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 1.5
-            }}
-          >
-            <Avatar src={stuff.owner.avatar} alt={stuff.owner.name} 
-              style={{ width: 25, height: 25, marginRight: 10 }}
-            />
-            <Typography
-              level="body1"
-              sx={{
-                fontWeight: "md",
-                color: "text.secondary",
-              }}
-            >
-              {stuff.owner.nickName}
-            </Typography>
-          </CardOverflow>
-          {
-            isMine && (
-              <CardOverflow sx={{ ml: "auto" }}>
-                <PositionedMenu />
-              </CardOverflow>
-            )
-          }
-        </CardOverflow>
-
-        <Divider />
-        
-        <CardOverflow>
-          <AspectRatio ratio="1">
-              <img
-                src={stuff.image}
-                srcSet={stuff.image}
-                loading="lazy"
-                alt={stuff.title}
-              />
-          </AspectRatio>
-          <RedEyeIconBtn onClick={detailsHandler} />
-          <FavoriteIconBtn stuff={stuff} onClick={likeHandler} isMine={isMine} />
-        </CardOverflow>
-
-        <CardOverflow
-          sx={{
+    <Card variant="outlined" className={classes.card}>
+      <CardOverflow 
+        variant="soft"
+        sx={{
+          display: "flex",
+          gap: 1.5,
+          py: 1.5,
+          px: "var(--Card-padding)",
+          bgcolor: "background.level1",
+        }}
+      >
+        <CardOverflow sx={{ mt: "auto", mb: "auto" }}
+          onClick={profileHandler}
+          style={{
             display: "flex",
             flexDirection: "row",
-            gap: 6,
-            py: 1.5,
-            px: "var(--Card-padding)",
-            bgcolor: "background.level",
+            gap: 1.5
           }}
         >
-          <CardOverflow>
-            <Typography level="h2" sx={{ fontSize: "lg", mt: 2 }}>
-              {stuff.title}
-            </Typography>
-            <Typography level="body2" sx={{ fontSize: "md", mt: 0.5, mb: 2 }}>
-              {stuff.category}
-            </Typography>
-          </CardOverflow>
+          <Avatar src={stuff.owner.avatar} alt={stuff.owner.name} 
+            style={{ width: 25, height: 25, marginRight: 10 }}
+          />
+          <Typography
+            level="body1"
+            sx={{
+              fontWeight: "md",
+              color: "text.secondary",
+            }}
+          >
+            {stuff.owner.nickName}
+          </Typography>
+        </CardOverflow>
+        {
+          isMine && (
+            <CardOverflow sx={{ ml: "auto" }}>
+              <PositionedMenu />
+            </CardOverflow>
+          )
+        }
+      </CardOverflow>
 
-          {
-            stuff.has_offer ? (
-              <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
-                <Typography level="body2" sx={{ fontSize: "md", mt: 2, textDecoration: "line-through" }}>
-                  {stuff.price}€
-                </Typography>
-                <Typography level="h2" sx={{ fontSize: "lg", fontWeight: "bold" }} color="success">
-                  {stuff.offer_price}€
-                </Typography>
-              </CardOverflow>
-            ) : (
-              <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
-                <Typography level="h1" sx={{ fontSize: "lg", fontWeight: "bold" }}>
-                  {stuff.price}€
-                </Typography>
-              </CardOverflow>
-            )
-          }
+      <Divider />
+      
+      <CardOverflow>
+        <AspectRatio ratio="1">
+            <img
+              src={stuff.image}
+              srcSet={stuff.image}
+              loading="lazy"
+              alt={stuff.title}
+            />
+        </AspectRatio>
+        <RedEyeIconBtn onClick={detailsHandler} />
+        <FavoriteIconBtn stuff={stuff} onClick={likeHandler} isMine={isMine} />
+      </CardOverflow>
 
-          {
-            stuff.has_offer && (
-              <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
-                <Typography level="body2" sx={{ fontSize: "lg", mt: 2, fontWeight: "bold" }} color="danger">
-                  {Math.round(((stuff.price - stuff.offer_price) / stuff.price) * 100)}%
-                </Typography>
-              </CardOverflow>
-            )
-          }
-          
+      <CardOverflow
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 6,
+          py: 1.5,
+          px: "var(--Card-padding)",
+          bgcolor: "background.level",
+        }}
+      >
+        <CardOverflow>
+          <Typography level="h2" sx={{ fontSize: "lg", mt: 2 }}>
+            {stuff.title}
+          </Typography>
+          <Typography level="body2" sx={{ fontSize: "md", mt: 0.5, mb: 2 }}>
+            {stuff.category}
+          </Typography>
         </CardOverflow>
 
-        <Divider />
+        {
+          stuff.has_offer ? (
+            <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
+              <Typography level="body2" sx={{ fontSize: "md", mt: 2, textDecoration: "line-through" }}>
+                {stuff.price}€
+              </Typography>
+              <Typography level="h2" sx={{ fontSize: "lg", fontWeight: "bold" }} color="success">
+                {stuff.offer_price}€
+              </Typography>
+            </CardOverflow>
+          ) : (
+            <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
+              <Typography level="h1" sx={{ fontSize: "lg", fontWeight: "bold" }}>
+                {stuff.price}€
+              </Typography>
+            </CardOverflow>
+          )
+        }
 
-        <CardOverflow
-          variant="soft"
-          sx={{
-            display: "flex",
-            gap: 1.5,
-            py: 1.5,
-            px: "var(--Card-padding)",
-            bgcolor: "background.level1",
-          }}
+        {
+          stuff.has_offer && (
+            <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
+              <Typography level="body2" sx={{ fontSize: "lg", mt: 2, fontWeight: "bold" }} color="danger">
+                {Math.round(((stuff.price - stuff.offer_price) / stuff.price) * 100)}%
+              </Typography>
+            </CardOverflow>
+          )
+        }
+        
+      </CardOverflow>
+
+      <Divider />
+
+      <CardOverflow
+        variant="soft"
+        sx={{
+          display: "flex",
+          gap: 1.5,
+          py: 1.5,
+          px: "var(--Card-padding)",
+          bgcolor: "background.level1",
+        }}
+      >
+        <Typography
+          level="body3"
+          sx={{ fontWeight: "md", color: "text.secondary" }}
         >
-          <Typography
-            level="body3"
-            sx={{ fontWeight: "md", color: "text.secondary" }}
-          >
-            {stuff.views} views
-          </Typography>
-          <Divider orientation="vertical" />
-          <Typography
-            level="body3"
-            sx={{ fontWeight: "md", color: "text.secondary" }}
-          >
-            {stuff.likes} likes
-          </Typography>
-        </CardOverflow>
-      </Card>
-    </>
+          {stuff.views} views
+        </Typography>
+        <Divider orientation="vertical" />
+        <Typography
+          level="body3"
+          sx={{ fontWeight: "md", color: "text.secondary" }}
+        >
+          {stuff.likes} likes
+        </Typography>
+      </CardOverflow>
+    </Card>
   );
 };
 
