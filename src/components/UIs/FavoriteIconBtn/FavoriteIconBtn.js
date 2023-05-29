@@ -1,7 +1,7 @@
 import { IconButton } from "@mui/joy";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const FavoriteIconBtn = ({ stuff, onClick, isMine }) => {
+const FavoriteIconBtn = ({ isLiked, onClick, isMine }) => {
 
     return (
         <>
@@ -10,7 +10,7 @@ const FavoriteIconBtn = ({ stuff, onClick, isMine }) => {
               <IconButton
                 size="md"
                 variant="solid"
-                color={stuff.isLiked ? "" : "danger"}
+                color={isLiked ? "" : "danger"}
                 sx={{
                   position: 'absolute',
                   zIndex: 2,
@@ -18,12 +18,12 @@ const FavoriteIconBtn = ({ stuff, onClick, isMine }) => {
                   right: '4.5rem',
                   bottom: 0,
                   transform: 'translateY(50%)',
-                  backgroundColor: stuff.isLiked ? "background.level2" : "",
-                  border: stuff.isLiked ? "2px solid #D7D7D7" : ""
+                  backgroundColor: isLiked ? "background.level2" : "",
+                  border: isLiked ? "2px solid #D7D7D7" : ""
                 }}
                 onClick={onClick}
               >
-                <FavoriteIcon color={stuff.isLiked ? "error": ""} />
+                <FavoriteIcon color={isLiked ? "error": ""} />
               </IconButton>
             )
           }
