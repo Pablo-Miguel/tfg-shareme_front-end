@@ -115,16 +115,59 @@ export const fetchUserCollections = async (user_id, isMe) => {
 
 };
 
+export const fetchLikedUserStuff = async () => {
+
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/users/me/likedStuff`, {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    }
+  });
+
+  if (response.statusText !== "OK") {
+    throw json(
+      { message: "Could not fetch the liked user stuff!" },
+      {
+        status: 500,
+      }
+    );
+  }
+
+  return response.data;
+
+};
+
+export const fetchLikedUserCollections = async () => {
+
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/users/me/likedCollections`, {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    }
+  });
+
+  if (response.statusText !== "OK") {
+    throw json(
+      { message: "Could not fetch the liked user collections!" },
+      {
+        status: 500,
+      }
+    );
+  }
+
+  return response.data;
+
+};
 
 export const getUserByIdLoader = async ({ request, params }) => {
   const isMe = params.user_id === getUserId();
   const id = params.user_id;
-
+  
   return defer({
     isMe: isMe,
     user: await fetchUserById(id),
     userStuff: await fetchUserStuff(id, isMe),
     userCollections: await fetchUserCollections(id, isMe),
+    userLikedStuff: isMe ? await fetchLikedUserStuff() : null,
+    userLikedCollections: isMe ? await fetchLikedUserCollections() : null,
   });
 };
 
