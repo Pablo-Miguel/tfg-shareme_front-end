@@ -2,21 +2,22 @@ import { useEffect, useState } from "react";
 import { useParams, useRouteLoaderData, useNavigate } from "react-router-dom";
 
 import useUser from "../hooks/useUser";
-import StuffCard from "../components/StuffCard/StuffCard";
 import useHttp from "../hooks/useHttp";
 import { getAuthToken } from "../utils/storage";
-import Card from "../components/UIs/Card/Card";
-import CollectionCard from "../components/CollectionCard/CollectionCard";
+import Spinner from "../components/Spinner/Spinner";
+
+import { Button, Divider, Grid, Typography } from "@mui/material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import ProfileTab from "../components/ProfileTab/ProfileTab";
 
 const ProfilePage = (props) => {
-  const [ viewMoreCont, setViewMoreCont ] = useState(0);
-  const [ viewMore, setViewMore ] = useState(false);
   const { user_id } = useParams();
   const user = useUser();
   const isMe = user_id === user._id;
   const loader = useRouteLoaderData("user-details");
   const [ frontUser, setFrontUser ] = useState(null);
-  const { sendRequest: fetchMoreStuff } = useHttp();
+  
   const { sendRequest: followUser } = useHttp();
   const navigate = useNavigate();
 
@@ -24,208 +25,143 @@ const ProfilePage = (props) => {
 
     if(loader){
 
-      if (!isMe) {
-        setFrontUser(loader.user);
-      } else {
-        setFrontUser(user);
-      }
-
-      setFrontUser((prevState) => ({
-        ...prevState,
+      setFrontUser({
+        ...loader.user,
         stuff: loader.userStuff.stuff,
         total_stuff: loader.userStuff.total,
         collections: loader.userCollections.collections,
-        total_collections: loader.userCollections.total
-      }));
-
-      setViewMore(loader.userStuff.total <= (viewMoreCont + 1) * 10);
+        total_collections: loader.userCollections.total,
+        likedStuff: loader.userLikedStuff ? loader.userLikedStuff : null,
+        likedCollections: loader.userLikedCollections ? loader.userLikedCollections : null,
+      });
 
     }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loader]);
 
-  useEffect(() => {
-
-    if(viewMoreCont !== 0){
-
-      let url_base = `${process.env.REACT_APP_BACKEND_BASE_URL}/stuff?`;
-
-      if (!isMe) {
-        url_base += `other_user_id=${user_id}`;
-      } else {
-        url_base += `isMine=${isMe}`;
-      }
-
-      url_base += `&limit=10`;
-      url_base += `&skip=${viewMoreCont * 10}`;
-      url_base += '&sortBy=createdAt:desc';
-
-      fetchMoreStuff({
-        url: url_base,
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-        }
-      }, (data) => {
-
-        setFrontUser((prevState) => ({
-          ...prevState,
-          stuff: prevState.stuff.concat(data.stuff),
-          total_stuff: data.total
-        }));
-
-        setViewMore(data.total <= (viewMoreCont + 1) * 10);
-
-      });
-
-    }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewMoreCont]);
-
   const onClickFollowHandler = () => {
-
+      
     followUser(
       {
-        url: `${process.env.REACT_APP_BACKEND_BASE_URL}/users/${user_id}/follow`,
+        url: frontUser.isFollowing ? `${process.env.REACT_APP_BACKEND_BASE_URL}/users/${user_id}/unfollow` : `${process.env.REACT_APP_BACKEND_BASE_URL}/users/${user_id}/follow`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
         }
       },
       (data) => {
-          
+
           setFrontUser((prevState) => ({
             ...prevState,
-            isFollowing: true,
-            followers: prevState.followers + 1
+            isFollowing: frontUser.isFollowing ? false : true,
+            followers: data.followers
           }));
-  
+
         }
     );
 
   };
 
-  const onClickViewMoreHandler = () => {
-    setViewMoreCont((prevState) => prevState + 1);
-  };
-
-  const onClickDetailsHandler = (event) => {
-    navigate(`/collection-details/${event.target.id}`);
-  };
-
   return (
     <>
       {frontUser ? (
-        <div style={
-          {
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            height: "100%",
-          }
-        }>
-          <div>
-            <h1>{isMe ? "My" : "User"} profile</h1>
-            <div>
-              <img src={frontUser.avatar} alt="profile" />
-            </div>
-            <div>
-              <h2>{`${frontUser.firstName} ${frontUser.lastName}`}</h2>
-              <p>Followers: {frontUser.followers}</p>
-              <p>Following: {frontUser.following}</p>
-              {
-                isMe ? (
-                  <div>
-                    <button
-                      style={{
-                        width: "100px",
-                        height: "30px",
-                        margin: "10px",
-                      }}
-                      type="button"
-                      disabled={true}
-                    >
-                      Edit
-                    </button>
-                  </div>
-                ) : (
-                  <div>
-                    <button
-                      style={{
-                        width: "100px",
-                        height: "30px",
-                        margin: "10px",
-                      }}
-                      type="button"
-                      disabled={frontUser.isFollowing}
-                      onClick={onClickFollowHandler}
-                    >
-                      Follow
-                    </button>
-                  </div>
-                )
+        <>
+          <Grid container spacing={3} padding={2}>
+            <Grid item xs={0} md={1} lg={2}></Grid>
+            <Grid item xs={12} md={10} lg={8} container>
+              <Grid item xs={12}>
+                  <Typography variant="h4" component="h4" style={{ fontWeight: "bold"}}>
+                    {isMe ? "My" : "User"} profile
+                  </Typography>
+              </Grid>
 
-              }
-            </div>
-          </div>
-          <div>
-            <h3>Posted stuff</h3>
-            <div>
-              {frontUser.total_stuff === 0 && <h1>No stuff found yet!</h1>}
-              {frontUser.stuff.map((item) => (
-                <StuffCard
-                  key={item._id}
-                  id={item._id}
-                  stuff={item}
-                  isMine={isMe}
-                />
-              ))}
-              {!viewMore && <div style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}>
-                <button
-                  style={{
-                    width: "100px",
-                    height: "30px",
-                    margin: "10px",
-                  }}
-                  type="button"
-                  onClick={onClickViewMoreHandler}
+              <Grid item xs={12}>
+                <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} container justifyContent="center">
+                  <img src={frontUser.avatar} alt="stuff_image" style={{ minHeight: 300 }} />
+                </Grid>
+                <Grid item padding={2} container>
+                  <Grid item xs={6} container justifyContent="center">
+                    <Typography variant="p" component="p"
+                      style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
+                    >
+                      {frontUser.followers} followers
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6} container justifyContent="center">
+                    <Typography variant="p" component="p"
+                      style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
+                    >
+                      {frontUser.following} following
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={8}>
+                <Typography variant="h5" component="h5"
+                    style={{ fontWeight: "bold" }}
                 >
-                  View more
-                </button>
-              </div>}
-            </div>
-          </div>
-          <div>
-            <h3>Posted collections</h3>
-            <div>
-              {frontUser.total_collections === 0 && <h1>No collections found yet!</h1>}
-              {frontUser.collections.map((collection) => (
-                <CollectionCard 
-                  key={collection._id} 
-                  id={collection._id} 
-                  collection={collection} 
-                  isMine={isMe} 
+                    {frontUser.nickName}
+                </Typography>
+                <Typography variant="body1" component="p">
+                    {frontUser.name}
+                </Typography>
+
+                <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+
+                {
+                  isMe ? (
+                    <Grid item xs={12} container>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        disabled={true}
+                        onClick={() => navigate("/")}
+                      >
+                        Edit profile
+                      </Button>
+                    </Grid>
+                  ) : (
+                    <Grid item xs={12} container>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={onClickFollowHandler}
+                        startIcon={frontUser.isFollowing ? <AccountCircleIcon /> : <AccountCircleOutlinedIcon />}
+                      >
+                        {frontUser.isFollowing ? "Stop following" : "Follow"}
+                      </Button>
+                    </Grid>
+                  )
+                }
+              </Grid>
+
+              <Grid item xs={12}>
+                <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+              </Grid>
+
+              <Grid item xs={12}>
+                <ProfileTab 
+                  frontUser={frontUser}
+                  user_id={user_id}
+                  isMe={isMe}
+                  setFrontUser={setFrontUser}
                 />
-              ))}
-            </div>
-          </div>
-        </div>
+              </Grid>
+
+            </Grid>
+            <Grid item xs={0} md={1} lg={2}></Grid>
+          </Grid>
+        </>
       ) : (
-        <h1 style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}>Loading...</h1>
+        <Grid container spacing={2} justifyContent='center'>
+          <Spinner />
+        </Grid>
       )}
     </>
   );
