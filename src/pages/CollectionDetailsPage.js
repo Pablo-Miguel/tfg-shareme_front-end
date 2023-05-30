@@ -18,7 +18,6 @@ const CollectionDetailsPage = () => {
     const effectExecutedRef = useRef(false);
     const { sendRequest: sendCollectionView } = useHttp();
     const { sendRequest: sendLike } = useHttp();
-    const { sendRequest: sendUnlike } = useHttp();
     const isMine = collection.owner._id === user._id;
 
     useEffect(() => {
@@ -48,39 +47,21 @@ const CollectionDetailsPage = () => {
     }, []);
 
     const likeHandler = () => {
-        if(collection.isLiked) {
             
-            sendUnlike({
-                url: `${process.env.REACT_APP_BACKEND_BASE_URL}/collections/${collection._id}/unlike`,
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${getAuthToken()}`
-                }
-            }, (data) => {
-                setCollection((prevState) => ({
-                    ...prevState,
-                    isLiked: false,
-                    likes: data.likes
-                }));
-            });
-
-        } else {
-
-            sendLike({
-                url: `${process.env.REACT_APP_BACKEND_BASE_URL}/collections/${collection._id}/like`,
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${getAuthToken()}`
-                }
-            }, (data) => {
-                setCollection((prevState) => ({
-                    ...prevState,
-                    isLiked: true,
-                    likes: data.likes
-                }));
-            });
-            
-        }
+        sendLike({
+            url: collection.isLiked ? `${process.env.REACT_APP_BACKEND_BASE_URL}/collections/${collection._id}/unlike` : `${process.env.REACT_APP_BACKEND_BASE_URL}/collections/${collection._id}/like`,
+            method: collection.isLiked ? "DELETE" : "POST",
+            headers: {
+                Authorization: `Bearer ${getAuthToken()}`
+            }
+        }, (data) => {
+            setCollection((prevState) => ({
+                ...prevState,
+                isLiked: collection.isLiked ? false : true,
+                likes: data.likes
+            }));
+        });
+        
     }
 
     return (

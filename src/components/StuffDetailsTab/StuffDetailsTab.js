@@ -6,7 +6,7 @@ import { TabPanel } from '@mui/joy';
 import RatingCommentsList from '../RatingCommentsList/RatingCommentsList';
 import QuestionsCommentsList from '../QuestionsCommentsList/QuestionsCommentsList';
 
-const DetailsTab = (props) => {
+const StuffDetailsTab = (props) => {
 
     return (
         <>
@@ -56,4 +56,4 @@ const DetailsTab = (props) => {
     )
 };
 
-export default DetailsTab;
+export default StuffDetailsTab;

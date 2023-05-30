@@ -14,7 +14,6 @@ const CollectionCard = ({ collection: inputCollection, isMine }) => {
     const [ collection, setCollection ] = useState(inputCollection);
     const navigate = useNavigate();
     const { sendRequest: sendLike } = useHttp();
-    const { sendRequest: sendUnlike } = useHttp();
 
     const profileHandler = () => {
         navigate(`/profile/${collection.owner._id}`, { replace: true });
@@ -24,40 +23,22 @@ const CollectionCard = ({ collection: inputCollection, isMine }) => {
         navigate(`/collection-details/${collection._id}`, { replace: true });
     }
 
-    const likeHandler = (event) => {
-        if(collection.isLiked) {
+    const likeHandler = () => {
             
-            sendUnlike({
-                url: `${process.env.REACT_APP_BACKEND_BASE_URL}/collections/${collection._id}/unlike`,
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${getAuthToken()}`
-                }
-            }, (data) => {
-                setCollection((prevState) => ({
-                    ...prevState,
-                    isLiked: false,
-                    likes: data.likes
-                }));
-            });
-
-        } else {
-
-            sendLike({
-                url: `${process.env.REACT_APP_BACKEND_BASE_URL}/collections/${collection._id}/like`,
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${getAuthToken()}`
-                }
-            }, (data) => {
-                setCollection((prevState) => ({
-                    ...prevState,
-                    isLiked: true,
-                    likes: data.likes
-                }));
-            });
-            
-        }
+        sendLike({
+            url: collection.isLiked ? `${process.env.REACT_APP_BACKEND_BASE_URL}/collections/${collection._id}/unlike` : `${process.env.REACT_APP_BACKEND_BASE_URL}/collections/${collection._id}/like`,
+            method: collection.isLiked ? "DELETE" : "POST",
+            headers: {
+                Authorization: `Bearer ${getAuthToken()}`
+            }
+        }, (data) => {
+            setCollection((prevState) => ({
+                ...prevState,
+                isLiked: collection.isLiked ? false : true,
+                likes: data.likes
+            }));
+        });
+        
     }
 
     return (
@@ -121,6 +102,9 @@ const CollectionCard = ({ collection: inputCollection, isMine }) => {
                 }}
             >
                 <CardOverflow>
+                    <Typography level="body1" sx={{ fontSize: "md", mt: 0.5, mb: 2 }}>
+                        {collection.title}
+                    </Typography>
                     <Typography level="body2" sx={{ fontSize: "md", mt: 0.5, mb: 2 }}>
                         Number of stuff: {collection.stuff.length}
                     </Typography>

@@ -10,7 +10,7 @@ import useHttp from "../hooks/useHttp";
 import { getAuthToken } from "../utils/storage";
 import Spinner from "../components/Spinner/Spinner";
 import useUser from "../hooks/useUser";
-import DetailsTab from "../components/DetailsTab/DetailsTab";
+import StuffDetailsTab from "../components/StuffDetailsTab/StuffDetailsTab";
 import StuffBodyDetail from "../components/StuffBodyDetail/StuffBodyDetail";
 import StuffHeaderBodyDetail from "../components/StuffHeaderBodyDetail/StuffHeaderBodyDetail";
 
@@ -223,7 +223,7 @@ const DetailsPage = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <DetailsTab 
+            <StuffDetailsTab 
               onClickRatingCommentsSubmit={onClickRatingFormHandler} 
               onClickQuestionsCommentsSubmit={onClickQuestionFormHandler}
               onClickQuestionAnswerSubmit={onClickAnswerFormHandler}
