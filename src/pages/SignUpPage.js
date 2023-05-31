@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Box from '@mui/joy/Box';
@@ -13,16 +13,32 @@ import { signUp } from "../store/auth-store/auth-actions";
 import { authActions } from "../store/auth-store/auth-slice";
 import LogInSignUpWrapper from "../components/LogInSignUpWrapper/LogInSignUpWrapper";
 import { Grid } from "@mui/material";
+import Alert from "../components/Alert/Alert";
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.auth.error);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     return () => {
       dispatch(authActions.setError(null));
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error && error.message !== '') {
+      setOpen(true);
+    }
+  }, [error]);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    
+    setOpen(false);
+  };
 
   const signupHandler = (data) => {
     dispatch(
@@ -98,13 +114,11 @@ const SignUpPage = () => {
           <Button type="submit" fullWidth>
             Sign in
           </Button>
-          {error && (
-            <Typography level="body2" color="error.main">
-              {error.message}
-            </Typography>
-          )}
         </form>
       </LogInSignUpWrapper>
+      {open && error && (
+        <Alert severity="error" open={open} handleClose={handleClose} message={error.message} />
+      )}
     </>
   );
 };

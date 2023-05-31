@@ -54,12 +54,21 @@ export const signUp = (firstName, lastName, nickName, email, password) => {
       setUserId(fetchedData.data.user._id);
       navigate("/");
     } catch (error) {
-      dispatch(
-        authActions.setError({
-          message: "Oh no! Something went wrong!",
-          status: 500,
-        })
-      );
+      if(error.request.status === 400) {
+        dispatch(
+          authActions.setError({
+            message: "Email or NickName already exists",
+            status: 400,
+          })
+        );
+      } else {
+        dispatch(
+          authActions.setError({
+            message: error.message || "Something went wrong",
+            status: 500,
+          })
+        );
+      }
     }
   };
 };

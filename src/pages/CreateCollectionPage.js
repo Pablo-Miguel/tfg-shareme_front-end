@@ -138,7 +138,7 @@ const CreateCollectionPage = () => {
                 </Grid>
                 <Grid item xs={0} md={1} lg={2}></Grid>
             </Grid>
-            {open & !error ? (
+            {open && !error ? (
                 <Alert severity="success" open={open} handleClose={handleClose} message="Your stuff collection has been created successfully!" />
             )
             : (

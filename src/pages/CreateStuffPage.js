@@ -108,7 +108,7 @@ const AddStuffPage = () => {
         </Grid>
         <Grid item xs={0} md={1} lg={2}></Grid>
       </Grid>
-      {open & !error & !imageError ? (
+      {open && !error && !imageError ? (
         <Alert severity="success" open={open} handleClose={handleClose} message="Your stuff has been created successfully!" />
       )
       : (
