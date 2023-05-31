@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Box, Button, FormControl, FormLabel, Input, Switch, Textarea, Typography } from "@mui/joy";
+import { FormControl, FormLabel, Switch } from "@mui/joy";
 import SellRoundedIcon from '@mui/icons-material/SellRounded';
 import RemoveShoppingCartRoundedIcon from '@mui/icons-material/RemoveShoppingCartRounded';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
@@ -25,6 +25,7 @@ const categories = [
 
 const CreateStuffForm = (props) => {
     const formRef = useRef();
+    const [ initialValue, setInitialValue ] = useState(null);
     const [file, setFile] = useState(null);
     const [hasOffer, setHasOffer] = useState(false);
     const [text, setText] = useState('');
@@ -36,6 +37,8 @@ const CreateStuffForm = (props) => {
         }
         setText('');
         setHasOffer(false);
+        setInitialValue(' ');
+        setInitialValue('');
     };
 
     const onChangeHandler = () => {
@@ -55,7 +58,7 @@ const CreateStuffForm = (props) => {
             shopping_link: formElements.shoppingLink.value,
             has_offer: hasOffer,
             offer_price: !hasOffer ? 0 : formElements.offerPrice.value,
-            image: file ? { file: file.file, preview: file.preview } : null
+            image: file ? file.file : null
         };
 
         props.onSubmit({
@@ -76,7 +79,8 @@ const CreateStuffForm = (props) => {
                         label="Title" 
                         placeholder="Enter a title..." 
                         type="text" 
-                        name="title" 
+                        name="title"
+                        initialValue={initialValue}
                     />
                     <TextAreaFormControl 
                         label="Description" 
@@ -108,6 +112,7 @@ const CreateStuffForm = (props) => {
                         placeholder="Enter a price..."
                         type="Number"
                         name="price"
+                        initialValue={initialValue}
                     />
                 </Grid>
             </Grid>
@@ -140,6 +145,7 @@ const CreateStuffForm = (props) => {
                                 placeholder="Enter an offer price..."
                                 type="Number"
                                 name="offerPrice"
+                                initialValue={initialValue}
                             />
                         </Grid>
                     )
@@ -151,6 +157,7 @@ const CreateStuffForm = (props) => {
                 placeholder="Enter a shopping link..."
                 type="text"
                 name="shoppingLink"
+                initialValue={initialValue}
             />
             <FormButton
                 text="Create stuff"

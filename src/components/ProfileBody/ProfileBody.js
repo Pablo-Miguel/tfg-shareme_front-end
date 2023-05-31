@@ -25,8 +25,7 @@ const ProfileBody = ({frontUser, isMe, onClickFollow}) => {
                     <Button
                     variant="contained"
                     color="primary"
-                    disabled={true}
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate("/edit-profile")}
                     >
                     Edit profile
                     </Button>

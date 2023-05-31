@@ -10,7 +10,7 @@ const TextAreaFormControl = props => {
                 placeholder={props.placeholder}
                 name={props.name}
                 minRows={3}
-                value={props.value}
+                value={props.text}
                 onChange={props.onChange}
                 endDecorator={
                     <Box

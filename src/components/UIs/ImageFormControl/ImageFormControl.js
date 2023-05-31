@@ -4,7 +4,7 @@ import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import { Grid } from "@mui/material";
 
 const ImageFormControl = props => {
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState(props.initialValue ? { preview: props.initialValue } : null);
 
     const imageOnChangeHandler = (event) => {
         const eventFile = event.target.files[0];

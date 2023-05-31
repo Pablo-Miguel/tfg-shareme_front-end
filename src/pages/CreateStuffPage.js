@@ -68,7 +68,7 @@ const AddStuffPage = () => {
   const changeImageHandler = (id, image, clearForm) => {
     
     const formData = new FormData();
-    formData.append('image', image.file, image.file.name);
+    formData.append('image', image, image.name);
 
     editImageToStuff(
       {
