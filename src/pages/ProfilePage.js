@@ -1,25 +1,22 @@
 import { useEffect, useState } from "react";
-import { useParams, useRouteLoaderData, useNavigate } from "react-router-dom";
+import { useParams, useRouteLoaderData } from "react-router-dom";
+import { Divider, Grid, Typography } from "@mui/material";
 
+import ProfileTab from "../components/ProfileTab/ProfileTab";
+import ProfileHeaderBody from "../components/ProfileHeaderBody/ProfileHeaderBody";
+import ProfileBody from "../components/ProfileBody/ProfileBody";
 import useUser from "../hooks/useUser";
 import useHttp from "../hooks/useHttp";
 import { getAuthToken } from "../utils/storage";
 import Spinner from "../components/Spinner/Spinner";
 
-import { Button, Divider, Grid, Typography } from "@mui/material";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import ProfileTab from "../components/ProfileTab/ProfileTab";
-
 const ProfilePage = (props) => {
   const { user_id } = useParams();
   const user = useUser();
-  const isMe = user_id === user._id;
+  const [ isMe, setIsMe ] = useState(false);
   const loader = useRouteLoaderData("user-details");
   const [ frontUser, setFrontUser ] = useState(null);
-  
   const { sendRequest: followUser } = useHttp();
-  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -34,6 +31,8 @@ const ProfilePage = (props) => {
         likedStuff: loader.userLikedStuff ? loader.userLikedStuff : null,
         likedCollections: loader.userLikedCollections ? loader.userLikedCollections : null,
       });
+      
+      setIsMe(user._id === loader.user._id);
 
     }
 
@@ -81,77 +80,26 @@ const ProfilePage = (props) => {
               </Grid>
 
               <Grid item xs={12} sm={6} md={4}>
-                <Grid item xs={12} container justifyContent="center">
-                  <img src={frontUser.avatar} alt="stuff_image" style={{ minHeight: 300 }} />
-                </Grid>
-                <Grid item padding={2} container>
-                  <Grid item xs={6} container justifyContent="center">
-                    <Typography variant="p" component="p"
-                      style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
-                    >
-                      {frontUser.followers} followers
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6} container justifyContent="center">
-                    <Typography variant="p" component="p"
-                      style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
-                    >
-                      {frontUser.following} following
-                    </Typography>
-                  </Grid>
-                </Grid>
+                <ProfileHeaderBody frontUser={frontUser} />
               </Grid>
 
               <Grid item xs={12} sm={6} md={8}>
-                <Typography variant="h5" component="h5"
-                    style={{ fontWeight: "bold" }}
-                >
-                    {frontUser.nickName}
-                </Typography>
-                <Typography variant="body1" component="p">
-                    {frontUser.name}
-                </Typography>
+                <ProfileBody frontUser={frontUser} isMe={isMe} onClickFollow={onClickFollowHandler} />
+              </Grid>
 
+              <Grid item xs={12}>
                 <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+              </Grid>
 
-                {
-                  isMe ? (
-                    <Grid item xs={12} container>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        disabled={true}
-                        onClick={() => navigate("/")}
-                      >
-                        Edit profile
-                      </Button>
-                    </Grid>
-                  ) : (
-                    <Grid item xs={12} container>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={onClickFollowHandler}
-                        startIcon={frontUser.isFollowing ? <AccountCircleIcon /> : <AccountCircleOutlinedIcon />}
-                      >
-                        {frontUser.isFollowing ? "Stop following" : "Follow"}
-                      </Button>
-                    </Grid>
-                  )
+              <Grid item xs={12}>
+                { user && 
+                  <ProfileTab 
+                    frontUser={frontUser}
+                    user_id={user_id}
+                    isMe={isMe}
+                    setFrontUser={setFrontUser}
+                  />
                 }
-              </Grid>
-
-              <Grid item xs={12}>
-                <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-              </Grid>
-
-              <Grid item xs={12}>
-                <ProfileTab 
-                  frontUser={frontUser}
-                  user_id={user_id}
-                  isMe={isMe}
-                  setFrontUser={setFrontUser}
-                />
               </Grid>
 
             </Grid>
