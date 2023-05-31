@@ -7,6 +7,8 @@ import StuffList from '../StuffList/StuffList';
 import CollectionList from '../CollectionList/CollectionList';
 import LikedStuffList from '../LikedStuffList/LikedStuffList';
 import LikedCollectionsList from '../LikedCollectionsList/LikedCollectionsList';
+import StuffTab from '../StuffTab/StuffTab';
+import CollectionTab from '../CollectionTab/CollectionTab';
 
 const ProfileTab = ({ 
     frontUser, 
@@ -43,43 +45,47 @@ const ProfileTab = ({
             >
                 <Tab>Stuff</Tab>
                 <Tab>Collections</Tab>
-                {
-                    isMe &&
-                    <>
-                        <Tab>Liked Stuff</Tab>
-                        <Tab>Liked Collections</Tab>
-                    </>
-                }
             </TabList>
             <TabPanel value={0}>
-                <StuffList
-                    stuff={frontUser.stuff}
-                    total={frontUser.total_stuff}
-                    isMe={isMe}
-                    user_id={user_id}
-                    setFrontUser={setFrontUser}
-                />
+                {
+                    !isMe ? 
+                        <StuffList
+                            stuff={frontUser.stuff}
+                            total={frontUser.total_stuff}
+                            isMe={isMe}
+                            user_id={user_id}
+                            setFrontUser={setFrontUser}
+                        />
+                    : (
+                        <StuffTab
+                            frontUser={frontUser}
+                            isMe={isMe}
+                            user_id={user_id}
+                            setFrontUser={setFrontUser}
+                        />
+                    )
+                }
             </TabPanel>
             <TabPanel value={1}>
-                <CollectionList
-                    collections={frontUser.collections}
-                    total={frontUser.total_collections}
-                    isMe={isMe}
-                    user_id={user_id}
-                    setFrontUser={setFrontUser}
-                />
+                {
+                    !isMe ?
+                        <CollectionList
+                            collections={frontUser.collections}
+                            total={frontUser.total_collections}
+                            isMe={isMe}
+                            user_id={user_id}
+                            setFrontUser={setFrontUser}
+                        />
+                    : (
+                        <CollectionTab
+                            frontUser={frontUser}
+                            isMe={isMe}
+                            user_id={user_id}
+                            setFrontUser={setFrontUser}
+                        />
+                    )
+                }
             </TabPanel>
-            { isMe && 
-                <>
-                    <TabPanel value={2}>
-                        <LikedStuffList likedStuff={frontUser.likedStuff} />
-                    </TabPanel>
-                    <TabPanel value={3}>
-                        <LikedCollectionsList likedCollections={frontUser.likedCollections} />
-                    </TabPanel>
-                </>
-            }
-            
         </Tabs>
     )
 };

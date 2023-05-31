@@ -6,7 +6,7 @@ import shareme_blue_logo from "../../assets/imgs/logos/shareme_blue_logo.png";
 import { logout } from "../../store/auth-store/auth-actions";
 import useUser from "../../hooks/useUser";
 import SideMenu from "../SideMenu/SideMenu";
-import { AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
+import { AppBar, Avatar, Box, Button, Container, Divider, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from "react-router-dom";
 
@@ -163,6 +163,21 @@ const MainHeader = () => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'start',
+                    paddingTop: '10px',
+                    paddingBottom: '10px',
+                    paddingLeft: '20px',
+                    paddingRight: '20px'
+                  }}>
+                    <Typography level="body2">Signed up as</Typography>
+                    <Typography fontWeight="lg" level="body2" style={{ fontWeight: 'bold' }}>
+                      {user.nickName}
+                    </Typography>
+                  </div>
+                  <Divider />
                   {settings.map((setting) => (
                     <MenuItem key={setting.title} onClick={() => {setting.handler(); handleCloseUserMenu();}}>
                       <Typography textAlign="center">{setting.title}</Typography>

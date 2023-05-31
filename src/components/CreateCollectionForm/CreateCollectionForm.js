@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Input, Textarea, Typography } from '@mui/joy';
+import { FormControl, FormLabel, Typography } from '@mui/joy';
 import { Avatar, Checkbox, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
@@ -12,6 +12,7 @@ import FormButton from '../UIs/FormButton/FormButton';
 
 const CreateCollectionForm = (props) => {
     const formRef = useRef();
+    const [ initialValue, setInitialValue ] = useState(null);
     const [text, setText] = useState('');
     const [checked, setChecked] = useState([]);
 
@@ -46,6 +47,8 @@ const CreateCollectionForm = (props) => {
                 setText('');
                 setChecked([]);
                 formRef.current.reset();
+                setInitialValue(' ');
+                setInitialValue('');
             }
         });
     };
@@ -61,6 +64,7 @@ const CreateCollectionForm = (props) => {
                 placeholder="Enter a title..." 
                 type="text" 
                 name="title" 
+                initialValue={initialValue}
             />
             <TextAreaFormControl 
                 label="Description" 
