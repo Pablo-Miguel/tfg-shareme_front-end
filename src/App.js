@@ -1,11 +1,11 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { checkAuthLoader, checkUnauthLoader, getCollectionByIdLoader, getCollectionStuffLoader, getStuffByIdLoader, getUserByIdLoader, getUsersLoader } from "./utils/loaders";
 import RootLayout from "./pages/RootLayout";
 import HomePage from "./pages/HomePage";
 import LogInPage from "./pages/LogInPage";
 import SignUpPage from "./pages/SignUpPage";
-import { checkAuthLoader, checkUnauthLoader, getCollectionByIdLoader, getCollectionStuffLoader, getStuffByIdLoader, getUserByIdLoader, getUsersLoader } from "./utils/loaders";
 import ErrorPage from "./pages/ErrorPage";
 import ProfilePage from "./pages/ProfilePage";
 import CreateStuffPage from "./pages/CreateStuffPage";
@@ -13,6 +13,7 @@ import DetailsPage from "./pages/StuffDetailsPage";
 import CreateCollectionPage from "./pages/CreateCollectionPage";
 import CollectionDetailsPage from "./pages/CollectionDetailsPage";
 import SearchProfilesPage from "./pages/SearchProfilesPage";
+import EditProfile from "./pages/EditProfile";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
         id: 'collection-stuff-details',
         element: <CreateCollectionPage />,
         loader: getCollectionStuffLoader
+      },
+      {
+        path: "/edit-profile",
+        element: <EditProfile />
       }
     ],
     loader: checkAuthLoader
