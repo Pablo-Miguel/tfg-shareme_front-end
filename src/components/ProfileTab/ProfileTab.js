@@ -3,8 +3,6 @@ import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab, { tabClasses } from '@mui/joy/Tab';
 import { TabPanel } from '@mui/joy';
-import { Grid } from '@mui/material';
-import CollectionCard from '../CollectionCard/CollectionCard';
 import StuffList from '../StuffList/StuffList';
 import CollectionList from '../CollectionList/CollectionList';
 import LikedStuffList from '../LikedStuffList/LikedStuffList';

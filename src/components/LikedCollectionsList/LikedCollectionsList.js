@@ -50,7 +50,6 @@ const LikedCollectionsList = ({ likedCollections }) => {
                     ))}
                     { !viewMore && 
                         <FormButton
-                            variant="soft"
                             text="View more"
                             isLoading={isLoading}
                             loadingPosition="start"

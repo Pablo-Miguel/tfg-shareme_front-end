@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { AspectRatio, Card, CardContent, CardOverflow, Divider, Typography } from '@mui/joy';
 
 const ProfileCard = ({ user }) => {
-    console.log(user);
     const navigate = useNavigate();
 
     const onClickProfileHandler = () => {

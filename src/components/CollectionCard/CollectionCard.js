@@ -9,6 +9,7 @@ import FavoriteIconBtn from "../UIs/FavoriteIconBtn/FavoriteIconBtn";
 import ImgCarousel from "../UIs/ImgCarousel/ImgCarousel";
 import useHttp from "../../hooks/useHttp";
 import { getAuthToken } from "../../utils/storage";
+import { Grid } from "@mui/material";
 
 const CollectionCard = ({ collection: inputCollection, isMine }) => {
     const [ collection, setCollection ] = useState(inputCollection);
@@ -86,7 +87,11 @@ const CollectionCard = ({ collection: inputCollection, isMine }) => {
             <Divider />
 
             <CardOverflow>
-                <ImgCarousel stuff={collection.stuff.slice(0, 5)} />
+                <Grid container>
+                    <Grid item xs={12}>
+                        <ImgCarousel stuff={collection.stuff.slice(0, 5)} />
+                    </Grid>
+                </Grid>
                 <RedEyeIconBtn onClick={detailsHandler} />
                 <FavoriteIconBtn isLiked={collection.isLiked} onClick={likeHandler} isMine={isMine} />
             </CardOverflow>

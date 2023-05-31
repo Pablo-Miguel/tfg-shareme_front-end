@@ -16,7 +16,7 @@ const ImgCarousel = ({ stuff }) => {
       >
         {stuff.map((item, index) => (
           <AspectRatio ratio="1" key={item._id}>
-            <img src={item.image} alt="" />
+            <img src={item.image} alt={item.nickName} />
           </AspectRatio>
         ))}
       </Carousel>

@@ -48,7 +48,6 @@ const LikedStuffList = ({ likedStuff }) => {
                     ))}
                     { !viewMore && 
                         <FormButton
-                            variant="soft"
                             text="View more"
                             isLoading={isLoading}
                             loadingPosition="start"
