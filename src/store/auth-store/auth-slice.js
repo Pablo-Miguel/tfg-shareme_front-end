@@ -28,6 +28,10 @@ const authSlice = createSlice({
             } else {
                 state.error = null;
             }
+        },
+        setAvatar(state, action) {
+            console.log('payload --> ' + action.payload);
+            state.user.avatar = action.payload;
         }
     }
 });
