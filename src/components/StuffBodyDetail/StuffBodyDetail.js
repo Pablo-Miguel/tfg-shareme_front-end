@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Avatar, Box, Button, Divider, Grid, Typography } from "@mui/material";
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import LocalMallRoundedIcon from '@mui/icons-material/LocalMallRounded';
@@ -9,8 +11,20 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 
 import LikeToggleBtn from "../UIs/LikeToggleBtn/LikeToggleBtn";
+import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
 
-const StuffBodyDetail = ({current_stuff, user, onLike}) => {
+const StuffBodyDetail = ({current_stuff, user, onLike, onDelete}) => {
+    const navigate = useNavigate();
+    const [ openModal, setOpenModal ] = useState(false);
+
+    const onEditClickHandler = () => {
+        navigate(`/edit-stuff/${current_stuff.stuff._id}`);
+    }
+
+    const onDeleteClickHandler = () => {
+        setOpenModal(true);
+    }
+
     return (
         <>
             <Box sx={{ display: { xs: 'none', sm: 'flex' }, mr: 2 }} flexDirection="column">
@@ -86,15 +100,17 @@ const StuffBodyDetail = ({current_stuff, user, onLike}) => {
             {
                 current_stuff.stuff.owner._id === user._id && (
                 <div>
-                    <Button variant="contained" color="primary" style={{ marginRight: 20 }} startIcon={<EditRoundedIcon />}>
-                    <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Edit</Typography>
+                    <Button onClick={onEditClickHandler} variant="contained" color="primary" style={{ marginRight: 20 }} startIcon={<EditRoundedIcon />}>
+                        <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Edit</Typography>
                     </Button>
-                    <Button variant="contained" color="error" startIcon={<DeleteForeverRoundedIcon />}>
-                    <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Delete</Typography>
+                    <Button onClick={onDeleteClickHandler} variant="contained" color="error" startIcon={<DeleteForeverRoundedIcon />}>
+                        <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Delete</Typography>
                     </Button>
                 </div>
                 )
             }
+
+            <DeleteConfirmationModal open={openModal} setOpen={setOpenModal} type='stuff' onDelete={onDelete} />
         </>
     );
 };
