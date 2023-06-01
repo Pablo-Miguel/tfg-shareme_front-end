@@ -8,7 +8,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Edit from '@mui/icons-material/Edit';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 
-const PositionedMenu = () => {
+const PositionedMenu = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -17,6 +17,16 @@ const PositionedMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const onEditClickHandler = () => {
+    props.onEditClick();
+    setAnchorEl(null);
+  }
+
+  const onDeleteClickHandler = () => {
+    props.onDeleteClick();
+    setAnchorEl(null);
+  }
 
   return (
     <>
@@ -41,14 +51,14 @@ const PositionedMenu = () => {
         aria-labelledby="positioned-demo-button"
         placement="bottom-end"
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={onEditClickHandler}>
           <ListItemDecorator>
             <Edit />
           </ListItemDecorator>{' '}
           Edit
         </MenuItem>
         <ListDivider />
-        <MenuItem onClick={handleClose} variant="soft" color="danger">
+        <MenuItem onClick={onDeleteClickHandler} variant="soft" color="danger">
           <ListItemDecorator sx={{ color: 'inherit' }}>
             <DeleteForever />
           </ListItemDecorator>{' '}
