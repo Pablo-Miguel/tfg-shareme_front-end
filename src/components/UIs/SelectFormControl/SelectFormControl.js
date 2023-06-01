@@ -11,7 +11,7 @@ const SelectFormControl = props => {
                 name={props.name}
                 placeholder={props.placeholder}
                 indicator={<KeyboardArrowDown />}
-                defaultValue=''
+                defaultValue={props.initialValue ? props.initialValue : ''}
                 sx={{
                 [`& .${selectClasses.indicator}`]: {
                     transition: '0.2s',
