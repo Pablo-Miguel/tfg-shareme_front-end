@@ -25,20 +25,29 @@ const categories = [
 
 const CreateStuffForm = (props) => {
     const formRef = useRef();
-    const [ initialValue, setInitialValue ] = useState(null);
+    const [ titleInitialValue, setTitleInitialValue ] = useState(props.initialStuff ? props.initialStuff.title : null);
+    const [ priceInitialValue, setPriceInitialValue ] = useState(props.initialStuff ? props.initialStuff.price : null);
+    const [ offerPriceInitialValue, setOfferPriceInitialValue ] = useState(props.initialStuff && props.initialStuff.has_offer ? props.initialStuff.offer_price : null);
+    const [ shoppingLinkInitialValue, setShoppingLinkInitialValue ] = useState(props.initialStuff ? props.initialStuff.shopping_link : null);
     const [file, setFile] = useState(null);
-    const [hasOffer, setHasOffer] = useState(false);
-    const [text, setText] = useState('');
+    const [hasOffer, setHasOffer] = useState(props.initialStuff ? props.initialStuff.has_offer : false);
+    const [description, setDescription] = useState(props.initialStuff ? props.initialStuff.description : '');
 
     const clearForm = () => {
         formRef.current.reset();
         if(file) {
             file.clear();
         }
-        setText('');
+        setDescription('');
         setHasOffer(false);
-        setInitialValue(' ');
-        setInitialValue('');
+        setTitleInitialValue(' ');
+        setPriceInitialValue(' ');
+        setOfferPriceInitialValue(' ');
+        setShoppingLinkInitialValue(' ');
+        setTitleInitialValue('');
+        setPriceInitialValue('');
+        setOfferPriceInitialValue('');
+        setShoppingLinkInitialValue('');
     };
 
     const onChangeHandler = () => {
@@ -80,18 +89,18 @@ const CreateStuffForm = (props) => {
                         placeholder="Enter a title..." 
                         type="text" 
                         name="title"
-                        initialValue={initialValue}
+                        initialValue={titleInitialValue}
                     />
                     <TextAreaFormControl 
                         label="Description" 
                         placeholder="Type something here…" 
                         name="description" 
-                        text={text} 
-                        onChange={(event) => setText(event.target.value)} 
+                        text={description} 
+                        onChange={(event) => setDescription(event.target.value)} 
                     />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <ImageFormControl onChange={(file) => setFile(file)} />
+                    <ImageFormControl onChange={(file) => setFile(file)} initialValue={props.initialStuff ? props.initialStuff.image : null} />
                 </Grid>
             </Grid>
 
@@ -103,6 +112,7 @@ const CreateStuffForm = (props) => {
                         options={categories}
                         placeholder="Select category…"
                         name="category"
+                        initialValue={props.initialStuff ? props.initialStuff.category : null}
                     />
                 </Grid>
                 <Grid item xs={12} md={8}>
@@ -112,7 +122,7 @@ const CreateStuffForm = (props) => {
                         placeholder="Enter a price..."
                         type="Number"
                         name="price"
-                        initialValue={initialValue}
+                        initialValue={priceInitialValue}
                     />
                 </Grid>
             </Grid>
@@ -145,7 +155,7 @@ const CreateStuffForm = (props) => {
                                 placeholder="Enter an offer price..."
                                 type="Number"
                                 name="offerPrice"
-                                initialValue={initialValue}
+                                initialValue={offerPriceInitialValue}
                             />
                         </Grid>
                     )
@@ -157,10 +167,10 @@ const CreateStuffForm = (props) => {
                 placeholder="Enter a shopping link..."
                 type="text"
                 name="shoppingLink"
-                initialValue={initialValue}
+                initialValue={shoppingLinkInitialValue}
             />
             <FormButton
-                text="Create stuff"
+                text={`${props.initialStuff ? 'Update' : 'Create'} stuff`}
                 isLoading={props.isLoading}
                 loadingPosition="end"
                 fullWidth={true}
