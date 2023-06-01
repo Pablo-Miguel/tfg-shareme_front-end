@@ -14,6 +14,7 @@ import CreateCollectionPage from "./pages/CreateCollectionPage";
 import CollectionDetailsPage from "./pages/CollectionDetailsPage";
 import SearchProfilesPage from "./pages/SearchProfilesPage";
 import EditProfile from "./pages/EditProfile";
+import EditStuffPage from "./pages/EditStuffPage";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,12 @@ export const router = createBrowserRouter([
       {
         path: "/edit-profile",
         element: <EditProfile />
+      },
+      {
+        path: "/edit-stuff/:stuff_id",
+        id: 'edit-stuff',
+        element: <EditStuffPage />,
+        loader: getStuffByIdLoader
       }
     ],
     loader: checkAuthLoader
