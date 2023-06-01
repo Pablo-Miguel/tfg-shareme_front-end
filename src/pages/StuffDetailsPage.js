@@ -13,6 +13,7 @@ import useUser from "../hooks/useUser";
 import StuffDetailsTab from "../components/StuffDetailsTab/StuffDetailsTab";
 import StuffBodyDetail from "../components/StuffBodyDetail/StuffBodyDetail";
 import StuffHeaderBodyDetail from "../components/StuffHeaderBodyDetail/StuffHeaderBodyDetail";
+import Alert from "../components/Alert/Alert";
 
 const DetailsPage = () => {
   const user = useUser();
@@ -25,6 +26,22 @@ const DetailsPage = () => {
   const loader = useRouteLoaderData("stuff-details");
   const [current_stuff, setCurrentStuff] = useState(null);
   const effectExecutedRef = useRef(false);
+  const { error, sendRequest: fetchDeleteStuff } = useHttp();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+      if (error && error !== '') {
+          setOpen(true);
+      }
+  }, [error]);
+
+  const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+          return;
+      }
+      
+      setOpen(false);
+  };
 
   useEffect(() => {
     if (!loader || effectExecutedRef.current) {
@@ -192,48 +209,73 @@ const DetailsPage = () => {
 
   };
 
+  const onDeleteHandler = (event) => {
+    fetchDeleteStuff(
+      {
+        url: `${process.env.REACT_APP_BACKEND_BASE_URL}/stuff/${current_stuff.stuff._id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      },
+      (data) => {
+        setOpen(true);
+        setTimeout(() => {
+          navigate("/");
+        }, 1200);
+      }
+    );
+  };
 
   return <>
     {!current_stuff ? 
         <Spinner />
     : 
-      <Grid container spacing={1} padding={2}>
-        <Grid item xs={0} md={1} lg={2}></Grid>
-        <Grid item xs={12} md={10} lg={8} container>
-          <Grid item xs={12}>
-            <Typography variant="h4" component="h4" style={{ fontWeight: "bold"}}>
-              Details Page
-            </Typography>
-          </Grid>
+      <>
+        <Grid container spacing={1} padding={2}>
+          <Grid item xs={0} md={1} lg={2}></Grid>
+          <Grid item xs={12} md={10} lg={8} container>
+            <Grid item xs={12}>
+              <Typography variant="h4" component="h4" style={{ fontWeight: "bold"}}>
+                Details Page
+              </Typography>
+            </Grid>
 
-          <Grid item xs={12}>
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-          </Grid>
+            <Grid item xs={12}>
+              <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            </Grid>
 
-          <Grid item xs={12} sm={6} md={4} container justifyContent="center">
-            <StuffHeaderBodyDetail current_stuff={current_stuff} />
-          </Grid>
+            <Grid item xs={12} sm={6} md={4} container justifyContent="center">
+              <StuffHeaderBodyDetail current_stuff={current_stuff} />
+            </Grid>
 
-          <Grid item xs={12} sm={6} md={8}>
-            <StuffBodyDetail current_stuff={current_stuff} onLike={likeHandler} user={user} />
-          </Grid>
+            <Grid item xs={12} sm={6} md={8}>
+              <StuffBodyDetail current_stuff={current_stuff} onLike={likeHandler} user={user} onDelete={onDeleteHandler} />
+            </Grid>
 
-          <Grid item xs={12}>
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-          </Grid>
+            <Grid item xs={12}>
+              <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            </Grid>
 
-          <Grid item xs={12}>
-            <StuffDetailsTab 
-              onClickRatingCommentsSubmit={onClickRatingFormHandler} 
-              onClickQuestionsCommentsSubmit={onClickQuestionFormHandler}
-              onClickQuestionAnswerSubmit={onClickAnswerFormHandler}
-              stuff={current_stuff.stuff} 
-              userId={user._id}
-            />
+            <Grid item xs={12}>
+              <StuffDetailsTab 
+                onClickRatingCommentsSubmit={onClickRatingFormHandler} 
+                onClickQuestionsCommentsSubmit={onClickQuestionFormHandler}
+                onClickQuestionAnswerSubmit={onClickAnswerFormHandler}
+                stuff={current_stuff.stuff} 
+                userId={user._id}
+              />
+            </Grid>
           </Grid>
+          <Grid item xs={0} md={1} lg={2}></Grid>
         </Grid>
-        <Grid item xs={0} md={1} lg={2}></Grid>
-      </Grid>
+        {open && !error ? (
+          <Alert severity="success" open={open} handleClose={handleClose} message="Your stuff has been deleted successfully!" />
+        )
+        : (
+          <Alert severity="error" open={open} handleClose={handleClose} message={error} />
+        )}
+      </>
     }
     </>;
 };
