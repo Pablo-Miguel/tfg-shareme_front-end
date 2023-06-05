@@ -51,6 +51,12 @@ const MainHeader = () => {
       }
     },
     {
+      title: 'Search collections',
+      handler: () => {
+        navigate('/search-collections', { replace: true });
+      }
+    },
+    {
       title: 'Search profiles',
       handler: () => {
         navigate('/search-profiles', { replace: true });
