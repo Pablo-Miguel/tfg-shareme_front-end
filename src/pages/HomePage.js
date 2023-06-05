@@ -8,9 +8,24 @@ import StuffCard from "../components/StuffCard/StuffCard";
 import PaginationUI from "../components/UIs/Pagination/PaginationUI";
 import Spinner from "../components/Spinner/Spinner";
 import SearchBar from "../components/UIs/SearchBar/SearchBar";
+import SelectFormControl from "../components/UIs/SelectFormControl/SelectFormControl";
+
+const categories = [
+  "All",
+  "Music",
+  "Photography",
+  "Technology",
+  "Clothes",
+  "Kitchen",
+  "Sports",
+  "Decoration",
+  "Books",
+  "Other"
+];
 
 const HomePage = () => {
   const [ searchBarValue, setSearchBarValue ] = useState("");
+  const [ category, setCategory ] = useState('All');
   const stuff = useSelector((state) => state.stuff);
   const dispatch = useDispatch();
 
@@ -20,11 +35,16 @@ const HomePage = () => {
 
   const searchBarHandler = (value) => {
     setSearchBarValue(value);
-    dispatch(fetchStuff(0, value));
+    dispatch(fetchStuff(0, value, category));
   };
 
   const onChangePaginationHandler = (event, page) => {
-    dispatch(fetchStuff(page - 1, searchBarValue));
+    dispatch(fetchStuff(page - 1, searchBarValue, category));
+  };
+
+  const onChangeCategoryHandler = (event) => {
+    setCategory(event.target.innerText);
+    dispatch(fetchStuff(0, searchBarValue, event.target.innerText));
   };
 
   return (
@@ -37,7 +57,20 @@ const HomePage = () => {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <SearchBar onSearch={searchBarHandler} />
+          <Grid container xs={12}>
+              <Grid item xs={12} md={8} lg={9} style={{ padding: 5 }}>
+                  <SearchBar onSearch={searchBarHandler}/>
+              </Grid>
+              <Grid item xs={12} md={4} lg={3} style={{ padding: 5 }}>
+                  <SelectFormControl
+                      options={categories}
+                      placeholder="Select category…"
+                      name="category"
+                      initialValue={"All"}
+                      onChange={onChangeCategoryHandler}
+                  />
+              </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12}>
           <Divider style={{ marginTop: 10, marginBottom: 10 }} />
