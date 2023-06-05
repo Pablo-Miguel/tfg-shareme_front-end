@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FormControl, FormLabel, Typography } from '@mui/joy';
-import { Avatar, Checkbox, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
+import { Avatar, Checkbox, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 
@@ -9,12 +9,19 @@ import SearchBar from '../UIs/SearchBar/SearchBar';
 import InputFormControl from '../UIs/InputFormControl/InputFormControl';
 import TextAreaFormControl from '../UIs/TextAreaFormControl/TextAreaFormControl';
 import FormButton from '../UIs/FormButton/FormButton';
+import SelectFormControl from '../UIs/SelectFormControl/SelectFormControl';
 
 const CreateCollectionForm = (props) => {
     const formRef = useRef();
-    const [ initialValue, setInitialValue ] = useState(null);
-    const [text, setText] = useState('');
+    const [ titleInitialValue, setTitleInitialValue ] = useState(props.initialCollection ? props.initialCollection.title : '');
+    const [text, setText] = useState(props.initialCollection ? props.initialCollection.description : '');
     const [checked, setChecked] = useState([]);
+
+    useEffect(() => {
+        if(props.initialStuff && props.initialStuff.length > 0) {
+            setChecked(props.initialStuff);
+        }
+    }, [props.initialStuff]);
 
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
@@ -27,7 +34,13 @@ const CreateCollectionForm = (props) => {
         }
 
         setChecked(newChecked);
-        console.log(newChecked);
+    };
+
+    const clearForm = () => {
+        formRef.current.reset();
+        setTitleInitialValue('___CLEAR___');
+        setText('');
+        setChecked([]);
     };
 
     const onSubmitHandler = (event) => {
@@ -43,13 +56,7 @@ const CreateCollectionForm = (props) => {
 
         props.onSubmit({
             data: data,
-            clearForm: () => {
-                setText('');
-                setChecked([]);
-                formRef.current.reset();
-                setInitialValue(' ');
-                setInitialValue('');
-            }
+            clearForm: clearForm
         });
     };
 
@@ -63,8 +70,8 @@ const CreateCollectionForm = (props) => {
                 label="Title" 
                 placeholder="Enter a title..." 
                 type="text" 
-                name="title" 
-                initialValue={initialValue}
+                name="title"
+                initialValue={titleInitialValue}
             />
             <TextAreaFormControl 
                 label="Description" 
@@ -75,7 +82,20 @@ const CreateCollectionForm = (props) => {
             />
             <FormControl style={{ marginBottom: 30 }}>
                 <FormLabel>Stuff</FormLabel>
-                <SearchBar onSearch={props.onSearchStuff} />
+                <Grid container>
+                    <Grid item xs={12} md={8} lg={9} style={{ padding: 5 }}>
+                        <SearchBar onSearch={props.onSearchStuff}/>
+                    </Grid>
+                    <Grid item xs={12} md={4} lg={3} style={{ padding: 5 }}>
+                        <SelectFormControl
+                            options={props.categories}
+                            placeholder="Select category…"
+                            name="category"
+                            initialValue={"All"}
+                            onChange={props.categoriesOnChange}
+                        />
+                    </Grid>
+                </Grid>
                 { props.collectionStuff ? (
                     <>
                         { props.collectionStuff.stuff.length > 0 ? (
@@ -130,6 +150,7 @@ const CreateCollectionForm = (props) => {
                         {!props.viewMore && 
                             <FormButton
                                 variant="soft"
+                                type="button"
                                 text="View more"
                                 isLoading={props.isLoadingStuff}
                                 loadingPosition="start"
@@ -145,7 +166,7 @@ const CreateCollectionForm = (props) => {
                 )}
             </FormControl>
             <FormButton
-                text="Create collection"
+                text={`${props.initialStuff ? 'Update' : 'Create'} collection`}
                 isLoading={props.isLoading}
                 loadingPosition="end"
                 fullWidth={true}
