@@ -40,14 +40,10 @@ const CreateStuffForm = (props) => {
         }
         setDescription('');
         setHasOffer(false);
-        setTitleInitialValue(' ');
-        setPriceInitialValue(' ');
-        setOfferPriceInitialValue(' ');
-        setShoppingLinkInitialValue(' ');
-        setTitleInitialValue('');
-        setPriceInitialValue('');
-        setOfferPriceInitialValue('');
-        setShoppingLinkInitialValue('');
+        setTitleInitialValue('___CLEAR___');
+        setPriceInitialValue('___CLEAR___');
+        setOfferPriceInitialValue('___CLEAR___');
+        setShoppingLinkInitialValue('___CLEAR___');
     };
 
     const onChangeHandler = () => {
