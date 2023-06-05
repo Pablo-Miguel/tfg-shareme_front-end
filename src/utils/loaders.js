@@ -177,6 +177,31 @@ export const getCollectionStuffLoader = async ({ request, params }) => {
   });
 };
 
+export const fetchCollections = async () => {
+  const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/collections?sortBy=createdAt:desc`, {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    }
+  });
+
+  if (response.statusText !== "OK") {
+    throw json(
+      { message: "Could not fetch the collections!" },
+      {
+        status: 500,
+      }
+    );
+  }
+
+  return response.data;
+};
+
+export const getGlobalCollectionStuffLoader = async ({ request, params }) => {
+  return defer({
+    ...await fetchCollections(),
+  });
+};
+
 export const getStuffByIdLoader = async ({ request, params }) => {
   const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/stuff/${params.stuff_id}`, {
     headers: {
