@@ -1,8 +1,11 @@
 import { Avatar, Box, Grid, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { AspectRatio } from "@mui/joy";
 
 import ImgCarousel from "../UIs/ImgCarousel/ImgCarousel";
+
+import not_found from "../../assets/imgs/resource/not-found.jpg";
 
 const CollectionHeaderBodyDetail = ({ collection }) => {
 
@@ -19,7 +22,12 @@ const CollectionHeaderBodyDetail = ({ collection }) => {
                 </Grid>
             </Box>
             <Grid item xs={12} style={{ padding: 10 }}>
-                <ImgCarousel stuff={collection.stuff} />
+                {collection.stuff.length > 0 && <ImgCarousel stuff={collection.stuff} />}
+                {collection.stuff.length === 0 &&
+                    <AspectRatio ratio={1}>
+                        <img src={not_found} alt="Image not found" />
+                    </AspectRatio>
+                }
             </Grid>
             <Grid item padding={2} container>
                 <Grid item xs={6} container justifyContent="center">
