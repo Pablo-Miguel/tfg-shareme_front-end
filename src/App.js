@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { checkAuthLoader, checkUnauthLoader, getCollectionByIdLoader, getCollectionStuffLoader, getStuffByIdLoader, getUserByIdLoader, getUsersLoader } from "./utils/loaders";
+import { checkAuthLoader, checkUnauthLoader, getCollectionByIdLoader, getCollectionStuffLoader, getGlobalCollectionStuffLoader, getStuffByIdLoader, getUserByIdLoader, getUsersLoader } from "./utils/loaders";
 import RootLayout from "./pages/RootLayout";
 import HomePage from "./pages/HomePage";
 import LogInPage from "./pages/LogInPage";
@@ -15,6 +15,8 @@ import CollectionDetailsPage from "./pages/CollectionDetailsPage";
 import SearchProfilesPage from "./pages/SearchProfilesPage";
 import EditProfile from "./pages/EditProfile";
 import EditStuffPage from "./pages/EditStuffPage";
+import EditCollectionPage from "./pages/EditCollectionPage";
+import SearchCollectionsPage from "./pages/SearchCollectionsPage";
 
 export const router = createBrowserRouter([
   {
@@ -32,7 +34,13 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <HomePage />, loader: checkAuthLoader },
+      { index: true, element: <HomePage /> },
+      {
+        path: "/search-collections",
+        id: 'search-collections',
+        element: <SearchCollectionsPage />,
+        loader: getGlobalCollectionStuffLoader,
+      },
       {
         path: "/search-profiles",
         id: 'search-profiles',
@@ -76,6 +84,12 @@ export const router = createBrowserRouter([
         id: 'edit-stuff',
         element: <EditStuffPage />,
         loader: getStuffByIdLoader
+      },
+      {
+        path: "/edit-collection/:collection_id",
+        id: 'edit-collection',
+        element: <EditCollectionPage />,
+        loader: getCollectionByIdLoader
       }
     ],
     loader: checkAuthLoader
