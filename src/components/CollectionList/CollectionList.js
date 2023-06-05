@@ -10,7 +10,7 @@ import CollectionCard from "../CollectionCard/CollectionCard";
 
 const LIMIT = 10;
 
-const CollectionList = ({ collections: initCollections, total: initTotal, isMe, user_id, setFrontUser }) => {
+const CollectionList = ({ collections: initCollections, total: initTotal, isMe, user_id, setFrontUser, isGlobal }) => {
     const [ collections, setCollections ] = useState(initCollections);
     const [ total, setTotal ] = useState(initTotal);
     const [ page, setPage ] = useState(0);
@@ -21,9 +21,9 @@ const CollectionList = ({ collections: initCollections, total: initTotal, isMe, 
 
         let url_base = `${process.env.REACT_APP_BACKEND_BASE_URL}/collections?`;
 
-        if (!isMe) {
+        if (!isMe && !isGlobal) {
             url_base += `other_user_id=${user_id}`;
-        } else {
+        } else if (isMe) {
             url_base += `isMine=${isMe}`;
         }
 
