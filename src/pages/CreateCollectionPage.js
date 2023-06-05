@@ -8,6 +8,19 @@ import { getAuthToken } from "../utils/storage";
 import CreateCollectionForm from "../components/CreateCollectionForm/CreateCollectionForm";
 import Alert from "../components/Alert/Alert";
 
+const categories = [
+    "All",
+    "Music",
+    "Photography",
+    "Technology",
+    "Clothes",
+    "Kitchen",
+    "Sports",
+    "Decoration",
+    "Books",
+    "Other"
+];
+
 const CreateCollectionPage = () => {
     const loader = useRouteLoaderData("collection-stuff-details");
     const { isLoading: isLoadingStuff, sendRequest: fetchMoreStuff } = useHttp();
@@ -16,6 +29,7 @@ const CreateCollectionPage = () => {
     const [ viewMore, setViewMore ] = useState(false);
     const [ collectionStuff, setCollectionStuff ] = useState(null);
     const [ searchBarValue, setSearchBarValue ] = useState('');
+    const [ category, setCategory ] = useState('All');
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -50,6 +64,10 @@ const CreateCollectionPage = () => {
             url_base += `&text_searched=${text_searched}`;
         }
 
+        if(category && category !== 'All') {
+            url_base += `&category=${category}`;
+        }
+
         url_base += `&limit=${(viewMoreCont * 10) + 10}`;
         url_base += '&sortBy=createdAt:desc';
 
@@ -76,7 +94,7 @@ const CreateCollectionPage = () => {
         fetchStuffHandler(searchBarValue);
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [viewMoreCont, searchBarValue]);
+    }, [viewMoreCont, searchBarValue, category]);
 
     const onClickViewMoreHandler = () => {
         setViewMoreCont((prevState) => prevState + 1);
@@ -84,6 +102,10 @@ const CreateCollectionPage = () => {
 
     const onChangeSearchBarHandler = (value) => {
         setSearchBarValue(value);
+    };
+
+    const categoriesOnChangeHandler = (event) => {
+        setCategory(event.target.innerText);
     };
 
     const createCollectionHandler = (event) => {
@@ -133,6 +155,8 @@ const CreateCollectionPage = () => {
                             viewMore={viewMore}
                             onClickViewMore={onClickViewMoreHandler}
                             onSubmit={createCollectionHandler}
+                            categories={categories}
+                            categoriesOnChange={categoriesOnChangeHandler}
                         />
                     </Grid>
                 </Grid>
