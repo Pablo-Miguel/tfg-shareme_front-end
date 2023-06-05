@@ -5,7 +5,13 @@ const InputFormControl = (props) => {
   const [value, setValue] = useState(props.initialValue || "");
 
   useEffect(() => {
-    setValue(props.initialValue || "");
+
+    if (props.initialValue === '___CLEAR___') {
+      setValue('');
+    } else {
+      setValue(props.initialValue || '');
+    }
+
   }, [props.initialValue]);
 
   const handleChange = (event) => {
