@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Divider, Grid, Typography } from "@mui/material";
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 
 import LikeToggleBtn from '../UIs/LikeToggleBtn/LikeToggleBtn';
+import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
 
-const CollectionBodyDetail = ({ collection, user, onLike }) => {
+const CollectionBodyDetail = ({ collection, user, onLike, onDelete }) => {
+    const navigate = useNavigate();
+    const [ openModal, setOpenModal ] = useState(false);
+
+    const onEditClickHandler = () => {
+        navigate(`/edit-collection/${collection._id}`);
+    }
+
+    const onDeleteClickHandler = () => {
+        setOpenModal(true);
+    }
 
     return (
         <>
@@ -38,15 +50,17 @@ const CollectionBodyDetail = ({ collection, user, onLike }) => {
             {
                 collection.owner._id === user._id && (
                 <div>
-                    <Button variant="contained" color="primary" style={{ marginRight: 20 }} startIcon={<EditRoundedIcon />}>
+                    <Button onClick={onEditClickHandler} variant="contained" color="primary" style={{ marginRight: 20 }} startIcon={<EditRoundedIcon />}>
                         <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Edit</Typography>
                     </Button>
-                    <Button variant="contained" color="error" startIcon={<DeleteForeverRoundedIcon />}>
+                    <Button onClick={onDeleteClickHandler} variant="contained" color="error" startIcon={<DeleteForeverRoundedIcon />}>
                         <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Delete</Typography>
                     </Button>
                 </div>
                 )
             }
+
+            <DeleteConfirmationModal open={openModal} setOpen={setOpenModal} type='stuff' onDelete={onDelete} />
         </>
     );
 };
