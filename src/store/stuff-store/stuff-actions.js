@@ -3,7 +3,7 @@ import axios from "axios";
 import { getAuthToken } from "../../utils/storage";
 import { stuffActions } from "./stuff-slice";
 
-export const fetchStuff = (page_number = 0, text_searched = "") => {
+export const fetchStuff = (page_number = 0, text_searched = "", category = "All") => {
   return async (dispatch) => {
     try {
       dispatch(stuffActions.setError(null));
@@ -20,6 +20,10 @@ export const fetchStuff = (page_number = 0, text_searched = "") => {
         url_base += `&text_searched=${text_searched}`;
       }
 
+      if (category !== "All") {
+        url_base += `&category=${category}`;
+      }
+      
       url_base += '&sortBy=createdAt:desc';
 
       const fetchedStaff = await axios.get(url_base, {
