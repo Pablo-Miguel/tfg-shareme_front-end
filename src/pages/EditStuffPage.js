@@ -9,7 +9,7 @@ import Alert from "../components/Alert/Alert";
 
 const EditStuffPage = (props) => {
     const loader = useRouteLoaderData("edit-stuff");
-    const { error, isLoading, sendRequest: fetchImageStuff } = useHttp();
+    const { error, isLoading, sendRequest: fetchEditStuff } = useHttp();
     const { error: imageError, sendRequest: editImageToStuff } = useHttp();
     const [open, setOpen] = useState(false);
 
@@ -33,7 +33,7 @@ const EditStuffPage = (props) => {
 
     const sendStuffHandler = (event) => {
     
-        fetchImageStuff(
+        fetchEditStuff(
             {
             url: `${process.env.REACT_APP_BACKEND_BASE_URL}/stuff/${loader.stuff._id}`,
             method: "PATCH",
@@ -87,24 +87,24 @@ const EditStuffPage = (props) => {
     return (
         <>
             <Grid container spacing={3} padding={2}>
-                        <Grid item xs={0} md={1} lg={2}></Grid>
-                        <Grid item xs={12} md={10} lg={8} container>
-                        <Grid item xs={12}>
-                            <Typography variant="h4" component="h4" style={{ fontWeight: "bold"}}>
-                                Edit stuff
-                            </Typography>
-                        </Grid>
-
-                        <Grid item xs={12}>
-                            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-                        </Grid>
-
-                        <Grid item xs={12}>
-                            <CreateStuffForm initialStuff={loader.stuff} onSubmit={sendStuffHandler} isLoading={isLoading} />
-                        </Grid>
-                        </Grid>
-                        <Grid item xs={0} md={1} lg={2}></Grid>
+                <Grid item xs={0} md={1} lg={2}></Grid>
+                <Grid item xs={12} md={10} lg={8} container>
+                    <Grid item xs={12}>
+                        <Typography variant="h4" component="h4" style={{ fontWeight: "bold"}}>
+                            Edit stuff
+                        </Typography>
                     </Grid>
+
+                    <Grid item xs={12}>
+                        <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <CreateStuffForm initialStuff={loader.stuff} onSubmit={sendStuffHandler} isLoading={isLoading} />
+                    </Grid>
+                </Grid>
+                <Grid item xs={0} md={1} lg={2}></Grid>
+            </Grid>
             {open && !error && !imageError ? (
                 <Alert severity="success" open={open} handleClose={handleClose} message="Your stuff has been updated successfully!" />
             )
