@@ -21,6 +21,11 @@ const SideMenu = (props) => {
     props.setOpenSideMenu(false);
   };
 
+  const searchCollectionsOnClickHandler = () => {
+    navigate("/search-collections", { replace: true });
+    props.setOpenSideMenu(false);
+  };
+
   return (
     <>
       <div
@@ -38,6 +43,9 @@ const SideMenu = (props) => {
               </li>
               <li onClick={createCollectionOnClickHandler}>
                 Create collection
+              </li>
+              <li onClick={searchCollectionsOnClickHandler}>
+                Search collections
               </li>
               <li onClick={searchProfilesOnClickHandler}>
                 Search profiles
