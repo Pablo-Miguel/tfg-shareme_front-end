@@ -6,7 +6,10 @@ const SelectFormControl = props => {
 
     return (
         <FormControl required={props.isRequired} style={{ marginBottom: 30 }}>
-            <FormLabel>{props.label}</FormLabel>
+            {
+                props.label && 
+                    <FormLabel>{props.label}</FormLabel>
+            }
             <Select
                 name={props.name}
                 placeholder={props.placeholder}
@@ -20,6 +23,7 @@ const SelectFormControl = props => {
                     },
                 },
                 }}
+                onChange={props.onChange}
             >
                 {props.options.map((option) => (
                     <Option value={option} key={option}>
