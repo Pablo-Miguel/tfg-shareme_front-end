@@ -59,6 +59,7 @@ const FollowersModal = ({ title, open, setOpen, type, userId }) => {
             fetchData(0);
         }
         
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [type]);
 
     const onClickProfileHandler = () => {
