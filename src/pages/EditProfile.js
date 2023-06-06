@@ -42,6 +42,7 @@ const EditProfile = () => {
                 firstName: event.data.firstName,
                 lastName: event.data.lastName,
                 nickName: event.data.nickName,
+                verified: event.data.verified,
                 email: event.data.email,
                 password: event.data.password,
             };
@@ -50,6 +51,7 @@ const EditProfile = () => {
                 firstName: event.data.firstName,
                 lastName: event.data.lastName,
                 nickName: event.data.nickName,
+                verified: event.data.verified,
                 email: event.data.email,
             };
         }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
@@ -6,10 +6,13 @@ import ImageFormControl from "../UIs/ImageFormControl/ImageFormControl";
 import InputFormControl from "../UIs/InputFormControl/InputFormControl";
 import useUser from "../../hooks/useUser";
 import FormButton from "../UIs/FormButton/FormButton";
+import CheckBoxFormControl from "../UIs/CheckBoxFormControl/CheckBoxFormControl";
 
 const ProfileForm = ({onSubmit, isLoading}) => {
     const user = useUser();
     const [file, setFile] = useState(null);
+    const [isVerified, setIsVerified] = useState(user.verified);
+
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
@@ -20,6 +23,7 @@ const ProfileForm = ({onSubmit, isLoading}) => {
             firstName: formElements.firstName.value,
             lastName: formElements.lastName.value,
             nickName: formElements.nickName.value,
+            verified: isVerified,
             email: formElements.email.value,
             password: formElements.password.value,
             avatar: file ? file.file : null
@@ -28,6 +32,10 @@ const ProfileForm = ({onSubmit, isLoading}) => {
         onSubmit({
             data
         });
+    };
+
+    const onChangeCheckedHandler = (value) => {
+        setIsVerified(value);
     };
 
     return (
@@ -61,6 +69,11 @@ const ProfileForm = ({onSubmit, isLoading}) => {
                             type="text"
                             name="nickName"
                             initialValue={user.nickName}
+                        />
+                        <CheckBoxFormControl 
+                            label="Verified"
+                            checked={isVerified}
+                            onChange={onChangeCheckedHandler}
                         />
                     </Grid>
                     <Grid item xs={12} md={4}>

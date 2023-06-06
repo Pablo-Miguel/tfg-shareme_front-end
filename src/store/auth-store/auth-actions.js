@@ -57,7 +57,11 @@ export const signUp = (firstName, lastName, nickName, email, password) => {
       if(error.request.status === 400) {
         dispatch(
           authActions.setError({
-            message: "Email or NickName already exists",
+            message: 
+              error.response.data.message || 
+              (error.response.data.keyValue.nickName && `${error.response.data.keyValue.nickName} ya existe en ShareMe`) || 
+              (error.response.data.keyValue.email && `${error.response.data.keyValue.email} ya existe en ShareMe`) || 
+              "Something went wrong",
             status: 400,
           })
         );

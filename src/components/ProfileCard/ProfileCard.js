@@ -37,22 +37,27 @@ const ProfileCard = ({ user, onClick }) => {
                     {user.name}
                 </Typography>
             </CardContent>
-            <Divider />
-            <CardOverflow
-                variant="soft"
-                color="primary"
-                sx={{
-                    px: 0.2,
-                    writingMode: 'vertical-rl',
-                    textAlign: 'center',
-                    fontSize: 'xs2',
-                    fontWeight: 'xl2',
-                    letterSpacing: '1px',
-                    textTransform: 'uppercase',
-                }}
-            >
-                Verified
-            </CardOverflow>
+
+            { user.verified &&
+                <Divider />
+            }
+            { user.verified &&
+                <CardOverflow
+                    variant="soft"
+                    color="primary"
+                    sx={{
+                        px: 0.2,
+                        writingMode: 'vertical-rl',
+                        textAlign: 'center',
+                        fontSize: 'xs2',
+                        fontWeight: 'xl2',
+                        letterSpacing: '1px',
+                        textTransform: 'uppercase',
+                    }}
+                >
+                    Verified
+                </CardOverflow>
+            }
         </Card>
     );
 };
