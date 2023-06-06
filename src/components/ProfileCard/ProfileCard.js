@@ -2,10 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AspectRatio, Card, CardContent, CardOverflow, Divider, Typography } from '@mui/joy';
 
-const ProfileCard = ({ user }) => {
+const ProfileCard = ({ user, onClick }) => {
     const navigate = useNavigate();
 
     const onClickProfileHandler = () => {
+        if(onClick){
+            onClick();
+        }
         navigate(`/profile/${user._id}`);
     }
 
@@ -13,7 +16,7 @@ const ProfileCard = ({ user }) => {
         <Card
             orientation="horizontal"
             variant="outlined"
-            sx={{ width: '100%', bgcolor: 'background.body', margin: '10px' }}
+            sx={{ width: '100%', bgcolor: 'background.body', margin: '10px', minWidth: '300px' }}
             onClick={onClickProfileHandler}
         >
             <CardOverflow>
