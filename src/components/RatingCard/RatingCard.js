@@ -1,11 +1,7 @@
 import { AspectRatio, Card, Typography } from "@mui/joy";
 import { Grid, Rating } from "@mui/material";
-import PositionedMenu from "../UIs/PositionedMenu/PositionedMenu";
 
-
-const RatingCard = ({ rating, comment, from, userId }) => {
-    
-    const isMine = from.id === userId;
+const RatingCard = ({ rating, comment, from }) => {
 
     return(
         <Card
@@ -33,11 +29,6 @@ const RatingCard = ({ rating, comment, from, userId }) => {
                         <Typography level="h6" aria-describedby="card-description" mb={1}>
                             {from.nickName}
                         </Typography>
-                        {
-                            isMine && (
-                                <PositionedMenu />
-                            )
-                        }
                     </Grid>
                     <Rating name="read-only" value={rating} readOnly />
                     <Typography

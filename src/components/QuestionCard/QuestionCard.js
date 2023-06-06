@@ -1,17 +1,14 @@
 import { AspectRatio, Box, Button, Card, CardContent, FormControl, FormLabel, Textarea, Typography } from "@mui/joy";
 import { Avatar, Collapse, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
-import PositionedMenu from "../UIs/PositionedMenu/PositionedMenu";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { useState } from "react";
 
 
-const QuestionCard = ({ question, userId, onSubmitHandler: submitHandler }) => {
+const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
     const [answerFormExpanded, setAnswerFormExpanded] = useState(false);
     const [seeAnswersExpanded, setSeeAnswersExpanded] = useState(false);
     const [text, setText] = useState('');
-
-    const isMine = question.from.id === userId;
 
     const handleAnswerFormExpandClick = () => {
         setAnswerFormExpanded(!answerFormExpanded);
@@ -62,11 +59,6 @@ const QuestionCard = ({ question, userId, onSubmitHandler: submitHandler }) => {
                         <Typography level="h6" aria-describedby="card-description" mb={1}>
                             {question.from.nickName}
                         </Typography>
-                        {
-                            isMine && (
-                                <PositionedMenu />
-                            )
-                        }
                     </Grid>
                     <Typography 
                         level="h5" 

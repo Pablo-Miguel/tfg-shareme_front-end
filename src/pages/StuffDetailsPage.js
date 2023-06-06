@@ -262,8 +262,7 @@ const DetailsPage = () => {
                 onClickRatingCommentsSubmit={onClickRatingFormHandler} 
                 onClickQuestionsCommentsSubmit={onClickQuestionFormHandler}
                 onClickQuestionAnswerSubmit={onClickAnswerFormHandler}
-                stuff={current_stuff.stuff} 
-                userId={user._id}
+                stuff={current_stuff.stuff}
               />
             </Grid>
           </Grid>

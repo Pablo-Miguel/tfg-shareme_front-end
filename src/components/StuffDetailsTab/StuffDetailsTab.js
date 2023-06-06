@@ -39,16 +39,14 @@ const StuffDetailsTab = (props) => {
                 <TabPanel value={0} style={{ padding: 20 }}>
                     <RatingCommentsList 
                         onClickSubmit={props.onClickRatingCommentsSubmit} 
-                        stuff={props.stuff} 
-                        userId={props.userId}
+                        stuff={props.stuff}
                     />
                 </TabPanel>
                 <TabPanel value={1} style={{ padding: 20 }}>
                     <QuestionsCommentsList 
                         onClickFormSubmit={props.onClickQuestionsCommentsSubmit} 
                         onClickAnswerSubmit={props.onClickQuestionAnswerSubmit} 
-                        stuff={props.stuff} 
-                        userId={props.userId}
+                        stuff={props.stuff}
                     />
                 </TabPanel>
             </Tabs>

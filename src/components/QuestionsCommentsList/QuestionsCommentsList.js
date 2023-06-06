@@ -64,7 +64,7 @@ const QuestionsCommentsList = (props) => {
                 {props.stuff.questionAnswersComments.length !== 0 ? props.stuff.questionAnswersComments.map((questionComment) => {
                   return (
                     <Grid item xs={12} md={6} container justifyContent="center" key={questionComment._id} style={{ padding: 10 }}>
-                      <QuestionCard question={questionComment} userId={props.userId} onSubmitHandler={props.onClickAnswerSubmit} />
+                      <QuestionCard question={questionComment} onSubmitHandler={props.onClickAnswerSubmit} />
                     </Grid>
                   )
                 }) : (
