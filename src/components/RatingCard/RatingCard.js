@@ -1,7 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { AspectRatio, Card, Typography } from "@mui/joy";
 import { Grid, Rating } from "@mui/material";
 
 const RatingCard = ({ rating, comment, from }) => {
+    const navigate = useNavigate();
+    
+    const navigateHandler = () => {
+        navigate(`/profile/${from.id}`);
+    };
 
     return(
         <Card
@@ -15,7 +21,7 @@ const RatingCard = ({ rating, comment, from }) => {
         >
             <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item xs={4} sm={3} md={2} padding={1}>
-                    <AspectRatio ratio="1" sx={{ maxWidth: 90 }}>
+                    <AspectRatio ratio="1" sx={{ maxWidth: 90 }} onClick={navigateHandler}>
                         <img
                             src={from.avatar}
                             srcSet={from.avatar}
@@ -25,7 +31,7 @@ const RatingCard = ({ rating, comment, from }) => {
                     </AspectRatio>
                 </Grid>
                 <Grid item xs={8} sm={9} md={10}>
-                    <Grid container alignItems="center" justifyContent="space-between">
+                    <Grid container alignItems="center" justifyContent="space-between" onClick={navigateHandler}>
                         <Typography level="h6" aria-describedby="card-description" mb={1}>
                             {from.nickName}
                         </Typography>

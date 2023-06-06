@@ -1,11 +1,12 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AspectRatio, Box, Button, Card, CardContent, FormControl, FormLabel, Textarea, Typography } from "@mui/joy";
 import { Avatar, Collapse, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { useState } from "react";
-
 
 const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
+    const navigate = useNavigate();
     const [answerFormExpanded, setAnswerFormExpanded] = useState(false);
     const [seeAnswersExpanded, setSeeAnswersExpanded] = useState(false);
     const [text, setText] = useState('');
@@ -33,6 +34,10 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
         });
     };
 
+    const navigateHandler = (id) => {
+        navigate(`/profile/${id}`);
+    };
+
     return (
         <Card
             variant="outlined"
@@ -44,7 +49,7 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
             }}
         >
             <Grid container alignItems="center" justifyContent="space-between">
-                <Grid item xs={4} sm={3} padding={1}>
+                <Grid item xs={4} sm={3} padding={1} onClick={() => {navigateHandler(question.from.id)}}>
                     <AspectRatio ratio="1" sx={{ width: 90 }}>
                         <img
                             src={question.from.avatar}
@@ -55,7 +60,7 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
                     </AspectRatio>
                 </Grid>
                 <Grid item xs={8} sm={9}>
-                    <Grid container alignItems="center" justifyContent="space-between">
+                    <Grid container alignItems="center" justifyContent="space-between" onClick={() => {navigateHandler(question.from.id)}}>
                         <Typography level="h6" aria-describedby="card-description" mb={1}>
                             {question.from.nickName}
                         </Typography>
@@ -98,7 +103,7 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
                                     question.answers.length > 0 ? question.answers.map((answer, index) => (
                                         <div key={answer._id}>
                                             <ListItem alignItems="flex-start">
-                                                <ListItemAvatar>
+                                                <ListItemAvatar onClick={() => {navigateHandler(answer.from.id)}}>
                                                     <Avatar alt={answer.from.nickName} src={answer.from.avatar} />
                                                 </ListItemAvatar>
                                                 <ListItemText
@@ -116,13 +121,9 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
                                                             >
                                                                 {answer.body}
                                                             </Typography>
-                                                            {/* {
-                                                                isMine && (
-                                                                    <PositionedMenu />
-                                                                )
-                                                            } */}
                                                         </Grid>
                                                     }
+                                                    onClick={() => {navigateHandler(answer.from.id)}}
                                                 />
                                             </ListItem>
                                             {
