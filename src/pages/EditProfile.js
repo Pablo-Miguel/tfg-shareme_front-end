@@ -68,6 +68,8 @@ const EditProfile = () => {
             },
             (data) => {
 
+                dispatch(authActions.setVerified(event.data.verified));
+
                 if(event.data.avatar) {
                     changeImageHandler(event.data.avatar);
                 } else {

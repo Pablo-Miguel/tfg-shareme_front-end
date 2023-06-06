@@ -22,7 +22,11 @@ const useHttp = () => {
 
       applyData(response.data);
     } catch (err) {
-      setError(err.response.data.message || 'Something went wrong!');
+      setError(err.response.data.message || 
+        (err.response.data.keyValue.nickName && `${err.response.data.keyValue.nickName} ya existe en ShareMe`) || 
+        (err.response.data.keyValue.email && `${err.response.data.keyValue.email} ya existe en ShareMe`) || 
+        'Something went wrong!'
+      );
     }
     setIsLoading(false);
   }, []);

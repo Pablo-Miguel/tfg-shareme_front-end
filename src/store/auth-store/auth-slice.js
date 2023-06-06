@@ -30,8 +30,10 @@ const authSlice = createSlice({
             }
         },
         setAvatar(state, action) {
-            console.log('payload --> ' + action.payload);
             state.user.avatar = action.payload;
+        },
+        setVerified(state, action) {
+            state.user.verified = action.payload;
         }
     }
 });
