@@ -42,7 +42,7 @@ const ProfileHeaderBody = ({frontUser}) => {
                     </Typography>
                 </Grid>
             </Grid>
-            <FollowersModal title={title} open={open} setOpen={setOpen} type={type} userId={frontUser._id} />
+            <FollowersModal title={title} open={open} setOpen={setOpen} type={type} userId={frontUser._id} setType={setType} />
         </>
     );
 };

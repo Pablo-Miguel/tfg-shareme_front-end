@@ -16,7 +16,7 @@ import { Grid } from '@mui/material';
 
 const LIMIT = 10;
 
-const FollowersModal = ({ title, open, setOpen, type, userId }) => {
+const FollowersModal = ({ title, open, setOpen, type, userId, setType }) => {
     const { error, isLoading, sendRequest: fetchFollowers } = useHttp();
     const [ followers, setFollowers ] = useState([]);
     const [ viewMoreCont, setViewMoreCont ] = useState(0);
@@ -73,8 +73,13 @@ const FollowersModal = ({ title, open, setOpen, type, userId }) => {
         
     };
 
+    const onCloseHandler = () => {
+        setType('');
+        setOpen(false);
+    };
+
     return (
-        <Modal open={open} onClose={() => setOpen(false)}>
+        <Modal open={open} onClose={onCloseHandler}>
             <ModalOverflow>
                 <ModalDialog aria-labelledby="modal-dialog-overflow" layout='center'>
                     <ModalClose />
