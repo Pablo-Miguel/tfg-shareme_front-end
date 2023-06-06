@@ -5,7 +5,7 @@ import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 const SelectFormControl = props => {
 
     return (
-        <FormControl required={props.isRequired} style={{ marginBottom: 30 }}>
+        <FormControl required={props.isRequired}>
             {
                 props.label && 
                     <FormLabel>{props.label}</FormLabel>
