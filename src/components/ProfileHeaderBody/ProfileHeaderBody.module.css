@@ -1,0 +1,11 @@
+.container {
+    justify-content: center;
+}
+
+.avatar {
+    min-height: 300px;
+}
+
+.text {
+    font-weight: bold;
+}

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
-import classes from "./MainHeader.module.css";
-import shareme_blue_logo from "../../assets/imgs/logos/shareme_blue_logo.png";
+import { AppBar, Avatar, Box, Button, Container, Divider, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+
 import { logout } from "../../store/auth-store/auth-actions";
 import useUser from "../../hooks/useUser";
 import SideMenu from "../SideMenu/SideMenu";
-import { AppBar, Avatar, Box, Button, Container, Divider, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
-import { Link, useNavigate } from "react-router-dom";
+
+import shareme_blue_logo from "../../assets/imgs/logos/shareme_blue_logo.png";
+import classes from "./MainHeader.module.css";
 
 const MainHeader = () => {
   const [openSideMenu, setOpenSideMenu] = useState(false);
@@ -149,12 +151,12 @@ const MainHeader = () => {
 
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar src={user.avatar} alt={user.name} sx={{ backgroundColor: 'white' }}/>
+                  <IconButton onClick={handleOpenUserMenu}>
+                    <Avatar src={user.avatar} alt={user.name} className={classes.avatar} />
                   </IconButton>
                 </Tooltip>
                 <Menu
-                  sx={{ mt: '45px' }}
+                  className={classes.menu}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
                   anchorOrigin={{
@@ -169,24 +171,16 @@ const MainHeader = () => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'start',
-                    paddingTop: '10px',
-                    paddingBottom: '10px',
-                    paddingLeft: '20px',
-                    paddingRight: '20px'
-                  }}>
+                  <div className={classes.menuInContent}>
                     <Typography level="body2">Signed up as</Typography>
-                    <Typography fontWeight="lg" level="body2" style={{ fontWeight: 'bold' }}>
+                    <Typography fontWeight="lg" level="body2" className={classes.nickNameContent}>
                       {user.nickName}
                     </Typography>
                   </div>
                   <Divider />
                   {settings.map((setting) => (
                     <MenuItem key={setting.title} onClick={() => {setting.handler(); handleCloseUserMenu();}}>
-                      <Typography textAlign="center">{setting.title}</Typography>
+                      <Typography>{setting.title}</Typography>
                     </MenuItem>
                   ))}
                 </Menu>

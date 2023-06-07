@@ -1,0 +1,10 @@
+.text{
+    color: var(--joy-palette-text-tertiary, var(--joy-palette-neutral-500, #73738C)) !important;
+}
+
+.box {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-top: 16px;
+}

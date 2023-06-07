@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Card, CardOverflow, Divider, Typography } from "@mui/joy";
 
-import classes from "./CollectionCard.module.css";
+import { Avatar, Card, CardOverflow, Divider, Typography } from "@mui/joy";
+import { Grid } from "@mui/material";
+
 import PositionedMenu from "../UIs/PositionedMenu/PositionedMenu";
 import RedEyeIconBtn from "../UIs/RedEyeIconBtn/RedEyeIconBtn";
 import FavoriteIconBtn from "../UIs/FavoriteIconBtn/FavoriteIconBtn";
 import ImgCarousel from "../UIs/ImgCarousel/ImgCarousel";
-import useHttp from "../../hooks/useHttp";
-import { getAuthToken } from "../../utils/storage";
-import { Grid } from "@mui/material";
 import Alert from "../Alert/Alert";
 import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
+import useHttp from "../../hooks/useHttp";
+import { getAuthToken } from "../../utils/storage";
+
+import classes from "./CollectionCard.module.css";
 
 const CollectionCard = ({ collection: inputCollection, isMine }) => {
     const [ collection, setCollection ] = useState(inputCollection);
@@ -94,38 +96,25 @@ const CollectionCard = ({ collection: inputCollection, isMine }) => {
             <Card variant="outlined" className={classes.card}>
                 <CardOverflow 
                     variant="soft"
-                    sx={{
-                        display: "flex",
-                        gap: 1.5,
-                        py: 1.5,
-                        px: "var(--Card-padding)",
-                        bgcolor: "background.level1",
-                    }}
+                    className={classes.cardOverflowHeader}
                 >
-                    <CardOverflow sx={{ mt: "auto", mb: "auto" }}
+                    <CardOverflow
+                        className={classes.cardOverflowProfile}
                         onClick={profileHandler}
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            gap: 1.5
-                        }}
                     >
                         <Avatar src={collection.owner.avatar} alt={collection.owner.nickName} 
-                            style={{ width: 25, height: 25, marginRight: 10 }}
+                            className={classes.avatar}
                         />
                         <Typography
                             level="body1"
-                            sx={{
-                            fontWeight: "md",
-                            color: "text.secondary",
-                            }}
+                            className={classes.text}
                         >
                             {collection.owner.nickName}
                         </Typography>
                     </CardOverflow>
                     {
                         isMine && (
-                            <CardOverflow sx={{ ml: "auto" }}>
+                            <CardOverflow className={classes.positionedMenu}>
                                 <PositionedMenu onEditClick={onEditClickHandler} onDeleteClick={onDeleteClickHandler} />
                             </CardOverflow>
                         )
@@ -145,20 +134,13 @@ const CollectionCard = ({ collection: inputCollection, isMine }) => {
                 </CardOverflow>
 
                 <CardOverflow
-                    sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: 6,
-                    py: 1.5,
-                    px: "var(--Card-padding)",
-                    bgcolor: "background.level",
-                    }}
+                    className={classes.cardOverflowBody}
                 >
                     <CardOverflow>
-                        <Typography level="body1" sx={{ fontSize: "md", mt: 0.5, mb: 2 }}>
+                        <Typography level="body1" className={`${classes.title} ${classes.decoration}`}>
                             {collection.title}
                         </Typography>
-                        <Typography level="body2" sx={{ fontSize: "md", mt: 0.5, mb: 2 }}>
+                        <Typography level="body2" className={classes.decoration}>
                             Number of stuff: {collection.stuff.length}
                         </Typography>
                     </CardOverflow>
@@ -168,24 +150,18 @@ const CollectionCard = ({ collection: inputCollection, isMine }) => {
 
                 <CardOverflow
                     variant="soft"
-                    sx={{
-                    display: "flex",
-                    gap: 1.5,
-                    py: 1.5,
-                    px: "var(--Card-padding)",
-                    bgcolor: "background.level1",
-                    }}
+                    className={classes.cardOverflowHeader}
                 >
                     <Typography
                         level="body3"
-                        sx={{ fontWeight: "md", color: "text.secondary" }}
+                        className={classes.text}
                     >
                         {collection.views} views
                     </Typography>
                     <Divider orientation="vertical" />
                     <Typography
                         level="body3"
-                        sx={{ fontWeight: "md", color: "text.secondary" }}
+                        className={classes.text}
                     >
                         {collection.likes} likes
                     </Typography>

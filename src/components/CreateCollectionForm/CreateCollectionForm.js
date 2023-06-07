@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+
 import { FormControl, FormLabel, Typography } from '@mui/joy';
-import { Avatar, Checkbox, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
+import { Grid } from '@mui/material';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 
@@ -10,6 +11,9 @@ import InputFormControl from '../UIs/InputFormControl/InputFormControl';
 import TextAreaFormControl from '../UIs/TextAreaFormControl/TextAreaFormControl';
 import FormButton from '../UIs/FormButton/FormButton';
 import SelectFormControl from '../UIs/SelectFormControl/SelectFormControl';
+import CollectionFormList from '../CollectionFormList/CollectionFormList';
+
+import classes from './CreateCollectionForm.module.css';
 
 const CreateCollectionForm = (props) => {
     const formRef = useRef();
@@ -80,13 +84,13 @@ const CreateCollectionForm = (props) => {
                 text={text} 
                 onChange={(event) => setText(event.target.value)} 
             />
-            <FormControl style={{ marginBottom: 30 }}>
+            <FormControl>
                 <FormLabel>Stuff</FormLabel>
                 <Grid container>
-                    <Grid item xs={12} md={8} lg={9} style={{ padding: 5 }}>
+                    <Grid item xs={12} md={8} lg={9} className={classes.content}>
                         <SearchBar onSearch={props.onSearchStuff}/>
                     </Grid>
-                    <Grid item xs={12} md={4} lg={3} style={{ padding: 5 }}>
+                    <Grid item xs={12} md={4} lg={3} className={classes.content}>
                         <SelectFormControl
                             options={props.categories}
                             placeholder="Select category…"
@@ -99,50 +103,16 @@ const CreateCollectionForm = (props) => {
                 { props.collectionStuff ? (
                     <>
                         { props.collectionStuff.stuff.length > 0 ? (
-                                <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                                    {
-                                        props.collectionStuff.stuff.map((stuff) => {
-                                            const labelId = `checkbox-list-secondary-label-${stuff._id}`;
-                                            return (
-                                                <ListItem
-                                                    key={stuff._id}
-                                                    onClick={handleToggle(stuff._id)}
-                                                    secondaryAction={
-                                                        <Checkbox
-                                                            edge="end"
-                                                            checked={checked.indexOf(stuff._id) !== -1}
-                                                            inputProps={{ 'aria-labelledby': labelId }}
-                                                        />
-                                                    }
-                                                    disablePadding
-                                                >
-                                                    <ListItemButton>
-                                                        <ListItemAvatar>
-                                                            <Avatar
-                                                                alt={stuff.title}
-                                                                src={stuff.image}
-                                                            />
-                                                        </ListItemAvatar>
-                                                        <ListItemText id={labelId} primary={stuff.title} secondary={stuff.category} />
-                                                    </ListItemButton>
-                                                </ListItem>
-                                            );
-                                        })
-                                    }
-                                </List>
+                                <CollectionFormList 
+                                    collectionStuff={props.collectionStuff}
+                                    handleToggle={handleToggle}
+                                    checked={checked}
+                                />
                             ) : (
                                 <Typography level="body1"
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        height: '100%',
-                                        width: '100%',
-                                        minHeight: 200,
-                                        color: 'text.secondary'
-                                    }}
+                                    className={classes.noStuffFoundContent}
                                 >
-                                    No stuff found
+                                    No stuff found!
                                 </Typography>
                             )
                         }

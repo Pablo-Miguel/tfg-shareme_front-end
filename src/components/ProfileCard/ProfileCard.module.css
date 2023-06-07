@@ -1,0 +1,31 @@
+.card {
+    width: 100%;
+    margin: 10px;
+    min-width: 300px;
+}
+
+.avatar {
+    width: 90px;
+}
+
+.cardContent {
+    padding-right: 16px;
+    padding-left: 16px;
+}
+
+.nickName {
+    font-weight: var(--joy-fontWeight-md, 500);
+    color: var(--joy-palette-primary-plainColor, var(--joy-palette-primary-600, #054DA7)) !important;
+    margin-bottom: 4px !important;
+}
+
+.verified {
+    padding-left: 1.6px !important;
+    padding-right: 1.6px !important;
+    writing-mode: vertical-rl;
+    text-align: center;
+    font-size: var(--joy-fontSize-xs2, 0.625rem);
+    font-weight: var(--joy-fontWeight-xl2, 800);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}

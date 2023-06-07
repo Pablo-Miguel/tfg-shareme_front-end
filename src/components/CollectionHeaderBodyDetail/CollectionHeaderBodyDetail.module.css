@@ -1,0 +1,33 @@
+.contentSpace {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.avatar {
+    width: 25px !important;
+    height: 25px !important;
+    margin-right: 10px;
+}
+
+.carousel {
+    padding: 10px;
+}
+
+.info {
+    padding: 16px;
+}
+
+.infoDetails {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.infoContainer {
+    justify-content: center;
+}
+
+.boxContainer {
+    flex-direction: column;
+}

@@ -1,0 +1,5 @@
+.tabList {
+    --List-padding: 0px !important;
+    --List-radius: 0px !important;
+    --ListItem-minHeight: 48px !important;
+}

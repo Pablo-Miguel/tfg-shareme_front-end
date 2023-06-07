@@ -1,0 +1,29 @@
+.box {
+    display: flex;
+    gap: var(--Textarea-paddingBlock);
+    padding-top: var(--Textarea-paddingBlock);
+    border-top: 1px solid;
+    flex: auto;
+    border-color: var(--joy-palette-divider, rgba(var(--joy-palette-neutral-mainChannel, 115 115 140) / 0.28));
+}
+
+.commentBtn {
+    margin-left: auto !important;
+}
+
+.textArea {
+    min-width: 300px !important;
+}
+
+.text {
+    margin-top: 32px !important;
+}
+
+.container {
+    justify-content: center;
+}
+
+.ratingContainer {
+    justify-content: center;
+    padding: 10px;
+}

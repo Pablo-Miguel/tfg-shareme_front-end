@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { AspectRatio, Card, CardContent, CardOverflow, Divider, Typography } from '@mui/joy';
+
+import classes from './ProfileCard.module.css';
 
 const ProfileCard = ({ user, onClick }) => {
     const navigate = useNavigate();
@@ -16,11 +19,11 @@ const ProfileCard = ({ user, onClick }) => {
         <Card
             orientation="horizontal"
             variant="outlined"
-            sx={{ width: '100%', bgcolor: 'background.body', margin: '10px', minWidth: '300px' }}
+            className={classes.card}
             onClick={onClickProfileHandler}
         >
             <CardOverflow>
-                <AspectRatio ratio="1" sx={{ width: 90 }}>
+                <AspectRatio ratio="1" className={classes.avatar}>
                     <img
                         src={user.avatar}
                         srcSet={`${user.avatar} 2x`}
@@ -29,8 +32,8 @@ const ProfileCard = ({ user, onClick }) => {
                     />
                 </AspectRatio>
             </CardOverflow>
-            <CardContent sx={{ px: 2 }}>
-                <Typography fontWeight="md" textColor="primary.plainColor" mb={0.5}>
+            <CardContent className={classes.cardContent}>
+                <Typography className={classes.nickName}>
                     {user.nickName}
                 </Typography>
                 <Typography level="body2">
@@ -45,15 +48,7 @@ const ProfileCard = ({ user, onClick }) => {
                 <CardOverflow
                     variant="soft"
                     color="primary"
-                    sx={{
-                        px: 0.2,
-                        writingMode: 'vertical-rl',
-                        textAlign: 'center',
-                        fontSize: 'xs2',
-                        fontWeight: 'xl2',
-                        letterSpacing: '1px',
-                        textTransform: 'uppercase',
-                    }}
+                    className={classes.verified}
                 >
                     Verified
                 </CardOverflow>

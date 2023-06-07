@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+
 import { Grid, Typography } from "@mui/material";
+
 import FollowersModal from "../FollowersModal/FollowersModal";
+
+import classes from "./ProfileHeaderBody.module.css";
 
 const ProfileHeaderBody = ({frontUser}) => {
 
@@ -23,20 +27,20 @@ const ProfileHeaderBody = ({frontUser}) => {
 
     return (
         <>
-            <Grid item xs={12} container justifyContent="center">
-                <img src={frontUser.avatar} alt="stuff_image" style={{ minHeight: 300 }} />
+            <Grid item xs={12} container className={classes.container}>
+                <img src={frontUser.avatar} alt="stuff_image" className={classes.avatar} />
             </Grid>
             <Grid item padding={2} container>
-                <Grid item xs={6} container justifyContent="center" onClick={onFollowersClickHandler}>
+                <Grid item xs={6} container className={classes.container} onClick={onFollowersClickHandler}>
                     <Typography variant="p" component="p"
-                        style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
+                        className={classes.text}
                     >
                         {frontUser.followers} followers
                     </Typography>
                 </Grid>
-                <Grid item xs={6} container justifyContent="center" onClick={onFollowingClickHandler}>
+                <Grid item xs={6} container className={classes.container} onClick={onFollowingClickHandler}>
                     <Typography variant="p" component="p"
-                        style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
+                        className={classes.text}
                     >
                         {frontUser.following} following
                     </Typography>

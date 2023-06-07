@@ -1,0 +1,32 @@
+.card {
+    width: calc(100% - 35px);
+    gap: 16px;
+}
+
+.card:hover {
+    box-shadow: var(--joy-shadow-md, var(--joy-shadowRing, 0 0 #000), 0.3px 0.8px 1.1px rgba(var(--joy-shadowChannel, 187 187 187) / 0.12), 1.1px 2.8px 3.9px -0.4px rgba(var(--joy-shadowChannel, 187 187 187) / 0.17), 2.4px 6.1px 8.6px -0.8px rgba(var(--joy-shadowChannel, 187 187 187) / 0.23), 5.3px 13.3px 18.8px -1.2px rgba(var(--joy-shadowChannel, 187 187 187) / 0.29));
+    border-color: var(--joy-palette-neutral-outlinedHoverBorder, var(--joy-palette-neutral-300, #B9B9C6));
+}
+
+.container {
+    align-items: center;
+    justify-content: space-between !important;
+}
+
+.avatarContainer {
+    padding: 8px !important;
+}
+
+.avatar {
+    max-width: 90px;
+}
+
+.nickName {
+    margin-bottom: 8px !important;
+}
+
+.body {
+    word-wrap: break-word;
+    hyphens: auto;
+    margin-bottom: 4px !important;
+}

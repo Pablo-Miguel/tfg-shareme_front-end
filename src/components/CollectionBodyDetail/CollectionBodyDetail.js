@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { Avatar, Box, Button, Divider, Grid, Typography } from "@mui/material";
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 
 import LikeToggleBtn from '../UIs/LikeToggleBtn/LikeToggleBtn';
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
+
+import classes from './CollectionBodyDetail.module.css';
 
 const CollectionBodyDetail = ({ collection, user, onLike, onDelete }) => {
     const navigate = useNavigate();
@@ -21,10 +24,10 @@ const CollectionBodyDetail = ({ collection, user, onLike, onDelete }) => {
 
     return (
         <>
-            <Box sx={{ display: { xs: 'none', sm: 'flex' }, mr: 2 }} flexDirection="column">
-                <Grid item xs={12} container direction="row" style={{ marginTop: 10, marginBottom: 10 }}>
+            <Box sx={{ display: { xs: 'none', sm: 'flex' }, mr: 2 }} className={classes.boxContainer}>
+                <Grid item xs={12} container className={classes.contentSpace}>
                     <Avatar src={collection.owner.avatar} alt={collection.owner.name} 
-                        style={{ width: 25, height: 25, marginRight: 10 }}
+                        className={classes.avatar}
                     />
                     <Typography variant="p" component="p">
                         {collection.owner.nickName}
@@ -32,10 +35,10 @@ const CollectionBodyDetail = ({ collection, user, onLike, onDelete }) => {
                 </Grid>
             </Box>
 
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            <Divider className={classes.contentSpace}/>
             
             <Typography variant="h5" component="h5"
-                style={{ fontWeight: "bold" }}
+                className={classes.title}
             >
                 {collection.title}
             </Typography>
@@ -43,18 +46,18 @@ const CollectionBodyDetail = ({ collection, user, onLike, onDelete }) => {
                 {collection.description}
             </Typography>
 
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            <Divider className={classes.contentSpace}/>
 
             <LikeToggleBtn isLiked={collection.isLiked} onClick={onLike} isMine={collection.owner._id === user._id} />
 
             {
                 collection.owner._id === user._id && (
                 <div>
-                    <Button onClick={onEditClickHandler} variant="contained" color="primary" style={{ marginRight: 20 }} startIcon={<EditRoundedIcon />}>
-                        <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Edit</Typography>
+                    <Button onClick={onEditClickHandler} variant="contained" color="primary" className={classes.buttonContent} startIcon={<EditRoundedIcon />}>
+                        <Typography variant="p" component="p" className={classes.buttonTextDecoration}>Edit</Typography>
                     </Button>
                     <Button onClick={onDeleteClickHandler} variant="contained" color="error" startIcon={<DeleteForeverRoundedIcon />}>
-                        <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Delete</Typography>
+                        <Typography variant="p" component="p" className={classes.buttonTextDecoration}>Delete</Typography>
                     </Button>
                 </div>
                 )

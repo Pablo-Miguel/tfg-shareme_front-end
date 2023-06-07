@@ -1,0 +1,27 @@
+.contentSpace {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.avatar {
+    width: 25px !important;
+    height: 25px !important;
+    margin-right: 10px;
+}
+
+.title {
+    font-weight: bold !important;
+}
+
+.buttonContent {
+    margin-right: 20px !important;
+}
+
+.buttonTextDecoration {
+    text-decoration: none;
+    color: white;
+}
+
+.boxContainer {
+    flex-direction: column;
+}

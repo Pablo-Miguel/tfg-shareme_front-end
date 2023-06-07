@@ -7,6 +7,8 @@ import { getAuthToken } from '../../utils/storage';
 import useHttp from '../../hooks/useHttp';
 import StuffCard from '../StuffCard/StuffCard';
 
+import classes from './LikedStuffList.module.css';
+
 const LikedStuffList = ({ likedStuff }) => {
     const [ viewMoreCont, setViewMoreCont ] = useState(0);
     const [ viewMore, setViewMore ] = useState(likedStuff.total <= (viewMoreCont + 1) * 10);
@@ -36,9 +38,9 @@ const LikedStuffList = ({ likedStuff }) => {
     return (
         <>
             { stuff.length > 0 && 
-                <Grid container style={{ marginTop: 20 }}>
+                <Grid container>
                     {stuff.map((item) => (
-                        <Grid item container xs={12} md={6} lg={6} key={item._id} justifyContent="center">
+                        <Grid item container xs={12} md={6} lg={6} key={item._id} className={classes.content}>
                             <StuffCard
                                 id={item._id}
                                 stuff={item}
@@ -59,8 +61,8 @@ const LikedStuffList = ({ likedStuff }) => {
                 </Grid>
             }
             { stuff.length <= 0 &&
-                <Grid item xs={12} container justifyContent="center" display="flex">
-                    <Typography variant="h5" component="h5" style={{ fontWeight: "bold", marginTop: 100 }}>
+                <Grid item xs={12} container className={classes.content}>
+                    <Typography variant="h5" component="h5" className={classes.text}>
                         No liked stuff!
                     </Typography>
                 </Grid>

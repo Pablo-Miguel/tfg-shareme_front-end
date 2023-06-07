@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+
 import { FormControl, FormLabel, Switch } from "@mui/joy";
 import SellRoundedIcon from '@mui/icons-material/SellRounded';
 import RemoveShoppingCartRoundedIcon from '@mui/icons-material/RemoveShoppingCartRounded';
@@ -10,6 +11,9 @@ import TextAreaFormControl from "../UIs/TextAreaFormControl/TextAreaFormControl"
 import SelectFormControl from "../UIs/SelectFormControl/SelectFormControl";
 import FormButton from "../UIs/FormButton/FormButton";
 import ImageFormControl from "../UIs/ImageFormControl/ImageFormControl";
+
+import classes from "./CreateStuffForm.module.css";
+
 
 const categories = [
     "Music",
@@ -125,7 +129,7 @@ const CreateStuffForm = (props) => {
 
             <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <FormControl style={{ marginBottom: 30 }}>
+                    <FormControl className={classes.hasOfferContent}>
                         <FormLabel>Has offer</FormLabel>
                         <Switch
                             color={hasOffer ? 'success' : 'danger'}

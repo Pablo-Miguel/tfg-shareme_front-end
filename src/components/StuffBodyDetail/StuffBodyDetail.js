@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { Avatar, Box, Button, Divider, Grid, Typography } from "@mui/material";
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import LocalMallRoundedIcon from '@mui/icons-material/LocalMallRounded';
@@ -12,6 +13,8 @@ import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 
 import LikeToggleBtn from "../UIs/LikeToggleBtn/LikeToggleBtn";
 import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
+
+import classes from "./StuffBodyDetail.module.css";
 
 const StuffBodyDetail = ({current_stuff, user, onLike, onDelete}) => {
     const navigate = useNavigate();
@@ -27,27 +30,27 @@ const StuffBodyDetail = ({current_stuff, user, onLike, onDelete}) => {
 
     return (
         <>
-            <Box sx={{ display: { xs: 'none', sm: 'flex' }, mr: 2 }} flexDirection="column">
-                <Grid item xs={12} container direction="row" style={{ marginTop: 10, marginBottom: 10 }}>
-                <Avatar src={current_stuff.stuff.owner.avatar} alt={current_stuff.stuff.owner.name} 
-                    style={{ width: 25, height: 25, marginRight: 10 }}
-                />
-                <Typography variant="p" component="p">
-                    {current_stuff.stuff.owner.nickName}
-                </Typography>
+            <Box sx={{ display: { xs: 'none', sm: 'flex' }, mr: 2 }} className={classes.box}>
+                <Grid item xs={12} container className={`${classes.container} ${classes.avatarGrid}`}>
+                    <Avatar src={current_stuff.stuff.owner.avatar} alt={current_stuff.stuff.owner.name} 
+                        className={classes.avatar}
+                    />
+                    <Typography variant="p" component="p">
+                        {current_stuff.stuff.owner.nickName}
+                    </Typography>
                 </Grid>
 
                 <Typography variant="h6" component="h6"
-                style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold"}}
+                    className={classes.category}
                 >
-                <ArrowForwardIosRoundedIcon /> {current_stuff.stuff.category}
+                    <ArrowForwardIosRoundedIcon /> {current_stuff.stuff.category}
                 </Typography>
             </Box>
 
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            <Divider className={classes.container}/>
             
             <Typography variant="h5" component="h5"
-                style={{ fontWeight: "bold" }}
+                className={classes.title}
             >
                 {current_stuff.stuff.title}
             </Typography>
@@ -55,58 +58,58 @@ const StuffBodyDetail = ({current_stuff, user, onLike, onDelete}) => {
                 {current_stuff.stuff.description}
             </Typography>
 
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            <Divider className={classes.container}/>
 
             {
                 current_stuff.stuff.has_offer ? (
                 <Grid item xs={6} container>
                     <div>
-                    <Typography variant="h6" component="h6" color="grey"
-                        style={{ display: "flex", alignItems: "center", gap: 5, textDecoration: "line-through" }}
-                    >
-                        <LocalMallRoundedIcon /> {current_stuff.stuff.price}€
-                    </Typography>
-                    <Typography variant="h5" component="h5" color="green"
-                        style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold"}}
-                    >
-                        <LocalOfferRoundedIcon /> {current_stuff.stuff.offer_price}€
-                    </Typography>
+                        <Typography variant="h6" component="h6" color="grey"
+                            className={`${classes.text} ${classes.lineThroughPrice}`}
+                        >
+                            <LocalMallRoundedIcon /> {current_stuff.stuff.price}€
+                        </Typography>
+                        <Typography variant="h5" component="h5" color="green"
+                            className={`${classes.text} ${classes.boldPrice}`}
+                        >
+                            <LocalOfferRoundedIcon /> {current_stuff.stuff.offer_price}€
+                        </Typography>
                     </div>
-                    <div style={{ marginTop: "auto", marginLeft: 30 }}>
-                    <Typography variant="h5" component="h5" color="error"
-                        style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold"}}
-                    >
-                        {Math.round(((current_stuff.stuff.price - current_stuff.stuff.offer_price) / current_stuff.stuff.price) * 100)} <PercentRoundedIcon />
-                    </Typography>
+                    <div className={classes.percent}>
+                        <Typography variant="h5" component="h5" color="error"
+                            className={`${classes.text} ${classes.boldPrice}`}
+                        >
+                            {Math.round(((current_stuff.stuff.price - current_stuff.stuff.offer_price) / current_stuff.stuff.price) * 100)} <PercentRoundedIcon />
+                        </Typography>
                     </div>
                 </Grid>
                 ) : (
                 <Typography variant="h6" component="h6"
-                    style={{ display: "flex", alignItems: "center", gap: 5 }}
+                    className={classes.text}
                 >
                     <LocalMallRoundedIcon /> {current_stuff.stuff.price}€
                 </Typography>
                 )
             }
             
-            <Button variant="contained" color="secondary" style={{ marginTop: 10 }} startIcon={<ShoppingCartOutlinedIcon />} endIcon={<OpenInNewRoundedIcon />}>
-                <Typography variant="p" component="a" href={current_stuff.stuff.shopping_link}  target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "white" }}>Shopping link</Typography>
+            <Button variant="contained" color="secondary" className={classes.buttonContainer} startIcon={<ShoppingCartOutlinedIcon />} endIcon={<OpenInNewRoundedIcon />}>
+                <Typography variant="p" component="a" href={current_stuff.stuff.shopping_link}  target="_blank" rel="noopener noreferrer" className={classes.link}>Shopping link</Typography>
             </Button>
 
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            <Divider className={classes.container}/>
 
             <LikeToggleBtn isLiked={current_stuff.isLiked} onClick={onLike} isMine={current_stuff.stuff.owner._id === user._id} />
 
             {
                 current_stuff.stuff.owner._id === user._id && (
-                <div>
-                    <Button onClick={onEditClickHandler} variant="contained" color="primary" style={{ marginRight: 20 }} startIcon={<EditRoundedIcon />}>
-                        <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Edit</Typography>
-                    </Button>
-                    <Button onClick={onDeleteClickHandler} variant="contained" color="error" startIcon={<DeleteForeverRoundedIcon />}>
-                        <Typography variant="p" component="p" style={{ textDecoration: "none", color: "white" }}>Delete</Typography>
-                    </Button>
-                </div>
+                    <div>
+                        <Button onClick={onEditClickHandler} variant="contained" color="primary" className={classes.btn} startIcon={<EditRoundedIcon />}>
+                            <Typography variant="p" component="p" className={classes.link}>Edit</Typography>
+                        </Button>
+                        <Button onClick={onDeleteClickHandler} variant="contained" color="error" startIcon={<DeleteForeverRoundedIcon />}>
+                            <Typography variant="p" component="p" className={classes.link}>Delete</Typography>
+                        </Button>
+                    </div>
                 )
             }
 

@@ -1,9 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { AspectRatio, Box, Button, Card, CardContent, FormControl, FormLabel, Textarea, Typography } from "@mui/joy";
 import { Avatar, Collapse, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+
+import classes from "./QuestionCard.module.css";
 
 const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
     const navigate = useNavigate();
@@ -42,15 +45,11 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
         <Card
             variant="outlined"
             orientation="horizontal"
-            sx={{
-                width: 'calc(100% - 35px)',
-                gap: 2,
-                '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
-            }}
+            className={classes.card}
         >
-            <Grid container alignItems="center" justifyContent="space-between">
-                <Grid item xs={4} sm={3} padding={1} onClick={() => {navigateHandler(question.from.id)}}>
-                    <AspectRatio ratio="1" sx={{ width: 90 }}>
+            <Grid container className={classes.container}>
+                <Grid item xs={4} lg={3} className={classes.avatarContainer} onClick={() => {navigateHandler(question.from.id)}}>
+                    <AspectRatio ratio="1" className={classes.avatar}>
                         <img
                             src={question.from.avatar}
                             srcSet={question.from.avatar}
@@ -59,40 +58,36 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
                         />
                     </AspectRatio>
                 </Grid>
-                <Grid item xs={8} sm={9}>
-                    <Grid container alignItems="center" justifyContent="space-between" onClick={() => {navigateHandler(question.from.id)}}>
-                        <Typography level="h6" aria-describedby="card-description" mb={1}>
+                <Grid item xs={8} lg={9}>
+                    <Grid container className={classes.container} onClick={() => {navigateHandler(question.from.id)}}>
+                        <Typography level="h6" aria-describedby="card-description" className={classes.nickName}>
                             {question.from.nickName}
                         </Typography>
                     </Grid>
                     <Typography 
                         level="h5" 
                         id="card-description"
-                        mb={0.5}
-                        sx={{
-                            wordWrap: 'break-word',
-                            hyphens: 'auto',
-                        }}
+                        className={classes.question}
                     >
                         {question.question}
                     </Typography>
                 </Grid>
 
-                <Grid item xs={12} alignItems="center">
+                <Grid item xs={12} className={classes.gridContainer}>
                     <Divider />
                 </Grid>
                 
-                <Grid item container xs={12} alignItems="center">
-                    <Typography level="body2" sx={{ color: 'text.secondary' }}>
+                <Grid item container xs={12} className={classes.gridContainer}>
+                    <Typography level="body2" className={classes.seeAnswerTxt}>
                         See answer(s)
                     </Typography>
                     <IconButton
                         onClick={handleSeeAnswersExpandClick}
                         aria-expanded={seeAnswersExpanded}
                         aria-label="show more"
-                        style={{ marginLeft: 'auto' }}
+                        className={classes.iconButton}
                     >
-                    {seeAnswersExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        {seeAnswersExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                     </IconButton>
                 </Grid>
                 <Grid item xs={12}>
@@ -102,22 +97,18 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
                                 {
                                     question.answers.length > 0 ? question.answers.map((answer, index) => (
                                         <div key={answer._id}>
-                                            <ListItem alignItems="flex-start">
+                                            <ListItem>
                                                 <ListItemAvatar onClick={() => {navigateHandler(answer.from.id)}}>
                                                     <Avatar alt={answer.from.nickName} src={answer.from.avatar} />
                                                 </ListItemAvatar>
                                                 <ListItemText
                                                     primary={answer.from.nickName}
                                                     secondary={
-                                                        <Grid container alignItems="center">
+                                                        <Grid container className={classes.gridContainer}>
                                                             <Typography
                                                                 level="body1"
                                                                 id="card-description"
-                                                                mb={0.5}
-                                                                sx={{
-                                                                    wordWrap: 'break-word',
-                                                                    hyphens: 'auto',
-                                                                }}
+                                                                className={classes.question}
                                                             >
                                                                 {answer.body}
                                                             </Typography>
@@ -133,7 +124,7 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
                                             }
                                         </div>
                                     )) : (
-                                        <Typography level="body1" sx={{ color: 'text.secondary', textAlign: "center" }}>
+                                        <Typography level="body1" className={classes.noAnswerText}>
                                             No answers yet
                                         </Typography>
                                     )
@@ -143,21 +134,21 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
                     </Collapse>
                 </Grid>
 
-                <Grid item xs={12} alignItems="center">
+                <Grid item xs={12} className={classes.gridContainer}>
                     <Divider />
                 </Grid>
 
-                <Grid item container xs={12} alignItems="center">
-                    <Typography level="body2" sx={{ color: 'text.secondary' }}>
+                <Grid item container xs={12} className={classes.gridContainer}>
+                    <Typography level="body2" className={classes.seeAnswerTxt}>
                         {question.answers.length} answer(s)
                     </Typography>
                     <IconButton
                         onClick={handleAnswerFormExpandClick}
                         aria-expanded={answerFormExpanded}
                         aria-label="show more"
-                        style={{ marginLeft: 'auto' }}
+                        className={classes.iconButton}
                     >
-                    {answerFormExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        {answerFormExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                     </IconButton>
                 </Grid>
                 <Grid item xs={12}>
@@ -176,24 +167,15 @@ const QuestionCard = ({ question, onSubmitHandler: submitHandler }) => {
                                         minRows={3}
                                         endDecorator={
                                             <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    gap: 'var(--Textarea-paddingBlock)',
-                                                    pt: 'var(--Textarea-paddingBlock)',
-                                                    borderTop: '1px solid',
-                                                    borderColor: 'divider',
-                                                    flex: 'auto',
-                                                }}
+                                                className={classes.box}
                                             >
                                                 <Typography level="body3">
                                                     {text.length} character(s)
                                                 </Typography>
-                                                <Button type="submit" sx={{ ml: 'auto' }} >Comment</Button>
+                                                <Button type="submit" className={classes.commentBtn} >Comment</Button>
                                             </Box>
                                         }
-                                        sx={{
-                                            minWidth: 300
-                                        }}
+                                        className={classes.textArea}
                                     />
                                 </FormControl>
                             </form>

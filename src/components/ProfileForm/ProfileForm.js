@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
 import { Grid } from "@mui/material";
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
@@ -41,7 +42,6 @@ const ProfileForm = ({onSubmit, isLoading}) => {
     return (
         <form
             onSubmit={onSubmitHandler}
-            width="100%"
         >
             <Grid container spacing={2}>
                 <Grid item xs={12} container spacing={2}>

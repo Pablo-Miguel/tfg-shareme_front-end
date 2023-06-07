@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 import { Grid, Typography } from "@mui/material";
 
 import SearchBar from "../UIs/SearchBar/SearchBar";
@@ -5,8 +7,10 @@ import Spinner from "../Spinner/Spinner";
 import useHttp from "../../hooks/useHttp";
 import { getAuthToken } from "../../utils/storage";
 import PaginationUI from "../UIs/Pagination/PaginationUI";
-import { useState } from "react";
 import CollectionCard from "../CollectionCard/CollectionCard";
+
+import classes from "./CollectionList.module.css";
+
 
 const LIMIT = 10;
 
@@ -77,14 +81,14 @@ const CollectionList = ({ collections: initCollections, total: initTotal, isMe, 
                 !isLoading ? (
                     <>
                         { (total === 0 || collections.length === 0) && 
-                            <Grid item xs={12} container justifyContent="center" display="flex">
-                                <Typography variant="h5" component="h5" style={{ fontWeight: "bold", marginTop: 100 }}>
+                            <Grid item xs={12} container className={classes.noCollectionContent}>
+                                <Typography variant="h5" component="h5" className={classes.text}>
                                     No collections found yet!
                                 </Typography>
                             </Grid>
                         }
                         {collections.map((item) => (
-                            <Grid item container xs={12} md={6} lg={6} key={item._id} justifyContent="center">
+                            <Grid item container xs={12} md={6} lg={6} key={item._id} className={classes.content}>
                                 <CollectionCard 
                                     id={item._id} 
                                     collection={item} 
@@ -101,7 +105,7 @@ const CollectionList = ({ collections: initCollections, total: initTotal, isMe, 
                 
             }
             {Math.ceil(total / LIMIT) > 1 && (
-              <Grid item xs={12} container justifyContent="center">
+              <Grid item xs={12} container className={classes.content}>
                 <PaginationUI page={page + 1} count={Math.ceil(total / LIMIT)} onChange={onChangePaginationHandler} />
               </Grid>
             )}

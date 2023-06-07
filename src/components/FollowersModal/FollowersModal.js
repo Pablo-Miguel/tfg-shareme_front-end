@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import List from '@mui/joy/List';
+
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
 import ModalDialog from '@mui/joy/ModalDialog';
 import ModalOverflow from '@mui/joy/ModalOverflow';
 import Typography from '@mui/joy/Typography';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
+import { Grid } from '@mui/material';
 
 import useHttp from '../../hooks/useHttp';
 import Spinner from '../Spinner/Spinner';
 import { getAuthToken } from '../../utils/storage';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import FormButton from '../UIs/FormButton/FormButton';
-import { Grid } from '@mui/material';
+
+import classes from './FollowersModal.module.css';
+
 
 const LIMIT = 10;
 
@@ -83,15 +86,15 @@ const FollowersModal = ({ title, open, setOpen, type, userId, setType }) => {
             <ModalOverflow>
                 <ModalDialog aria-labelledby="modal-dialog-overflow" layout='center'>
                     <ModalClose />
-                    <Typography id="modal-dialog-overflow" component="h2" style={{ textAlign: 'center' }}>
+                    <Typography id="modal-dialog-overflow" component="h2" className={classes.title}>
                         {title}
                     </Typography>
                     {
                         followers.length > 0 && !isLoading && !error && (
                             <>
-                                    <Grid container spacing={3}>
+                                    <Grid container>
                                             {followers.map((item) => (
-                                                <Grid item xs={12} md={6} key={item._id} justifyContent="center">
+                                                <Grid item xs={12} md={6} key={item._id} className={classes.cardsContent}>
                                                     <ProfileCard user={item} onClick={onClickProfileHandler} />
                                                 </Grid>
                                             ))}

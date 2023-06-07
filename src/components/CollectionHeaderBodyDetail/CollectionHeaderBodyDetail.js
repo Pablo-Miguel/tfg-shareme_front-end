@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Avatar, Box, Grid, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
@@ -6,22 +8,23 @@ import { AspectRatio } from "@mui/joy";
 import ImgCarousel from "../UIs/ImgCarousel/ImgCarousel";
 
 import not_found from "../../assets/imgs/resource/not-found.jpg";
+import classes from "./CollectionHeaderBodyDetail.module.css";
 
 const CollectionHeaderBodyDetail = ({ collection }) => {
 
     return (
         <>
-            <Box sx={{ display: { xs: 'flex', sm: 'none' }, mr: 2 }} flexDirection="column">
-                <Grid item xs={12} container direction="row" style={{ marginTop: 10, marginBottom: 10 }}>
+            <Box sx={{ display: { xs: 'flex', sm: 'none' }, mr: 2 }} className={classes.boxContainer}>
+                <Grid item xs={12} container className={classes.contentSpace}>
                     <Avatar src={collection.owner.avatar} alt={collection.owner.name} 
-                        style={{ width: 25, height: 25, marginRight: 10 }}
+                        className={classes.avatar}
                     />
                     <Typography variant="p" component="p">
-                    {collection.owner.nickName}
+                        {collection.owner.nickName}
                     </Typography>
                 </Grid>
             </Box>
-            <Grid item xs={12} style={{ padding: 10 }}>
+            <Grid item xs={12} className={classes.carousel}>
                 {collection.stuff.length > 0 && <ImgCarousel stuff={collection.stuff} />}
                 {collection.stuff.length === 0 &&
                     <AspectRatio ratio={1}>
@@ -29,17 +32,17 @@ const CollectionHeaderBodyDetail = ({ collection }) => {
                     </AspectRatio>
                 }
             </Grid>
-            <Grid item padding={2} container>
-                <Grid item xs={6} container justifyContent="center">
+            <Grid item container className={classes.info}>
+                <Grid item xs={6} container className={classes.infoContainer}>
                     <Typography variant="p" component="p"
-                    style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
+                        className={classes.infoDetails}
                     >
-                    <RemoveRedEyeIcon color="secondary" /> {collection.views}
+                        <RemoveRedEyeIcon color="secondary" /> {collection.views}
                     </Typography>
                 </Grid>
-                <Grid item xs={6} container justifyContent="center">
+                <Grid item xs={6} container className={classes.infoContainer}>
                     <Typography variant="p" component="p"
-                    style={{ display: "flex", alignItems: "center", gap: 5, fontWeight: "bold" }}
+                        className={classes.infoDetails}
                     >
                     <FavoriteIcon color="error" /> {collection.likes}
                     </Typography>

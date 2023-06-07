@@ -11,3 +11,25 @@ img {
   color: #fff;
   text-decoration: none;
 }
+
+.menuInContent {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.nickNameContent {
+  font-weight: bold !important;
+}
+
+.menu {
+  margin-top: 45px;
+}
+
+.avatar {
+  background-color: white;
+}

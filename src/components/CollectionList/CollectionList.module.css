@@ -1,0 +1,13 @@
+.noCollectionContent {
+    justify-content: center;
+    display: flex;
+}
+
+.text {
+    font-weight: bold !important;
+    margin-top: 100px !important;
+}
+
+.content {
+    justify-content: center;
+}

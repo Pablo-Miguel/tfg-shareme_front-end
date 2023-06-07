@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { likeStuff, unlikeStuff } from "../../store/stuff-store/stuff-actions";
-import classes from "./StuffCard.module.css";
 import { AspectRatio, Avatar, Card, CardOverflow, Divider, Typography } from "@mui/joy";
 import PositionedMenu from "../UIs/PositionedMenu/PositionedMenu";
 import RedEyeIconBtn from "../UIs/RedEyeIconBtn/RedEyeIconBtn";
@@ -12,6 +11,8 @@ import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmati
 import useHttp from "../../hooks/useHttp";
 import Alert from "../Alert/Alert";
 import { getAuthToken } from "../../utils/storage";
+
+import classes from "./StuffCard.module.css";
 
 const StuffCard = ({ stuff: inputStuff, isMine }) => {
   const [ openModal, setOpenModal ] = useState(false);
@@ -86,38 +87,25 @@ const StuffCard = ({ stuff: inputStuff, isMine }) => {
       <Card variant="outlined" className={classes.card}>
         <CardOverflow 
           variant="soft"
-          sx={{
-            display: "flex",
-            gap: 1.5,
-            py: 1.5,
-            px: "var(--Card-padding)",
-            bgcolor: "background.level1",
-          }}
+          className={classes.cardOverflowHeader}
         >
-          <CardOverflow sx={{ mt: "auto", mb: "auto" }}
+          <CardOverflow
             onClick={profileHandler}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 1.5
-            }}
+            className={classes.cardOverflowProfile}
           >
             <Avatar src={stuff.owner.avatar} alt={stuff.owner.name} 
-              style={{ width: 25, height: 25, marginRight: 10 }}
+              className={classes.avatar}
             />
             <Typography
               level="body1"
-              sx={{
-                fontWeight: "md",
-                color: "text.secondary",
-              }}
+              className={classes.text}
             >
               {stuff.owner.nickName}
             </Typography>
           </CardOverflow>
           {
             isMine && (
-              <CardOverflow sx={{ ml: "auto" }}>
+              <CardOverflow className={classes.positionedMenu}>
                 <PositionedMenu onEditClick={onEditClickHandler} onDeleteClick={onDeleteClickHandler} />
               </CardOverflow>
             )
@@ -140,37 +128,30 @@ const StuffCard = ({ stuff: inputStuff, isMine }) => {
         </CardOverflow>
 
         <CardOverflow
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 6,
-            py: 1.5,
-            px: "var(--Card-padding)",
-            bgcolor: "background.level",
-          }}
+          className={classes.cardOverflowBody}
         >
           <CardOverflow>
-            <Typography level="h2" sx={{ fontSize: "lg", mt: 2 }}>
+            <Typography level="h2" className={classes.title}>
               {stuff.title}
             </Typography>
-            <Typography level="body2" sx={{ fontSize: "md", mt: 0.5, mb: 2 }}>
+            <Typography level="body2" className={classes.category}>
               {stuff.category}
             </Typography>
           </CardOverflow>
 
           {
             stuff.has_offer ? (
-              <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
-                <Typography level="body2" sx={{ fontSize: "md", mt: 2, textDecoration: "line-through" }}>
+              <CardOverflow className={classes.priceContent}>
+                <Typography level="body2" className={classes.priceLineThrough}>
                   {stuff.price}€
                 </Typography>
-                <Typography level="h2" sx={{ fontSize: "lg", fontWeight: "bold" }} color="success">
+                <Typography level="h2" className={classes.offerPrice} color="success">
                   {stuff.offer_price}€
                 </Typography>
               </CardOverflow>
             ) : (
-              <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
-                <Typography level="h1" sx={{ fontSize: "lg", fontWeight: "bold" }}>
+              <CardOverflow className={classes.priceContent}>
+                <Typography level="h1" className={classes.offerPrice}>
                   {stuff.price}€
                 </Typography>
               </CardOverflow>
@@ -179,8 +160,8 @@ const StuffCard = ({ stuff: inputStuff, isMine }) => {
 
           {
             stuff.has_offer && (
-              <CardOverflow sx={{ mt: "auto", mb: "auto" }}>
-                <Typography level="body2" sx={{ fontSize: "lg", mt: 2, fontWeight: "bold" }} color="danger">
+              <CardOverflow className={classes.priceContent}>
+                <Typography level="body2" className={classes.percent} color="danger">
                   {Math.round(((stuff.price - stuff.offer_price) / stuff.price) * 100)}%
                 </Typography>
               </CardOverflow>
@@ -193,24 +174,18 @@ const StuffCard = ({ stuff: inputStuff, isMine }) => {
 
         <CardOverflow
           variant="soft"
-          sx={{
-            display: "flex",
-            gap: 1.5,
-            py: 1.5,
-            px: "var(--Card-padding)",
-            bgcolor: "background.level1",
-          }}
+          className={classes.cardOverflowHeader}
         >
           <Typography
             level="body3"
-            sx={{ fontWeight: "md", color: "text.secondary" }}
+            className={classes.text}
           >
             {stuff.views} views
           </Typography>
           <Divider orientation="vertical" />
           <Typography
             level="body3"
-            sx={{ fontWeight: "md", color: "text.secondary" }}
+            className={classes.text}
           >
             {stuff.likes} likes
           </Typography>

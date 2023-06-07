@@ -1,6 +1,10 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
+
 import { AspectRatio, Card, Typography } from "@mui/joy";
 import { Grid, Rating } from "@mui/material";
+
+import classes from "./RatingCard.module.css";
 
 const RatingCard = ({ rating, comment, from }) => {
     const navigate = useNavigate();
@@ -13,15 +17,11 @@ const RatingCard = ({ rating, comment, from }) => {
         <Card
             variant="outlined"
             orientation="horizontal"
-            sx={{
-                width: 'calc(100% - 35px)',
-                gap: 2,
-                '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
-            }}
+            className={classes.card}
         >
-            <Grid container alignItems="center" justifyContent="space-between">
-                <Grid item xs={4} sm={3} md={2} padding={1}>
-                    <AspectRatio ratio="1" sx={{ maxWidth: 90 }} onClick={navigateHandler}>
+            <Grid container className={classes.container}>
+                <Grid item xs={4} sm={3} md={2} className={classes.avatarContainer}>
+                    <AspectRatio ratio="1" className={classes.avatar} onClick={navigateHandler}>
                         <img
                             src={from.avatar}
                             srcSet={from.avatar}
@@ -31,8 +31,8 @@ const RatingCard = ({ rating, comment, from }) => {
                     </AspectRatio>
                 </Grid>
                 <Grid item xs={8} sm={9} md={10}>
-                    <Grid container alignItems="center" justifyContent="space-between" onClick={navigateHandler}>
-                        <Typography level="h6" aria-describedby="card-description" mb={1}>
+                    <Grid container className={classes.container} onClick={navigateHandler}>
+                        <Typography level="h6" aria-describedby="card-description" className={classes.nickName}>
                             {from.nickName}
                         </Typography>
                     </Grid>
@@ -40,11 +40,7 @@ const RatingCard = ({ rating, comment, from }) => {
                     <Typography
                         level="body1"
                         id="card-description"
-                        mb={0.5}
-                        sx={{
-                          wordWrap: 'break-word',
-                          hyphens: 'auto',
-                        }}
+                        className={classes.body}
                     >
                         {comment}
                     </Typography>

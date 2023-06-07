@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import { Grid, Typography } from '@mui/material';
 
@@ -6,6 +7,8 @@ import FormButton from '../UIs/FormButton/FormButton';
 import { getAuthToken } from '../../utils/storage';
 import useHttp from '../../hooks/useHttp';
 import CollectionCard from '../CollectionCard/CollectionCard';
+
+import classes from './LikedCollectionsList.module.css';
 
 const LikedCollectionsList = ({ likedCollections }) => {
     const [ viewMoreCont, setViewMoreCont ] = useState(0);
@@ -38,9 +41,9 @@ const LikedCollectionsList = ({ likedCollections }) => {
     return (
         <>
             { collections.length > 0 && 
-                <Grid container style={{ marginTop: 20 }}>
+                <Grid container>
                     {collections.map((item) => (
-                        <Grid item container xs={12} md={6} lg={6} key={item._id} justifyContent="center">
+                        <Grid item container xs={12} md={6} lg={6} key={item._id} className={classes.content}>
                             <CollectionCard 
                                 id={item._id} 
                                 collection={item} 
@@ -61,8 +64,8 @@ const LikedCollectionsList = ({ likedCollections }) => {
                 </Grid>
             }
             { collections.length <= 0 &&
-                <Grid item xs={12} container justifyContent="center" display="flex">
-                    <Typography variant="h5" component="h5" style={{ fontWeight: "bold", marginTop: 100 }}>
+                <Grid item xs={12} container className={classes.content}>
+                    <Typography variant="h5" component="h5" className={classes.text}>
                         No liked collections!
                     </Typography>
                 </Grid>
