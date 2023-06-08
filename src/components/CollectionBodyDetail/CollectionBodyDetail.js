@@ -22,10 +22,14 @@ const CollectionBodyDetail = ({ collection, user, onLike, onDelete }) => {
         setOpenModal(true);
     }
 
+    const navigateHandler = () => {
+        navigate(`/profile/${collection.owner._id}`);
+    };
+
     return (
         <>
             <Box sx={{ display: { xs: 'none', sm: 'flex' }, mr: 2 }} className={classes.boxContainer}>
-                <Grid item xs={12} container className={classes.contentSpace}>
+                <Grid item xs={12} container className={classes.contentSpace} onClick={navigateHandler}>
                     <Avatar src={collection.owner.avatar} alt={collection.owner.name} 
                         className={classes.avatar}
                     />

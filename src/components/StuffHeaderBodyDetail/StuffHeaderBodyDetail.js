@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Avatar, Box, Grid, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -8,11 +9,16 @@ import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRound
 import classes from './StuffHeaderBodyDetail.module.css';
 
 const StuffHeaderBodyDetail = ({ current_stuff }) => {
+    const navigate = useNavigate();
+
+    const navigateHandler = () => {
+      navigate(`/profile/${current_stuff.stuff.owner._id}`);
+    };
 
     return (
         <>
             <Box sx={{ display: { xs: 'flex', sm: 'none' }}} className={classes.box}>
-              <Grid item xs={12} container className={classes.contentSpace}>
+              <Grid item xs={12} container className={classes.contentSpace} onClick={navigateHandler}>
                 <Avatar src={current_stuff.stuff.owner.avatar} alt={current_stuff.stuff.owner.name} 
                   className={classes.avatar}
                 />

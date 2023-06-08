@@ -28,10 +28,14 @@ const StuffBodyDetail = ({current_stuff, user, onLike, onDelete}) => {
         setOpenModal(true);
     }
 
+    const navigateHandler = () => {
+        navigate(`/profile/${current_stuff.stuff.owner._id}`);
+    };
+
     return (
         <>
             <Box sx={{ display: { xs: 'none', sm: 'flex' }, mr: 2 }} className={classes.box}>
-                <Grid item xs={12} container className={`${classes.container} ${classes.avatarGrid}`}>
+                <Grid item xs={12} container className={`${classes.container} ${classes.avatarGrid}`} onClick={navigateHandler}>
                     <Avatar src={current_stuff.stuff.owner.avatar} alt={current_stuff.stuff.owner.name} 
                         className={classes.avatar}
                     />

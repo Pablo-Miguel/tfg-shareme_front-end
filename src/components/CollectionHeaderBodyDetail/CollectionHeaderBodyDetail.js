@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Avatar, Box, Grid, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -11,11 +12,16 @@ import not_found from "../../assets/imgs/resource/not-found.jpg";
 import classes from "./CollectionHeaderBodyDetail.module.css";
 
 const CollectionHeaderBodyDetail = ({ collection }) => {
+    const navigate = useNavigate();
+
+    const navigateHandler = () => {
+        navigate(`/profile/${collection.owner._id}`);
+    };
 
     return (
         <>
             <Box sx={{ display: { xs: 'flex', sm: 'none' }, mr: 2 }} className={classes.boxContainer}>
-                <Grid item xs={12} container className={classes.contentSpace}>
+                <Grid item xs={12} container className={classes.contentSpace} onClick={navigateHandler}>
                     <Avatar src={collection.owner.avatar} alt={collection.owner.name} 
                         className={classes.avatar}
                     />
