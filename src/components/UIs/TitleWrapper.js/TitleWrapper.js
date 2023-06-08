@@ -9,13 +9,13 @@ const TitleWrapper = ({ title }) => {
     return (
         <>
             <Grid item xs={12}>
-                <Typography variant="h4" component="h4" style={{ fontWeight: "bold"}}>
+                <Typography variant="h4" component="h4" className={classes.text}>
                     {title}
                 </Typography>
             </Grid>
 
-            <Grid item xs={12}>
-                <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
+            <Grid item xs={12} className={classes.divider}>
+                <Divider />
             </Grid>
         </>
     );
