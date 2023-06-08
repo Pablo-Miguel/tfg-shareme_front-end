@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
+
 import { FormControl, FormLabel, Input } from "@mui/joy";
+
+import classes from "./InputFormControl.module.css";
 
 const InputFormControl = (props) => {
   const [value, setValue] = useState(props.initialValue || "");
@@ -19,7 +22,7 @@ const InputFormControl = (props) => {
   };
 
   return (
-    <FormControl required={props.isRequired} style={{ marginBottom: 30 }}>
+    <FormControl required={props.isRequired} className={classes.content}>
       <FormLabel>{props.label}</FormLabel>
       <Input
         placeholder={props.placeholder}

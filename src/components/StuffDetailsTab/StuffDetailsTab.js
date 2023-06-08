@@ -38,13 +38,13 @@ const StuffDetailsTab = (props) => {
                     <Tab>Rating Comments</Tab>
                     <Tab>Questions Comments</Tab>
                 </TabList>
-                <TabPanel value={0} style={{ padding: 20 }}>
+                <TabPanel value={0} className={classes.content}>
                     <RatingCommentsList 
                         onClickSubmit={props.onClickRatingCommentsSubmit} 
                         stuff={props.stuff}
                     />
                 </TabPanel>
-                <TabPanel value={1} style={{ padding: 20 }}>
+                <TabPanel value={1} className={classes.content}>
                     <QuestionsCommentsList 
                         onClickFormSubmit={props.onClickQuestionsCommentsSubmit} 
                         onClickAnswerSubmit={props.onClickQuestionAnswerSubmit} 

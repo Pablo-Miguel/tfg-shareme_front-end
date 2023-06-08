@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { login } from "../store/auth-store/auth-actions";
-import { authActions } from "../store/auth-store/auth-slice";
-
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import { Link as JoyLink } from "@mui/joy";
+
+import { login } from "../store/auth-store/auth-actions";
+import { authActions } from "../store/auth-store/auth-slice";
 import LogInSignUpWrapper from "../components/LogInSignUpWrapper/LogInSignUpWrapper";
 import Alert from "../components/Alert/Alert";
 

@@ -1,10 +1,13 @@
+import React from "react";
+
 import { Box, FormControl, FormLabel, Textarea, Typography } from "@mui/joy";
 
+import classes from "./TextAreaFormControl.module.css";
 
 const TextAreaFormControl = props => {
 
     return (
-        <FormControl required={props.isRequired ? props.isRequired : false} style={{ marginBottom: 30 }}>
+        <FormControl required={props.isRequired ? props.isRequired : false} className={classes.formControl}>
             <FormLabel>{props.label}</FormLabel>
             <Textarea
                 placeholder={props.placeholder}
@@ -14,23 +17,14 @@ const TextAreaFormControl = props => {
                 onChange={props.onChange}
                 endDecorator={
                     <Box
-                            sx={{
-                            display: 'flex',
-                            gap: 'var(--Textarea-paddingBlock)',
-                            pt: 'var(--Textarea-paddingBlock)',
-                            borderTop: '1px solid',
-                            borderColor: 'divider',
-                            flex: 'auto',
-                            }}
-                        >
-                            <Typography level="body3">
-                                {props.text.length} character(s)
-                            </Typography>
-                        </Box>
+                        className={classes.box}
+                    >
+                        <Typography level="body3">
+                            {props.text.length} character(s)
+                        </Typography>
+                    </Box>
                 }
-                sx={{
-                    minWidth: 300
-                }}
+                className={classes.textArea}
             />
         </FormControl>
     );

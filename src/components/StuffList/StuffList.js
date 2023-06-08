@@ -1,28 +1,18 @@
+import React, { useState } from "react";
+
 import { Grid, Typography } from "@mui/material";
 
 import StuffCard from "../StuffCard/StuffCard";
 import SearchBar from "../UIs/SearchBar/SearchBar";
+import PaginationUI from "../UIs/Pagination/PaginationUI";
+import SelectFormControl from "../UIs/SelectFormControl/SelectFormControl";
 import Spinner from "../Spinner/Spinner";
 import useHttp from "../../hooks/useHttp";
 import { getAuthToken } from "../../utils/storage";
-import PaginationUI from "../UIs/Pagination/PaginationUI";
-import { useState } from "react";
-import SelectFormControl from "../UIs/SelectFormControl/SelectFormControl";
 
-const LIMIT = 10;
+import classes from "./StuffList.module.css";
 
-const categories = [
-    "All",
-    "Music",
-    "Photography",
-    "Technology",
-    "Clothes",
-    "Kitchen",
-    "Sports",
-    "Decoration",
-    "Books",
-    "Other"
-];
+import { LIMIT, CATEGORIES_ALL } from "../../Global";
 
 const StuffList = ({ stuff, total, isMe, user_id, setFrontUser, setData, url_base }) => {
     const [ page, setPage ] = useState(0);
@@ -98,14 +88,14 @@ const StuffList = ({ stuff, total, isMe, user_id, setFrontUser, setData, url_bas
 
 
     return (
-        <Grid container style={{ marginTop: 20 }}>
+        <Grid container className={classes.wrapperGrid}>
             <Grid item xs={12} container>
-                <Grid item xs={12} md={8} lg={9} style={{ padding: 5 }}>
+                <Grid item xs={12} md={8} lg={9} className={classes.wrapperOptions}>
                     <SearchBar onSearch={onSearchHandler}/>
                 </Grid>
-                <Grid item xs={12} md={4} lg={3} style={{ padding: 5 }}>
+                <Grid item xs={12} md={4} lg={3} className={classes.wrapperOptions}>
                     <SelectFormControl
-                        options={categories}
+                        options={CATEGORIES_ALL}
                         placeholder="Select category…"
                         name="category"
                         initialValue={"All"}
@@ -117,14 +107,14 @@ const StuffList = ({ stuff, total, isMe, user_id, setFrontUser, setData, url_bas
                 !isLoading ? (
                     <>
                         { (total === 0 || stuff.length === 0) && 
-                            <Grid item xs={12} container justifyContent="center" display="flex">
-                                <Typography variant="h5" component="h5" style={{ fontWeight: "bold", marginTop: 100 }}>
+                            <Grid item xs={12} container className={`${classes.container} ${classes.noStuffCont}`}>
+                                <Typography variant="h5" component="h5" className={classes.text}>
                                     No stuff found yet!
                                 </Typography>
                             </Grid>
                         }
                         {stuff.map((item) => (
-                            <Grid item container xs={12} md={6} lg={6} key={item._id} justifyContent="center">
+                            <Grid item container xs={12} md={6} lg={6} key={item._id} className={classes.container}>
                                 <StuffCard
                                     id={item._id}
                                     stuff={item}
@@ -141,7 +131,7 @@ const StuffList = ({ stuff, total, isMe, user_id, setFrontUser, setData, url_bas
                 
             }
             {Math.ceil(total / LIMIT) > 1 && (
-              <Grid item xs={12} container justifyContent="center">
+              <Grid item xs={12} container className={classes.container}>
                 <PaginationUI page={page + 1} count={Math.ceil(total / LIMIT)} onChange={onChangePaginationHandler} />
               </Grid>
             )}

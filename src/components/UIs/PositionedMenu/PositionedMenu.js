@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import IconButton from '@mui/joy/IconButton';
 import Menu from '@mui/joy/Menu';
 import MenuItem from '@mui/joy/MenuItem';
@@ -7,6 +8,8 @@ import ListDivider from '@mui/joy/ListDivider';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Edit from '@mui/icons-material/Edit';
 import DeleteForever from '@mui/icons-material/DeleteForever';
+
+import classes from './PositionedMenu.module.css';
 
 const PositionedMenu = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -59,7 +62,7 @@ const PositionedMenu = (props) => {
         </MenuItem>
         <ListDivider />
         <MenuItem onClick={onDeleteClickHandler} variant="soft" color="danger">
-          <ListItemDecorator sx={{ color: 'inherit' }}>
+          <ListItemDecorator className={classes.item}>
             <DeleteForever />
           </ListItemDecorator>{' '}
           Delete

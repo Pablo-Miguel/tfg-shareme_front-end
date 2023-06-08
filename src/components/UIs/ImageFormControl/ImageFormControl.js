@@ -1,7 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
+
 import { Box, Button, FormControl, FormLabel} from "@mui/joy";
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import { Grid } from "@mui/material";
+
+import classes from "./ImageFormControl.module.css";
 
 const ImageFormControl = props => {
     const [file, setFile] = useState(props.initialValue ? { preview: props.initialValue } : null);
@@ -24,32 +27,22 @@ const ImageFormControl = props => {
         <FormControl>
             <FormLabel>Image</FormLabel>
             <Box
-                sx={{
-                width: 1,
-                height: 1,
-                border: 1,
-                borderColor: 'divider',
-                borderRadius: 8,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer'
-                }}
+                className={classes.box}
             >
                 <input
                     accept=".jpg,.jpeg,.png"
-                    style={{ display: 'none' }}
+                    className={classes.input}
                     id="raised-button-file"
                     type="file"
                     onChange={imageOnChangeHandler}
                 />
                 <label htmlFor="raised-button-file"
-                    style={{ width: '100%', height: '100%' }}
+                    className={classes.label}
                 >
                     <Button
                         variant="text"
                         component="span"
-                        style={{ width: '100%' }}
+                        className={classes.btn}
                         startDecorator={<KeyboardArrowDown />}
                     >
                         Upload
@@ -61,17 +54,9 @@ const ImageFormControl = props => {
                     item
                     xs={12}
                     container
-                    alignItems={'center'}
-                    direction={'column'}
+                    className={classes.grid}
                 >
-                    <img src={file.preview} alt="Uploaded img" style={
-                        {
-                            width: '50%',
-                            height: 'auto',
-                            marginTop: 10,
-                            borderRadius: 1,
-                        }
-                    } />
+                    <img src={file.preview} alt="Uploaded img" className={classes.img} />
                 </Grid>
             )}
         </FormControl>

@@ -11,8 +11,7 @@ import CollectionCard from "../CollectionCard/CollectionCard";
 
 import classes from "./CollectionList.module.css";
 
-
-const LIMIT = 10;
+import { LIMIT } from "../../Global";
 
 const CollectionList = ({ collections: initCollections, total: initTotal, isMe, user_id, setFrontUser, isGlobal }) => {
     const [ collections, setCollections ] = useState(initCollections);

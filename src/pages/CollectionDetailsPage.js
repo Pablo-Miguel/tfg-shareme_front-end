@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useRouteLoaderData } from "react-router-dom";
+
 import { Divider, Grid, Typography } from "@mui/material";
 
 import useHttp from "../hooks/useHttp";
@@ -9,6 +10,7 @@ import CollectionHeaderBodyDetail from "../components/CollectionHeaderBodyDetail
 import CollectionBodyDetail from "../components/CollectionBodyDetail/CollectionBodyDetail";
 import StuffList from "../components/StuffList/StuffList";
 import Alert from "../components/Alert/Alert";
+import TitleWrapper from "../components/UIs/TitleWrapper.js/TitleWrapper";
 
 const CollectionDetailsPage = () => {
     const user = useUser();
@@ -112,15 +114,8 @@ const CollectionDetailsPage = () => {
             <Grid container spacing={3} padding={2}>
                 <Grid item xs={0} md={1} lg={2}></Grid>
                 <Grid item xs={12} md={10} lg={8} container>
-                    <Grid item xs={12}>
-                        <Typography variant="h4" component="h4" style={{ fontWeight: "bold"}}>
-                            Collection Details Page
-                        </Typography>
-                    </Grid>
 
-                    <Grid item xs={12}>
-                        <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-                    </Grid>
+                    <TitleWrapper title="Collection Details Page" />
                     
                     <Grid item xs={12} sm={6} md={4} container justifyContent="center">
                         <CollectionHeaderBodyDetail collection={collection} />

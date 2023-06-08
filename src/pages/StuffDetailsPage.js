@@ -245,11 +245,11 @@ const DetailsPage = () => {
               <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4} container justifyContent="center">
+            <Grid item xs={12} sm={5} md={4} container justifyContent="center">
               <StuffHeaderBodyDetail current_stuff={current_stuff} />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={8}>
+            <Grid item xs={12} sm={7} md={8}>
               <StuffBodyDetail current_stuff={current_stuff} onLike={likeHandler} user={user} onDelete={onDeleteHandler} />
             </Grid>
 

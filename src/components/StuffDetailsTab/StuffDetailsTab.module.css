@@ -3,3 +3,7 @@
     --List-radius: 0px !important;
     --ListItem-minHeight: 48px !important;
 }
+
+.content {
+    padding: 20px !important;
+}

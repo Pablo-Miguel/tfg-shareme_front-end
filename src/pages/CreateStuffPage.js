@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 
+import { Grid } from "@mui/material";
+
 import useHttp from "../hooks/useHttp";
 import { getAuthToken } from "../utils/storage";
-import { Divider, Grid, Typography as TypographyMUI } from "@mui/material";
-
-
 import Alert from "../components/Alert/Alert";
 import CreateStuffForm from "../components/CreateStuffForm/CreateStuffForm";
+import TitleWrapper from "../components/UIs/TitleWrapper.js/TitleWrapper";
 
 const AddStuffPage = () => {
   const { isLoading, error, sendRequest: sendNewStuff } = useHttp();
@@ -92,15 +92,8 @@ const AddStuffPage = () => {
       <Grid container spacing={3} padding={2}>
         <Grid item xs={0} md={1} lg={2}></Grid>
         <Grid item xs={12} md={10} lg={8} container>
-          <Grid item xs={12}>
-            <TypographyMUI variant="h4" component="h4" style={{ fontWeight: "bold"}}>
-              Create new stuff
-            </TypographyMUI>
-          </Grid>
 
-          <Grid item xs={12}>
-            <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-          </Grid>
+          <TitleWrapper title="Create new stuff" />
 
           <Grid item xs={12}>
             <CreateStuffForm onSubmit={sendStuffHandler} isLoading={isLoading} />

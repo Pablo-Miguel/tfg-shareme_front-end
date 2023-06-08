@@ -1,4 +1,8 @@
+import React from "react";
+
 import { Pagination } from "@mui/material";
+
+import classes from "./PaginationUI.module.css";
 
 const PaginationUI = (props) => {
 
@@ -7,7 +11,7 @@ const PaginationUI = (props) => {
             count={props.count}
             page={props.page}
             onChange={props.onChange}
-            sx={{ margin: 5 }}
+            className={classes.pagination}
             color="primary"
             size="large"
         />

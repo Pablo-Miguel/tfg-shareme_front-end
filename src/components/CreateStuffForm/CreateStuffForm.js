@@ -14,18 +14,7 @@ import ImageFormControl from "../UIs/ImageFormControl/ImageFormControl";
 
 import classes from "./CreateStuffForm.module.css";
 
-
-const categories = [
-    "Music",
-    "Photography",
-    "Technology",
-    "Clothes",
-    "Kitchen",
-    "Sports",
-    "Decoration",
-    "Books",
-    "Other",
-];
+import { CATEGORIES } from "../../Global";
 
 const CreateStuffForm = (props) => {
     const formRef = useRef();
@@ -109,7 +98,7 @@ const CreateStuffForm = (props) => {
                     <SelectFormControl
                         isRequired={true}
                         label="Category"
-                        options={categories}
+                        options={CATEGORIES}
                         placeholder="Select category…"
                         name="category"
                         initialValue={props.initialStuff ? props.initialStuff.category : null}

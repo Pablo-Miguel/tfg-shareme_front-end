@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { Divider } from "@mui/joy";
 import { Grid, Typography } from "@mui/material";
 
@@ -10,18 +11,7 @@ import Spinner from "../components/Spinner/Spinner";
 import SearchBar from "../components/UIs/SearchBar/SearchBar";
 import SelectFormControl from "../components/UIs/SelectFormControl/SelectFormControl";
 
-const categories = [
-  "All",
-  "Music",
-  "Photography",
-  "Technology",
-  "Clothes",
-  "Kitchen",
-  "Sports",
-  "Decoration",
-  "Books",
-  "Other"
-];
+import { CATEGORIES_ALL } from "../Global";
 
 const HomePage = () => {
   const [ searchBarValue, setSearchBarValue ] = useState("");
@@ -63,7 +53,7 @@ const HomePage = () => {
               </Grid>
               <Grid item xs={12} md={4} lg={3} style={{ padding: 5 }}>
                   <SelectFormControl
-                      options={categories}
+                      options={CATEGORIES_ALL}
                       placeholder="Select category…"
                       name="category"
                       initialValue={"All"}

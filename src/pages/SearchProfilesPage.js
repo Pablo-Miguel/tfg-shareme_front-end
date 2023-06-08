@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouteLoaderData } from "react-router-dom";
+
 import { Divider, Grid, Typography } from "@mui/material";
 
 import useHttp from "../hooks/useHttp";
@@ -8,8 +9,9 @@ import Spinner from "../components/Spinner/Spinner";
 import ProfileCard from "../components/ProfileCard/ProfileCard";
 import PaginationUI from "../components/UIs/Pagination/PaginationUI";
 
+import { LIMIT } from "../Global";
+
 const SearchProfilesPage = () => {
-    const LIMIT = 10;
     const loader = useRouteLoaderData("search-profiles");
     const [ searchedUsers, setSearchedUsers ] = useState(loader);
     const [ pageCont, setPageCont ] = useState(0);

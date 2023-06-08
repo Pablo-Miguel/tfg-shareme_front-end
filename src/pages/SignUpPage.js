@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
-import Typography from '@mui/joy/Typography';
 import { Link as JoyLink } from "@mui/joy";
+import { Grid } from "@mui/material";
 
 import { signUp } from "../store/auth-store/auth-actions";
 import { authActions } from "../store/auth-store/auth-slice";
 import LogInSignUpWrapper from "../components/LogInSignUpWrapper/LogInSignUpWrapper";
-import { Grid } from "@mui/material";
 import Alert from "../components/Alert/Alert";
 
 const SignUpPage = () => {

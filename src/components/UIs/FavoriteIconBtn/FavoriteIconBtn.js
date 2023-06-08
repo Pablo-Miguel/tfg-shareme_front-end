@@ -1,5 +1,9 @@
+import React from 'react';
+
 import { IconButton } from "@mui/joy";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+
+import classes from "./FavoriteIconBtn.module.css";
 
 const FavoriteIconBtn = ({ isLiked, onClick, isMine }) => {
 
@@ -12,15 +16,10 @@ const FavoriteIconBtn = ({ isLiked, onClick, isMine }) => {
                 variant="solid"
                 color={isLiked ? "" : "danger"}
                 sx={{
-                  position: 'absolute',
-                  zIndex: 2,
-                  borderRadius: '50%',
-                  right: '4.5rem',
-                  bottom: 0,
-                  transform: 'translateY(50%)',
                   backgroundColor: isLiked ? "background.level2" : "",
                   border: isLiked ? "2px solid #D7D7D7" : ""
                 }}
+                className={classes.btn}
                 onClick={onClick}
               >
                 <FavoriteIcon color={isLiked ? "error": ""} />

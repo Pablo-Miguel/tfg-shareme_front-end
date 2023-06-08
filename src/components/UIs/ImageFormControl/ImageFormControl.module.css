@@ -1,0 +1,36 @@
+.box {
+    width: 100%;
+    height: 100%;
+    border: 1px solid;
+    border-color: var(--joy-palette-divider, rgba(var(--joy-palette-neutral-mainChannel, 115 115 140) / 0.28));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.input {
+    display: none;
+}
+
+.label {
+    width: 100%;
+    height: 100%;
+}
+
+.btn {
+    width: 100%;
+}
+
+.grid {
+    align-items: center;
+    flex-direction: column !important;
+}
+
+.img {
+    width: 50%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 1px;
+}

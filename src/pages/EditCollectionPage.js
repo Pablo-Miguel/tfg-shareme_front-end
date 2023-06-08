@@ -1,24 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useRouteLoaderData } from "react-router-dom";
-import { Divider, Grid, Typography } from "@mui/material";
+
+import { Grid } from "@mui/material";
 
 import CreateCollectionForm from "../components/CreateCollectionForm/CreateCollectionForm";
 import { getAuthToken } from "../utils/storage";
 import useHttp from "../hooks/useHttp";
 import Alert from "../components/Alert/Alert";
+import TitleWrapper from "../components/UIs/TitleWrapper.js/TitleWrapper";
 
-const categories = [
-    "All",
-    "Music",
-    "Photography",
-    "Technology",
-    "Clothes",
-    "Kitchen",
-    "Sports",
-    "Decoration",
-    "Books",
-    "Other"
-];
+import { CATEGORIES_ALL } from "../Global";
 
 const EditCollectionPage = () => {
     const loader = useRouteLoaderData("edit-collection");
@@ -140,15 +131,8 @@ const EditCollectionPage = () => {
             <Grid container spacing={3} padding={2}>
                 <Grid item xs={0} md={1} lg={2}></Grid>
                 <Grid item xs={12} md={10} lg={8} container>
-                    <Grid item xs={12}>
-                        <Typography variant="h4" component="h4" style={{ fontWeight: "bold"}}>
-                            Edit collection
-                        </Typography>
-                    </Grid>
 
-                    <Grid item xs={12}>
-                        <Divider style={{ marginTop: 10, marginBottom: 10 }}/>
-                    </Grid>
+                    <TitleWrapper title="Edit collection" />
 
                     <Grid item xs={12}>
                         <CreateCollectionForm 
@@ -161,7 +145,7 @@ const EditCollectionPage = () => {
                             viewMore={viewMore}
                             onClickViewMore={onClickViewMoreHandler}
                             onSubmit={editCollectionHandler}
-                            categories={categories}
+                            categories={CATEGORIES_ALL}
                             categoriesOnChange={categoriesOnChangeHandler}
                         />
                     </Grid>

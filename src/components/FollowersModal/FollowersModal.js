@@ -17,7 +17,7 @@ import FormButton from '../UIs/FormButton/FormButton';
 import classes from './FollowersModal.module.css';
 
 
-const LIMIT = 10;
+import { LIMIT } from "../../Global";
 
 const FollowersModal = ({ title, open, setOpen, type, userId, setType }) => {
     const { error, isLoading, sendRequest: fetchFollowers } = useHttp();

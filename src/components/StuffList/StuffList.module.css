@@ -1,0 +1,20 @@
+.wrapperGrid {
+    margin-top: 20px;
+}
+
+.wrapperOptions {
+    padding: 5px;
+}
+
+.container {
+    justify-content: center;
+}
+
+.noStuffCont {
+    display: flex;
+}
+
+.text {
+    font-weight: bold !important;
+    margin-top: 100px !important;
+}

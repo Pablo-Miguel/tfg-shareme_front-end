@@ -1,5 +1,9 @@
+import React from 'react';
+
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { IconButton } from '@mui/joy';
+
+import classes from './RedEyeIconBtn.module.css';
 
 const RedEyeIconBtn = (props) => {
 
@@ -8,14 +12,7 @@ const RedEyeIconBtn = (props) => {
             size="md"
             variant="solid"
             color="info"
-            sx={{
-                position: 'absolute',
-                zIndex: 2,
-                borderRadius: '50%',
-                right: '1rem',
-                bottom: 0,
-                transform: 'translateY(50%)',
-            }}
+            className={classes.btn}
             onClick={props.onClick}
         >
             <RemoveRedEyeIcon />
