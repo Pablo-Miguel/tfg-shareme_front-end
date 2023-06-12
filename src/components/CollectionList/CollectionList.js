@@ -75,7 +75,7 @@ const CollectionList = ({ collections: initCollections, total: initTotal, isMe, 
     
     return (
         <Grid container style={{ marginTop: 20 }}>
-            <SearchBar onSearch={onSearchHandler}/>
+            <SearchBar placeholder="Search for collections..." onSearch={onSearchHandler}/>
             {
                 !isLoading ? (
                     <>
