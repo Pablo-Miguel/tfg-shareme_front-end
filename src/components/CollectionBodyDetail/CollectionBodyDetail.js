@@ -67,7 +67,7 @@ const CollectionBodyDetail = ({ collection, user, onLike, onDelete }) => {
                 )
             }
 
-            <DeleteConfirmationModal open={openModal} setOpen={setOpenModal} type='stuff' onDelete={onDelete} />
+            <DeleteConfirmationModal open={openModal} setOpen={setOpenModal} type='collection' onDelete={onDelete} />
         </>
     );
 };

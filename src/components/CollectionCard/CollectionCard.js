@@ -167,7 +167,7 @@ const CollectionCard = ({ collection: inputCollection, isMine }) => {
                     </Typography>
                 </CardOverflow>
             </Card>
-            <DeleteConfirmationModal open={openModal} setOpen={setOpenModal} type='stuff' onDelete={onDeleteHandler} />
+            <DeleteConfirmationModal open={openModal} setOpen={setOpenModal} type='collection' onDelete={onDeleteHandler} />
             {open && !error ? (
                 <Alert severity="success" open={open} handleClose={handleClose} message="Your stuff has been deleted successfully!" />
             )
